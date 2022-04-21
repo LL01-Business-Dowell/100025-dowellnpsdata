@@ -21,8 +21,7 @@ def render_form(request):
         formdata['location'] = request.POST.get('location')
         formdata['promotional_sentence'] = request.POST.get('promotional_sentence')
         host = request.META['HTTP_HOST']
-        print('----------->>>>>>')
-        print(host)
+        
         
 
         url ='http://'+host+'/api/qrcode/'
