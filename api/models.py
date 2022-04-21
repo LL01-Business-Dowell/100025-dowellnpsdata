@@ -10,7 +10,7 @@ class QrCode(models.Model):
     url = models.CharField(max_length=500)
     location = models.CharField(max_length=255)
     qr_code = models.FileField(upload_to='company-qrcode',blank= True)
-    promotional_sentence = models.TextField()
+    promotional_sentence = models.TextField(default=b'')
 
     image = models.BinaryField()
 

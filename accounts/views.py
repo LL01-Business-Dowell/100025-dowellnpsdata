@@ -20,9 +20,12 @@ def render_form(request):
         formdata['url'] = request.POST.get('url')
         formdata['location'] = request.POST.get('location')
         formdata['promotional_sentence'] = request.POST.get('promotional_sentence')
+        host = request.META['HTTP_HOST']
+        print('----------->>>>>>')
+        print(host)
         
 
-        url = 'http://localhost:8000/api/qrcode/'
+        url ='http://'+host+'/api/qrcode/'
         res = requests.post(url, data = formdata, files=files)
         res_data = res.json()
         context ={
