@@ -16,6 +16,21 @@
         .form-check{
             padding: 0%;
         }
+        .img-thumbnail {
+        border: 0;
+        }
+        .card-body{
+            border: 5px solid gray;
+            border-radius: 5px;
+        }
+        .card-body > .card-body{
+            border: 5px solid green;
+            border-radius: 2px;
+        }
+
+        .green-btn{
+            background-color: greenyellow;
+        }
     </style>
     <title>Do well</title>
   </head>
@@ -24,9 +39,26 @@
         <div class="row justify-content-center">
             <div class="card">
                 <div class="card-body">
-                    <img src="{{qrcode}}"  alt="..." class="img-thumbnail mb-2">
+                    <div class="card-body">
+                        {% if qrcode %}
+                        <img src="{{qrcode}}"  alt="..." class="img-thumbnail mb-2">
+                        {% else %}
+                        <img src="{% static 'assets/img/cpp.png' %}"  alt="..." class="img-thumbnail mb-2">
+                        {% endif %}
+                        <div class="row justify-content-center">
+                            <a class="btn btn-primary green-btn" href="#" role="button">Click here or scan qrcode to start survey</a>
+                        </div>
+                    </div>
+                    <!-- edit and proceed btn -->
+                    <div class="row mt-2 p-4">
+                        <a class="btn btn-primary green-btn float-left" href="#" role="button">Edit </a>
+                        <a style="margin-left: auto;" class="btn btn-primary green-btn" href="#" role="button">Procced to Confirm</a>
 
+                    </div>
+
+                    
                 </div>
+                
             </div>
             
         </div>

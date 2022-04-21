@@ -36,3 +36,7 @@ def render_form(request):
 
 def render_qrcode(request):
     return render(request,'qrcode.html')
+
+
+def render_iframe(request):
+    return render(request, 'iframe.html')

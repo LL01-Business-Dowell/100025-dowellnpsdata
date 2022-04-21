@@ -7,14 +7,14 @@ from django.conf import settings
 import base64
 
 
-def decodeDesignImage(data):
-    try:
-        data = base64.b64decode(data.encode('UTF-8'))
-        buf = io.BytesIO(data)
-        img = Image.open(buf)
-        return img
-    except:
-        return None
+# def decodeDesignImage(data):
+#     try:
+#         data = base64.b64decode(data.encode('UTF-8'))
+#         buf = io.BytesIO(data)
+#         img = Image.open(buf)
+#         return img
+#     except:
+#         return None
 
 class CreateQrCodeSerializer(serializers.ModelSerializer):
     class Meta:
@@ -33,6 +33,8 @@ class CreateQrCodeSerializer(serializers.ModelSerializer):
         wpercent = (basewidth/float(logo.size[0]))
         hsize = int((float(logo.size[1])*float(wpercent)))
         logo = logo.resize((basewidth, hsize), Image.ANTIALIAS)
+        
+     
         QRcode = qrcode.QRCode(
             error_correction=qrcode.constants.ERROR_CORRECT_H
         )
@@ -56,8 +58,12 @@ class CreateQrCodeSerializer(serializers.ModelSerializer):
         # set size of QR code
         pos = ((QRimg.size[0] - logo.size[0]) // 2,
             (QRimg.size[1] - logo.size[1]) // 2)
-
-        QRimg.paste(logo, pos)
+        
+        # box = Image.open('background.png')
+        # QRimg.paste(box, pos)
+        QRimg.paste(logo,pos)
+        
+        # QRimg.show()
         
         # save the QR code generated
         QRimg.save(settings.MEDIA_ROOT+'/company_qrcode/'+filename)
