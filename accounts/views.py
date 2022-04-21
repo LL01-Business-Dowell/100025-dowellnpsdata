@@ -28,8 +28,11 @@ def render_form(request):
         res = requests.post(url, data = formdata, files=files)
         res_data = res.json()
         context ={
-            'qrcode': res_data['qr_code']
+            'qrcode': res_data['qr_code'],
+            
         }
+
+        request.session['form_link'] = res_data['url']
         return render(request, 'qrcode.html', context)
 
     return render(request, 'form.html')
@@ -39,4 +42,7 @@ def render_qrcode(request):
 
 
 def render_iframe(request):
-    return render(request, 'iframe.html')
+    context = {
+        'url_link':request.session['form_link']
+    }
+    return render(request, 'iframe.html',context )
