@@ -13,6 +13,7 @@ class QrCode(models.Model):
     promotional_sentence = models.TextField(default=b'')
 
     image = models.BinaryField()
+    event_id = models.CharField(max_length=255, blank=True, null=True)
 
 
     

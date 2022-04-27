@@ -5,6 +5,7 @@ from PIL import Image
 import qrcode
 from django.conf import settings
 import base64
+from accounts.views import get_event_id
 
 
 # def decodeDesignImage(data):
@@ -75,6 +76,7 @@ class CreateQrCodeSerializer(serializers.ModelSerializer):
        
 
         new_qrcode.image = converted_string
+        new_qrcode.event_id = get_event_id()
         new_qrcode.save()
         return new_qrcode
 

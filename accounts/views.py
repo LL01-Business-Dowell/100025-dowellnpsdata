@@ -1,6 +1,8 @@
 from django.shortcuts import render
 import requests
 from rest_framework.response import Response
+from datetime import datetime
+from django.http import HttpResponse, JsonResponse
 
 # Create your views here.
 
@@ -29,6 +31,7 @@ def render_form(request):
         res_data = res.json()
         context ={
             'qrcode': res_data['qr_code'],
+            'link': res_data['url']
             
         }
 
@@ -46,3 +49,20 @@ def render_iframe(request):
         'url_link':request.session['form_link']
     }
     return render(request, 'iframe.html',context )
+
+def get_event_id():
+    dd=datetime.now()
+    time=dd.strftime("%d:%m:%Y,%H:%M:%S")
+    url="https://100003.pythonanywhere.com/event_creation"
+    data={"platformcode":"FB" ,"citycode":"101","daycode":"0",
+                    "dbcode":"pfm" ,"ip_address":"192.168.0.41",
+                    "login_id":"lav","session_id":"new",
+                    "processcode":"1","regional_time":time,
+                    "dowell_time":time,"location":"22446576",
+                    "objectcode":"1","instancecode":"100051","context":"afdafa ",
+                    "document_id":"3004","rules":"some rules","status":"work"
+                    }
+
+
+    r=requests.post(url,json=data)
+    return r.text
