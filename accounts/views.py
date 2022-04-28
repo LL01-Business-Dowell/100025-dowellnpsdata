@@ -29,11 +29,15 @@ def render_form(request):
         url ='http://'+host+'/api/qrcode/'
         res = requests.post(url, data = formdata, files=files)
         res_data = res.json()
+
+        upload_to_remote_db(res_data)
         context ={
             'qrcode': res_data['qr_code'],
             'link': res_data['url']
             
         }
+
+
 
         request.session['form_link'] = res_data['url']
         return render(request, 'qrcode.html', context)
@@ -66,3 +70,36 @@ def get_event_id():
 
     r=requests.post(url,json=data)
     return r.text
+
+def upload_to_remote_db(data):
+    # print('sanity check')
+    # print(data)
+    url = "http://100002.pythonanywhere.com/" 
+    #searchstring="ObjectId"+"("+"'"+"6139bd4969b0c91866e40551"+"'"+")"
+    payload = {
+    "cluster": "nps",
+
+    "database": "voc_survey",
+
+    "collection": "client_voc_data",
+
+    "document": "client_voc_data",
+
+    "team_member_ID": "76888881",
+
+    "function_ID": "ABCDE",
+
+    "command": "insert",
+
+    "field": data,
+    "update_field": {
+        "order_nos": 21
+    },
+    "platform": "bangalore"
+    }
+    headers = {
+    'Content-Type': 'application/json'
+    }
+
+    response = requests.post( url, headers=headers, json=payload)
+    print(response.text)
