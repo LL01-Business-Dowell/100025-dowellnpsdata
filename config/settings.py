@@ -95,7 +95,7 @@ WSGI_APPLICATION = 'config.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'djongo',
-        'NAME': 'dowell_qrcode',
+        'NAME': 'dowell_qrcodetest',
     }
 }
 # DATABASES = {
