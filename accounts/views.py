@@ -36,10 +36,12 @@ def render_form(request):
         }
 
         request.session['form_link'] = res_data['url']
+        print(context)
         return render(request, 'qrcode.html', context)
 
     return render(request, 'form.html')
-
+def text_qrcode_page(request):
+    return render(request, 'qrcode.html', {'qrcode': 'http://127.0.0.1:8000/media/company_qrcode/DSC04502.jpg', 'link': 'https://www.youtube.com/watch?v=Lv8LJo777CU&ab_channel=YRF'})
 def render_qrcode(request):
     return render(request,'qrcode.html')
 
