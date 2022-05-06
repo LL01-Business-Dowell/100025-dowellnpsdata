@@ -107,18 +107,20 @@
                             <div style="cursor: pointer;margin:auto;padding:10px;width: 100px;height:100px;border: 5px solid #D5DCE2;border-radius: 15px;" onclick="clickUploadFile()">
                                 <p style="text-align: justify;font-weight: bold"><b>Upload Photo/ Logo</b></p>
                             </div>
+                            <div id = "errorBar" style="width: 100%;display: none">
+                                <p style="margin: auto; background: red; text-align: center">Please Attach Photo/Logo</p>
+                            </div>
                           <div class="custom-file" style="display: none">
-                            <input type="file" name="logo" class="custom-file-input" id="customFile">
-                            <label class="custom-file-label" for="customFile">Choose file</label>
+                            <input required type="file" name="logo" class="custom-file-input" id="customFile">
                           </div>
                           
                         </div>
                         <div class="form-group">
-                          <input type="text" name="brand_name" class="form-control" style="color: black" placeholder="Enter your brand name">
+                          <input required type="text" name="brand_name" class="form-control" style="color: black" placeholder="Enter your brand name">
                         </div>
                         
                         <div class="form-group">
-                            <select class="custom-select" name="service" required>
+                            <select required class="custom-select" name="service" required>
                                 <option selected value="">Select your Product/Service &nbsp&nbsp&nbsp</option>
                                 <option value="one">One</option>
                                 <option value="two">Two</option>
@@ -127,11 +129,11 @@
                         </div>
 
                         <div class="form-group">
-                            <input type="text" name="url" class="form-control" style="color: black" placeholder="Enter link to survey form">
+                            <input required type="text" name="url" class="form-control" style="color: black" placeholder="Enter link to survey form">
                         </div>
 
                         <div class="form-group">
-                            <select class="custom-select" required name="location">
+                            <select required class="custom-select" required name="location">
                                 <option selected value="">Select the survey location</option>
                                 <option value="one">One</option>
                                 <option value="two">Two</option>
@@ -140,16 +142,16 @@
                         </div>
 
                         <div class="form-group">
-                            <textarea placeholder="Enter a promotional sentence to attract participants (15 words)" id = "provitionalTextArea" class="form-control" name="promotional_sentence"></textarea>
+                            <textarea required placeholder="Enter a promotional sentence to attract participants (15 words)" id = "provitionalTextArea" class="form-control" name="promotional_sentence"></textarea>
                         </div>
 
 
                         <div id="disclaimerCheckbox" class="form-check">
                             <label class="form-check-label" for="exampleCheck1"><u>Disclaimer</u></label>
-                            <input type="checkbox" class="form-check-input-reverse" id="exampleCheck1">
+                            <input required type="checkbox" class="form-check-input-reverse" id="exampleCheck1">
                           </div>
                         <div>
-                            <button id = "submitButton" type="submit" class="btn btn-primary"><u>Create Survey Campaign</u></button>
+                            <button id = "submitButton" onclick="checkFileUploadStatus()" type="submit" class="btn btn-primary"><u>Create Survey Campaign</u></button>
                         </div>
                     </form>
                 </div>
@@ -178,6 +180,14 @@
     })
     function clickUploadFile() {
             document.getElementById("customFile").click()
+    }
+    function checkFileUploadStatus(){
+        if(document.getElementById("customFile").value == "") {
+                document.getElementById("errorBar").style.display = "block";
+            }
+        else{
+                document.getElementById("errorBar").style.display = "none";
+        }
     }
     </script>
 
