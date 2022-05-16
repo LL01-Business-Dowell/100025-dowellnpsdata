@@ -6,6 +6,7 @@ import qrcode
 from django.conf import settings
 import base64
 from accounts.views import get_event_id
+from django.conf import settings
 
 
 # def decodeDesignImage(data):
@@ -39,9 +40,11 @@ class CreateQrCodeSerializer(serializers.ModelSerializer):
         QRcode = qrcode.QRCode(
             error_correction=qrcode.constants.ERROR_CORRECT_H
         )
-        
+        host = settings.HOSTNAME
 
-        url = validated_data.pop('url')
+        # url = validated_data.pop('url')
+        survey_url = validated_data['url']
+        url = 'http://' + host + '/iframe?url='+ survey_url
         
 
         QRcode.add_data(url)
