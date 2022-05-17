@@ -153,6 +153,9 @@ MEDIA_URL = '/media/'
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
+HOSTNAME = 'localhost:8000'
+
+
 
 # Activate Django-Heroku.
 django_heroku.settings(locals())

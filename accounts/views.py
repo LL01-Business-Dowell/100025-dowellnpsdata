@@ -3,6 +3,7 @@ import requests
 from rest_framework.response import Response
 from datetime import datetime
 from django.http import HttpResponse, JsonResponse
+from django.conf import settings
 
 def text_qrcode_page(request):
     return render(request, 'proceed.html')
@@ -31,7 +32,7 @@ def render_form(request):
         upload_to_remote_db(res_data)
         context = {
             'qrcode': res_data['qr_code'],
-            'link': res_data['url']
+            'link': 'http://'+settings.HOSTNAME+'/iframe?url='+ res_data['url']
 
         }
 
@@ -46,8 +47,14 @@ def render_qrcode(request):
 
 
 def render_iframe(request):
+    survey_link = request.GET.get('url', '')
+    if survey_link:
+        url_link = survey_link
+    else:
+        url_link= request.session['form_link']
     context = {
-        'url_link': request.session['form_link']
+        'url_link': url_link
+        # 'url_link': request.session['form_link']
     }
     return render(request, 'iframe.html', context)
 
