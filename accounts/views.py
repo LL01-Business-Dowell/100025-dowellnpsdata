@@ -4,9 +4,8 @@ from rest_framework.response import Response
 from datetime import datetime
 from django.http import HttpResponse, JsonResponse
 
-
-# Create your views here.
-
+def text_qrcode_page(request):
+    return render(request, 'proceed.html')
 
 def render_form(request):
     if request.method == 'POST' and request.FILES:
