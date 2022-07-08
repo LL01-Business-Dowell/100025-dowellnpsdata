@@ -4,6 +4,9 @@ from rest_framework.response import Response
 from datetime import datetime
 from django.http import HttpResponse, JsonResponse
 from django.conf import settings
+from django.views.generic import View
+from django.contrib.auth.mixins import LoginRequiredMixin
+
 
 def text_qrcode_page(request):
     return render(request, 'proceed.html')
@@ -108,3 +111,11 @@ def upload_to_remote_db(data):
 
     response = requests.post(url, headers=headers, json=payload)
     print(response.text)
+
+
+class FeedbackView(View):
+    template_name = 'accounts/feedback.html'
+
+    def get(self, request, *args, **kwargs):
+        context = {}
+        return render(request, self.template_name, context)
