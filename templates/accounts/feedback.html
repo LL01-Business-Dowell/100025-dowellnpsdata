@@ -63,7 +63,7 @@
                 <!-- pop up section starts -->
                 <section class="create_survey">
                     <div class="form_survey_container padding_center">
-                        <form action="" method="post">
+                        <form action="" method="post" enctype="multipart/form-data">
                             {% csrf_token %}
                             <div class="form_control close_container flex">
                                 <span id="qmark"> ? </span>
@@ -72,30 +72,30 @@
                             <div class="form_control_image flex">
                                 <div class="upload__image__cover">
                                     <button type="button" class="btn-warning">
-                                        <img src="" alt="" id="image" />
+                                        <img src="" alt="" id="logo" />
                                         <span id="upload__icon" class="flex"><i class="fa fa-plus"></i> <small>upload file</small></span>
                                         <span></span>
                                     </button>
-                                    <input type="file" id="uploaded__image" name="image" id="image" required />
+                                    <input type="file" id="uploaded__image" name="logo" id="logo" required />
                                 </div>
                             </div>
                             <div class="form_control">
-                                <input type="text" placeholder="enter your name" id="name" name="name" required />
+                                <input type="text" placeholder="enter your name" id="brand_name" name="brand_name" required />
                             </div>
                             <div class="form_control">
                                 <select name="service" id="service" required>
                                     <option value="">--select your product/service--</option>
-                                    <option value="">two</option>
+                                    <option value="2">two</option>
                                 </select>
                             </div>
                             <div class="form_control">
-                                <input type="url" placeholder="https//:yourlink.com" id="link" name="link" required />
+                                <input type="url" placeholder="https//:yourlink.com" id="url" name="url" required />
                             </div>
                             <div class="form_control">
-                                <select name="survey_form" id="survey_form" required>
+                                <select name="location" id="location" required>
                                     <option value="">--select the survey form--</option>
-                                    <option value="">one</option>
-                                    <option value="">two</option>
+                                    <option value="1">one</option>
+                                    <option value="2">two</option>
                                 </select>
                             </div>
                             <div class="form_control">
@@ -157,7 +157,7 @@
 
             // upload image script
             const uploadIcon = document.querySelector("#upload__icon");
-            const image = document.querySelector("#image");
+            const image = document.querySelector("#logo");
             const uploaded = document.querySelector("#uploaded__image");
             uploaded.addEventListener("change", function () {
                 const file = this.files[0];
