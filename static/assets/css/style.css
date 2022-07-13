@@ -347,7 +347,7 @@ select {
 .survey__date__form__cover {
   border-top: 1px solid var(--red-color);
   /* border-bottom: 1px solid var(--red-color); */
-  height: 80vh;
+  height: auto;
   flex-direction: column;
   margin-top: 0.4rem;
 }
@@ -380,6 +380,7 @@ select {
   color: var(--white-color);
   text-align: center;
   padding: 1rem;
+  margin-top: 5px;
 }
 .survey__date__title {
   height: 70px;

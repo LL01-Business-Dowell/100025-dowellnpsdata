@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+  {% load static %}
+    <head>
+        <meta charset="UTF-8" />
+        <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>create qr code</title>
+
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" />
+        <link rel="stylesheet" href="{% static 'assets/css/style.css' %}" />
+        <script
+            src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.8.0/chart.min.js"
+            integrity="sha512-sW/w8s4RWTdFFSduOTGtk4isV1+190E/GghVffMA9XczdJ2MDzSzLEubKAs5h0wzgSJOQTRYyaz73L3d6RtJSg=="
+            crossorigin="anonymous"
+            referrerpolicy="no-referrer"
+        ></script>
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css" />
+    </head>
+    <body>
+        <main>
+            <div class="container">
+                <!-- main section starts -->
+                <header class="">
+                    <nav id="navbar">
+                        <span class="padding_center"><i class="fa fa-bars"></i></span>
+                    </nav>
+                </header>
+                <section class="qr_code_preview flex padding_center">
+                    <span> Preview of the survey invitation in uxlivinglab page </span>
+                    <span><i class="fa fa-close"></i></span>
+                </section>
+                <section class="qr_code_container">
+                    <div class="qr_img flex">
+                        {% if qrcode %}
+                          <img src="{{ qrcode }}"  alt="..." class="img-thumbnail mb-2">
+                        {% else %}
+                          <img src="{% static 'assets/img/cpp.png' %}"  alt="..." class="img-thumbnail mb-2">
+                        {% endif %}
+                    </div>
+                    <div class="qr_imoji flex">
+                        <span><img src="{% static 'assets/img/image 5.png'%}" alt="" /></span>
+                        <span>How do you feel about Apple, Coffee in today's breakfast? </span>
+                    </div>
+                    <div class="privacy_policy flex padding_center">
+                        <span><input type="checkbox" /></span>
+                        <span>Privacy Policy</span>
+                    </div>
+                    <div class="qr_footer_text padding_center">
+                        <h4 class="">Click here or scan QR code to fill survey form</h4>
+                    </div>
+                </section>
+                <div class="qr_buttons flex padding_center">
+                    <span><button id="qr_edit">Edit</button></span>
+                    <span><a href="survey_date.html" id="qr_timeline">Set Survey timeline</a></span>
+                </div>
+            </div>
+        </main>
+
+        <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+        <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+    </body>
+</html>

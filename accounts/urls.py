@@ -1,14 +1,15 @@
 from django.shortcuts import render
 from django.urls import path, include
-from .views import render_form, render_qrcode, render_iframe, get_event_id, FeedbackView
+from accounts.views.helper import render_form, render_qrcode, render_iframe, get_event_id
+from accounts import views
 
 urlpatterns = [
-    path('', render_form, name='form'),
+    path('form/', render_form, name='form'),
 
     # path('test', text_qrcode_page),
 
     path('get_eventid', get_event_id, name='get_event_id'),
     path('qrcode', render_qrcode, name='qrcode'),
     path('iframe', render_iframe, name='iframe'),
-    path('feedback/', FeedbackView.as_view(), name='feedback'),
+    path('', views.DashboardView.as_view(), name='feedback'),
 ]

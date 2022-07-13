@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>survey paused</title>
+
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css"
+      integrity="sha512-KfkfwYDsLkIlwQp6LFnl8zNdLGxu9YAA1QvwINks4PhcElQSvqcyVLLD9aMhXd13uQjoXtEKNosOWaZqXgel0g=="
+      crossorigin="anonymous"
+      referrerpolicy="no-referrer"
+    />
+    <link rel="stylesheet" href="style.css" />
+    <script
+      src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.8.0/chart.min.js"
+      integrity="sha512-sW/w8s4RWTdFFSduOTGtk4isV1+190E/GghVffMA9XczdJ2MDzSzLEubKAs5h0wzgSJOQTRYyaz73L3d6RtJSg=="
+      crossorigin="anonymous"
+      referrerpolicy="no-referrer"
+    ></script>
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css"
+    />
+    <style>
+      .survey__date {
+        height: auto;
+      }
+      .progress__line__container {
+        height: 2px;
+        width: 100%;
+        background-color: var(--deep-gray-bg);
+      }
+      .progress__line__inner {
+        display: flex;
+        background-color: var(--pink-color);
+        width: 10%;
+        justify-content: flex-start;
+        align-items: center;
+        height: 2px;
+        /* border-bottom-right-radius: 50%;
+        border-top-right-radius: 50%; */
+        position: relative;
+      }
+      .progress__line__inner::before {
+        content: "";
+        position: absolute;
+        right: 0;
+        height: 8px;
+        width: 8px;
+        background-color: var(--pink-color);
+        border-radius: 50%;
+      }
+      .survey__paused__text {
+        text-align: center;
+        padding: 1.5rem 0;
+      }
+      .survey__paused__text h5 {
+        font-size: 15px;
+        color: var(--deep-gray-bg);
+      }
+      .suervey__paused__icon {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        border-radius: 3px solid var(--deep-gray-bg);
+        height: 40px;
+        width: 45px;
+        margin: 0 auto;
+        border-radius: 50%;
+        position: relative;
+        margin-bottom: 20px;
+      }
+      .suervey__paused__icon span {
+        position: absolute;
+        color: var(--pink-color);
+        font-size: 40px;
+      }
+      .survey__pause__image {
+        margin: 0 auto;
+        width: 70%;
+        height: 270px;
+      }
+      .survey__pause__image img {
+        height: 100%;
+      }
+      .form_control_date__submit {
+        flex-direction: column;
+      }
+      .form_control_date__submit button {
+        background-color: var(--green-bg);
+        color: var(--white-color);
+        min-width: 200px;
+        padding: 0.8rem;
+      }
+    </style>
+  </head>
+  <body>
+    <main>
+      <div class="container">
+        <!-- main section starts -->
+        <header class="">
+          <nav id="navbar">
+            <span class="padding_center"><i class="fa fa-bars"></i></span>
+          </nav>
+        </header>
+
+        <section class="survey__date">
+          <section class="survey__text">
+            <h3>survey paused</h3>
+          </section>
+        </section>
+        <section>
+          <div class="survey__paused__text">
+            <h5>Your survey has been paused</h5>
+          </div>
+
+          <div class="survey__pause__image padding_center">
+            <img src="img/endsurvey.png" alt="" />
+          </div>
+          <div class="suervey__paused__icon">
+            <span class="pause__icon"> </span>
+            <span class="play__icon">
+              <i class="fa-solid fa-play"></i>
+            </span>
+          </div>
+          <div class="progress__line__container">
+            <div class="progress__line__inner"></div>
+          </div>
+          <div class="form_control_date__submit padding_center flex">
+            <button
+              href="end_survey_response.html"
+              type="submit"
+              id="survey__date__submit__btn"
+            >
+              Resume now
+            </button>
+            <small>click to end your survey now</small>
+          </div>
+        </section>
+
+        <!-- survey start date pop up -->
+        <section class="survey_date_popup flex">
+          <div class="survey_date_popup_content flex">
+            <div class="survey_date_popup_close flex">
+              <span id="survey-datestart-close">x</span>
+            </div>
+            <h4 class="padding_center items-center">
+              start and end date of survey <br />
+              has been set
+            </h4>
+            <img src="img/endsurvey2.png" alt="" />
+          </div>
+        </section>
+      </div>
+    </main>
+
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+    <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+    <script>
+      "use strict";
+      const surveyDateStartBtn = document.querySelector(
+        "#survey__date__submit__btn"
+      );
+      console.log(surveyDateStartBtn);
+      const surveyDateCloseBtn = document.querySelector(
+        "#survey-datestart-close"
+      );
+      const surveyDatePopup = document.querySelector(".survey_date_popup");
+
+      surveyDateStartBtn.addEventListener("click", (e) => {
+        e.preventDefault();
+        surveyDatePopup.classList.add("survey_date_popup_show");
+      });
+      surveyDateCloseBtn.addEventListener("click", () => {
+        surveyDatePopup.classList.remove("survey_date_popup_show");
+      });
+
+      //   script to play and pause progress bar
+      //initial variables
+      let setProgressInterval = 0;
+      let currentWidth = 1;
+      const playBtn = document.querySelector(".play__icon");
+      const pauseBtn = document.querySelector(".pause__icon");
+      const progressBar = document.querySelector(".progress__line__inner");
+
+      playBtn.addEventListener("click", () => {
+        playBtn.innerHTML = "";
+        pauseBtn.innerHTML = `<i class="fa-solid fa-circle-pause"></i>`;
+        setProgressInterval = setInterval(startProgressBar, 1000);
+      });
+      pauseBtn.addEventListener("click", () => {
+        pauseBtn.innerHTML = "";
+        playBtn.innerHTML = `<i class="fa-solid fa-play"></i>`;
+        clearInterval(setProgressInterval);
+      });
+
+      function startProgressBar() {
+        progressBar.style.width = currentWidth + 4 + "%";
+        currentWidth++;
+      }
+    </script>
+  </body>
+</html>

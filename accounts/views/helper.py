@@ -114,7 +114,7 @@ def upload_to_remote_db(data):
 
 
 class FeedbackView(View):
-    template_name = 'accounts/feedback.html'
+    template_name = 'dashboard/feedback.html'
 
     def get(self, request, *args, **kwargs):
         context = {}
