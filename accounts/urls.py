@@ -12,4 +12,5 @@ urlpatterns = [
     path('qrcode', render_qrcode, name='qrcode'),
     path('iframe', render_iframe, name='iframe'),
     path('', views.DashboardView.as_view(), name='feedback'),
+    path('set/survey/date/', views.SurveyDateView.as_view(), name='set_survey_date'),
 ]
