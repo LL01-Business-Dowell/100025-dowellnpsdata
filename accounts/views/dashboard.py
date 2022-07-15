@@ -40,6 +40,7 @@ class DashboardView(View):
             upload_to_remote_db(res_data)
             context = {
                 'qrcode': res_data['qr_code'],
+                'pk': res_data['id'],
                 'link': 'http://'+settings.HOSTNAME+'/iframe?url='+ res_data['url']
 
             }
