@@ -1,6 +1,6 @@
+{% load static %}
 <!DOCTYPE html>
 <html lang="en">
-    {% load static %}
     <head>
         <meta charset="UTF-8" />
         <meta http-equiv="X-UA-Compatible" content="IE=edge" />
@@ -16,7 +16,16 @@
             referrerpolicy="no-referrer"
         ></script>
         <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css" />
+        <style>
+            .survey__date_fixed {
+                height: calc(100vh - 70px);
+            }
+            .survey__date__form__cover__fixed {
+                height: 500px;
+            }
+        </style>
     </head>
+
     <body>
         <main>
             <div class="container">
@@ -27,28 +36,29 @@
                     </nav>
                 </header>
 
-                <section class="survey__date">
+                <section class="survey__date_fixed">
                     <section class="survey__text">
                         <h3>select a start and stop date of survey</h3>
                     </section>
 
-                    <div class="survey__date__form__cover flex">
-                        <form action="" class="">
+                    <div class="survey__date__form__cover__fixed flex">
+                        <form method="post" action="" class="">
+                            {% csrf_token %}
                             <section class="survey__date__title padding_center">
                                 select the duration of survey that has to be shown
                             </section>
                             <div class="survey__date__inputs flex padding_center">
                                 <div class="form_control_date">
                                     <label for="start__date">Start date</label>
-                                    <input type="date" value="2022-06-07" name="start__date" id="date-input" />
+                                    <input type="date" value="{{ qr_code.start_date }}" name="start_date" id="start_date" required />
                                 </div>
                                 <div class="form_control_date">
                                     <label for="end__date">End date</label>
-                                    <input type="date" value="2022-06-07" name="end__date" id="date-input" />
+                                    <input type="date" value="{{ qr_code.end_date }}" name="end_date" id="end_date" required />
                                 </div>
                             </div>
                             <div class="form_control_date__btn padding_center">
-                                <button type="submit" id="survey__date__btn" class="survey__date__btn">
+                                <button type="submit" id="survey__date__btn" class="survey__date__btn survey__date__btn__show">
                                     start now
                                 </button>
                             </div>
