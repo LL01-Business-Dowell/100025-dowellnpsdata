@@ -14,6 +14,9 @@ class QrCode(models.Model):
     event_id = models.CharField(max_length=255, blank=True, null=True)
     start_date = models.DateField(blank=True, null=True)
     end_date = models.DateField(blank=True, null=True)
+    privacy_policy_check = models.BooleanField(default=True)
+    name = models.CharField(max_length=255, blank=True, null=True)
+    email = models.EmailField(max_length=255, blank=True, null=True)
 
     def __str__(self):
         return str(self.brand_name)

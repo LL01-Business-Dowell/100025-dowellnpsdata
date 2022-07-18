@@ -1,120 +1,105 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>create qr code</title>
+    {% load static %}
+    <head>
+        <meta charset="UTF-8" />
+        <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>create qr code</title>
 
-    <link
-      rel="stylesheet"
-      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css"
-    />
-    <link rel="stylesheet" href="style.css" />
-    <script
-      src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.8.0/chart.min.js"
-      integrity="sha512-sW/w8s4RWTdFFSduOTGtk4isV1+190E/GghVffMA9XczdJ2MDzSzLEubKAs5h0wzgSJOQTRYyaz73L3d6RtJSg=="
-      crossorigin="anonymous"
-      referrerpolicy="no-referrer"
-    ></script>
-    <link
-      rel="stylesheet"
-      href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css"
-    />
-  </head>
-  <body>
-    <main>
-      <div class="container">
-        <!-- main section starts -->
-        <header class="">
-          <nav id="navbar">
-            <span class="padding_center"><i class="fa fa-bars"></i></span>
-          </nav>
-        </header>
-        <section class="create_qr_code">
-          <div class="form_survey_container padding_center">
-            <form action="">
-              <div class="form_control close_container flex">
-                <span id="qmark"> ? </span>
-                <span id="close"><i class="fa fa-close"></i></span>
-              </div>
-              <div class="form_control text-content">
-                <p>
-                  The next step is confirmation of your email, click the
-                  confirmation link recieved in your email after submitting this
-                  form.
-                </p>
-                <p>
-                  We will intimate you withing 24 hours after email confirmation
-                  about the campaign approval. Then you can start and stop tha
-                  campaign, check your data continuously for updates
-                </p>
-                <p>
-                  We will update you with periodic reports on the progress of
-                  the campaign
-                </p>
-              </div>
-              <div class="form_control privacy">
-                <input type="checkbox" />
-                <span> Privacy Policy </span>
-              </div>
-              <div class="form_control">
-                <input type="text" placeholder=" your name" id="name" />
-              </div>
-              <div class="form_control">
-                <input type="email" placeholder=" your email" id="email" />
-              </div>
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" />
+        <link rel="stylesheet" href="{% static 'assets/css/style.css' %}" />
+        <script
+            src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.8.0/chart.min.js"
+            integrity="sha512-sW/w8s4RWTdFFSduOTGtk4isV1+190E/GghVffMA9XczdJ2MDzSzLEubKAs5h0wzgSJOQTRYyaz73L3d6RtJSg=="
+            crossorigin="anonymous"
+            referrerpolicy="no-referrer"
+        ></script>
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css" />
+    </head>
+    <body>
+        <main>
+            <div class="container">
+                <!-- main section starts -->
+                <header class="">
+                    <nav id="navbar">
+                        <span class="padding_center"><i class="fa fa-bars"></i></span>
+                    </nav>
+                </header>
+                <section class="create_qr_code">
+                    <div class="form_survey_container padding_center">
+                        <form action="" method="post">
+                            {% csrf_token %}
+                            <div class="form_control close_container flex">
+                                <span id="qmark"> ? </span>
+                                <span id="close"><i class="fa fa-close"></i></span>
+                            </div>
+                            <div class="form_control text-content">
+                                <p>
+                                    The next step is confirmation of your email, click the confirmation link recieved in your email after submitting this form.
+                                </p>
+                                <p>
+                                    We will intimate you withing 24 hours after email confirmation about the campaign approval. Then you can start and stop tha campaign, check your data continuously for updates
+                                </p>
+                                <p>
+                                    We will update you with periodic reports on the progress of the campaign
+                                </p>
+                            </div>
+                            <div class="form_control privacy">
+                                <input type="checkbox" id="checkbox" name="checkbox" {% if qr_code.privacy_policy_check %}checked{% endif %} required />
+                                <span> Privacy Policy </span>
+                            </div>
+                            <div class="form_control">
+                                <input type="text" placeholder=" your name" id="name" name="name" value="{{ qr_code.name }}" required />
+                            </div>
+                            <div class="form_control">
+                                <input type="email" placeholder=" your email" id="email" name="email" value="{{ qr_code.email }}" required />
+                            </div>
 
-              <div class="form_control create_qr_code1 flex mt">
-                <button id="back" type="submit">Back</button>
-                <button
-                  id="submit"
-                  class="create_qr_code1_submit"
-                  type="submit"
-                >
-                  Submit
-                </button>
-              </div>
-            </form>
-          </div>
-        </section>
-        <!-- pop up section -->
-        <section class="survey_date_popup flex">
-          <div class="survey_date_popup_content flex">
-            <div class="survey_date_popup_close flex">
-              <span id="survey-datestart-close">x</span>
+                            <div class="form_control create_qr_code1 flex mt">
+                                <button id="back" type="submit">Back</button>
+                                <button id="submit" class="btn" type="submit">
+                                    Submit
+                                </button>
+                            </div>
+                        </form>
+                    </div>
+                </section>
+                <!-- pop up section -->
+                <section class="survey_date_popup flex">
+                    <div class="survey_date_popup_content flex">
+                        <div class="survey_date_popup_close flex">
+                            <span id="survey-datestart-close">x</span>
+                        </div>
+                        <h4 class="padding_center items-center">
+                            QR code has bee sent <br />
+                            to given email address
+                        </h4>
+                        <img src="{% static 'assets/img/image-4.png' %}" alt="" />
+                    </div>
+                </section>
             </div>
-            <h4 class="padding_center items-center">
-              QR code has bee sent <br />
-              to given email address
-            </h4>
-            <img src="img/image-4.png" alt="" />
-          </div>
-        </section>
-      </div>
-    </main>
+        </main>
 
-    <!-- <script src="js/survey__script.js"></script>
+        <!-- <script src="js/survey__script.js"></script>
     <script src="js/image_script.js"></script> -->
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
-    <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+        <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
 
-    <script>
-      const qrCodeStartBtn = document.querySelector(".create_qr_code1_submit");
-      console.log(qrCodeStartBtn);
-      const qrCodeStartBtnCloseBtn = document.querySelector(
-        "#survey-datestart-close"
-      );
-      const surveyDatePopup = document.querySelector(".survey_date_popup");
+        <script>
+            const qrCodeStartBtn = document.querySelector(".create_qr_code1_submit");
+            console.log(qrCodeStartBtn);
+            const qrCodeStartBtnCloseBtn = document.querySelector("#survey-datestart-close");
+            const surveyDatePopup = document.querySelector(".survey_date_popup");
 
-      qrCodeStartBtn.addEventListener("click", (e) => {
-        e.preventDefault();
-        surveyDatePopup.classList.add("survey_date_popup_show");
-      });
-      qrCodeStartBtnCloseBtn.addEventListener("click", () => {
-        surveyDatePopup.classList.remove("survey_date_popup_show");
-      });
-    </script>
-  </body>
+            qrCodeStartBtn.addEventListener("click", (e) => {
+                e.preventDefault();
+                surveyDatePopup.classList.add("survey_date_popup_show");
+            });
+            qrCodeStartBtnCloseBtn.addEventListener("click", () => {
+                surveyDatePopup.classList.remove("survey_date_popup_show");
+            });
+        </script>
+    </body>
 </html>
