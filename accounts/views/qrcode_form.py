@@ -1,5 +1,5 @@
 from django.views.generic import View
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 
 from api.models import QrCode
 
@@ -27,6 +27,46 @@ class QRCodeFormView(View):
             qr_code.name = name
             qr_code.email = email
             qr_code.save()
+            return redirect('survey_stop', qr_code.pk)
+        context = {
+            'qr_code': qr_code
+        }
+        return render(request, self.template_name, context)
+
+
+class SurveyStoppedView(View):
+    template_name = 'qrcode/survey__stopped.html'
+    model = QrCode
+
+    def get(self, request, *args, **kwargs):
+        qr_code = self.model.objects.get(pk=self.kwargs['pk'])
+        print(qr_code.start_date, qr_code.end_date)
+        context = {
+            'qr_code': qr_code
+        }
+        return render(request, self.template_name, context)
+
+
+class SurveyPusedView(View):
+    template_name = 'qrcode/survey__pused.html'
+    model = QrCode
+
+    def get(self, request, *args, **kwargs):
+        qr_code = self.model.objects.get(pk=self.kwargs['pk'])
+        print(qr_code.start_date, qr_code.end_date)
+        context = {
+            'qr_code': qr_code
+        }
+        return render(request, self.template_name, context)
+
+
+class EndSurveyView(View):
+    template_name = 'qrcode/end_survey.html'
+    model = QrCode
+
+    def get(self, request, *args, **kwargs):
+        qr_code = self.model.objects.get(pk=self.kwargs['pk'])
+        print(qr_code.start_date, qr_code.end_date)
         context = {
             'qr_code': qr_code
         }
