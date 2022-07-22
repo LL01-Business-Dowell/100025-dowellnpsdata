@@ -4,6 +4,7 @@ from accounts.views.helper import render_form, render_qrcode, render_iframe, get
 from accounts import views
 
 urlpatterns = [
+    path('login/', views.LoInFunc.as_view(), name='login'),
     path('form/', render_form, name='form'),
 
     # path('test', text_qrcode_page),
