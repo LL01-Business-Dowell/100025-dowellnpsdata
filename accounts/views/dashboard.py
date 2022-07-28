@@ -1,5 +1,6 @@
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 import requests
+import json
 from rest_framework.response import Response
 from datetime import datetime
 from django.http import HttpResponse, JsonResponse
@@ -9,12 +10,41 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 from accounts.views.helper import upload_to_remote_db
 
 
+def get_key():
+    username = "dowellFeedback"
+    password = "DOWELL@qrcode2022"
+    URL = 'https://100014.pythonanywhere.com/api/login/'
+    payload = {
+        'username': username,
+        'password': password,
+    }
+    response = requests.post(URL, data=payload)
+    print(response)
+    return response.json()
+
+def get_user_profile(session):
+    data = {'key': session}
+    headers = {"Content-Type": "application/json"}
+    url = "https://100014.pythonanywhere.com/api/profile/"
+    response = requests.post(url, data, headers)
+    print(response)
+    return response
+
+
 class DashboardView(View):
     template_name = 'qrcode/feedback.html'
 
     def get(self, request, *args, **kwargs):
-        context = {}
-        return render(request, self.template_name, context)
+        session = request.GET.get("session_id", None)
+        if session:
+            user = get_user_profile(session)
+            if user:
+                context = {}
+                return render(request, self.template_name, context)
+            else:
+                return redirect("https://100014.pythonanywhere.com/")
+        else:
+            return redirect("https://100014.pythonanywhere.com/")
 
     def post(self, request, *args, **kwargs):
         if request.method == 'POST' and request.FILES:
