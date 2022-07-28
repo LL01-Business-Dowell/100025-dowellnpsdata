@@ -1,63 +1,111 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>iframe</title>
-    <style>
-      * {
-        box-sizing: border-box;
-        margin: 0;
-        padding: 0;
-      }
-      main {
-        display: flex;
-        height: 98vh;
-        justify-content: center;
-        align-items: center;
-      }
-      .iframe {
-        height: 85%;
-        border-radius: 30px;
-      }
-      iframe {
-        border-radius: 10px;
-        outline: 0;
-        border: 0;
-        box-shadow: rgba(0, 0, 0, 0.16) 0px 1px 4px;
-      }
-      .iframe__btn {
-        display: flex;
-        justify-content: flex-end;
-        padding-right: 8%;
-      }
-      .iframe__btn button {
-        background-color: #ffb388;
-        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
-        border-radius: 5px;
-        padding: 13px;
-        min-width: 140px;
-        outline: 0;
-        border: 0;
-        color: #fff;
-      }
-    </style>
-  </head>
-  <body>
-    <main>
-      <section class="iframe">
-        <iframe
-          src="{{ url_link }}"
-          title="work status form"
-          width="350"
-          height="100%"
-        >
-        </iframe>
-        <div class="iframe__btn">
-          <button>End survey</button>
-        </div>
-      </section>
-    </main>
-  </body>
+    <head>
+        <meta charset="UTF-8" />
+        <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>iframe</title>
+        <!-- Bootstrap CSS -->
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+        <script src="http://code.jquery.com/jquery-1.9.1.js"></script>
+        <style>
+            * {
+                box-sizing: border-box;
+                margin: 0;
+                padding: 0;
+            }
+            main {
+                display: flex;
+                height: 98vh;
+                justify-content: center;
+                align-items: center;
+            }
+            .iframe {
+                height: 85%;
+                border-radius: 30px;
+            }
+            iframe {
+                border-radius: 10px;
+                outline: 0;
+                border: 0;
+                box-shadow: rgba(0, 0, 0, 0.16) 0px 1px 4px;
+            }
+            .iframe__btn {
+                display: flex;
+                justify-content: flex-end;
+                padding-right: 8%;
+            }
+            .iframe__btn button {
+                background-color: #ffb388;
+                box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+                border-radius: 5px;
+                padding: 13px;
+                min-width: 140px;
+                outline: 0;
+                border: 0;
+                color: #fff;
+            }
+             /* Extra small devices (phones, 600px and down) */
+            @media only screen and (max-width: 600px) {
+                #cardbox{
+                    border: 10px solid #D5DCE2;
+                    border-radius: 25px;
+                    width: 95vw;
+                }
+            }
+            /* Small devices (portrait tablets and large phones, 600px and up) */
+            @media only screen and (min-width: 600px) {
+                #cardbox{
+                    border: 10px solid #D5DCE2;
+                    border-radius: 25px;
+                    width: 95vw;
+                }
+            }
+
+            /* Medium devices (landscape tablets, 768px and up) */
+            @media only screen and (min-width: 768px) {
+                #cardbox{
+                    border: 10px solid #D5DCE2;
+                    border-radius: 25px;
+                    width: 80vw;
+                }
+            }
+
+            /* Large devices (laptops/desktops, 992px and up) */
+            @media only screen and (min-width: 992px) {
+                #cardbox{
+                    border: 10px solid #D5DCE2;
+                    border-radius: 25px;
+                    width: 40vw;
+                }
+            }
+
+            /* Extra large devices (large laptops and desktops, 1200px and up) */
+            @media only screen and (min-width: 1200px) {
+                #cardbox{
+                    border: 10px solid #D5DCE2;
+                    border-radius: 25px;
+                    width: 30vw;
+                }
+            }
+        </style>
+    </head>
+    <body>
+        <main>
+            <section class="iframe">
+                {% if survey_url %}
+                  <iframe src="{{ survey_url }}" title="work status form" width="350" height="100%"> </iframe>
+                {% else %}
+                <div class="card mb-4" id="cardbox">
+                  <div class="card-body">
+                    <p style="margin-top: 100px; margin-bottom: 100px;" class="text-center text-danger">{{ message }}</p>
+                  </div>
+                </div>
+                {% endif %}
+                <div class="iframe__btn">
+                    <button>End survey</button>
+                </div>
+            </section>
+        </main>
+    </body>
 </html>

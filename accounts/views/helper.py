@@ -1,11 +1,13 @@
-from django.shortcuts import render
+from django.shortcuts import render, get_object_or_404
 import requests
 from rest_framework.response import Response
-from datetime import datetime
+from datetime import datetime, date
 from django.http import HttpResponse, JsonResponse
 from django.conf import settings
 from django.views.generic import View
 from django.contrib.auth.mixins import LoginRequiredMixin
+
+from api.models import QrCode
 
 
 def text_qrcode_page(request):
@@ -49,15 +51,45 @@ def render_qrcode(request):
     return render(request, 'qrcode.html')
 
 
+# def render_iframe(request):
+#     survey_link = request.GET.get('url', '')
+#     # qr_code = QrCode.objects.filter(url=survey_link)[0]
+#     # print(qr_code)
+#     current_date = datetime.now()
+#     print(current_date)
+#     if survey_link:
+#         url_link = survey_link
+#     else:
+#         url_link= request.session['form_link']
+#     context = {
+#         'url_link': url_link
+#         # 'url_link': request.session['form_link']
+#     }
+#     return render(request, 'iframe.html', context)
+
+
 def render_iframe(request):
-    survey_link = request.GET.get('url', '')
-    if survey_link:
-        url_link = survey_link
+    survey_id = request.GET.get('survey_id', '')
+    qr_code = get_object_or_404(QrCode, pk=survey_id)
+    today = datetime.now()
+    current_date = date(today.year, today.month, today.day)
+    message = ''
+    if qr_code.start_date and qr_code.end_date:
+        if qr_code.start_date <= current_date <= qr_code.end_date:
+            survey_url = qr_code.url
+        else:
+            if qr_code.start_date > current_date:
+                survey_url = None
+                message = "Survey is not started yet."
+            else:
+                survey_url = None
+                message = "Survey is ended."
     else:
-        url_link= request.session['form_link']
+        survey_url = None
+        message = "Survey date is not set yet."
     context = {
-        'url_link': url_link
-        # 'url_link': request.session['form_link']
+        'survey_url': survey_url,
+        'message': message,
     }
     return render(request, 'iframe.html', context)
 

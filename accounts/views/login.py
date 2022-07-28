@@ -7,6 +7,7 @@ from django.shortcuts import render
 class LoInFunc(View):
     def get(self, request, *args, **kwargs):
         return render(request, 'log_in_func.html')
+
     def post(self, request, *args, **kwargs):
         print("Login")
         loc = request.POST.get("loc", False)
