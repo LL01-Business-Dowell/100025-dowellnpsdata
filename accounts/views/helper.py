@@ -90,6 +90,7 @@ def render_iframe(request):
     context = {
         'survey_url': survey_url,
         'message': message,
+        'qr_code': qr_code,
     }
     return render(request, 'iframe.html', context)
 

@@ -103,7 +103,7 @@
                 </div>
                 {% endif %}
                 <div class="iframe__btn">
-                    <button>End survey</button>
+                    <a href="{% url 'survey_end' qr_code.pk %}" class="btn btn-warning">End survey</a>
                 </div>
             </section>
         </main>
