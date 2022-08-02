@@ -8,5 +8,5 @@ from api.models import QrCode
 class QrCodeAdmin(admin.ModelAdmin):
     list_display = [
         'id', 'brand_name', 'service', 'start_date', 'end_date',
-        'privacy_policy_check', 'name', 'email',
+        'privacy_policy_check', 'name', 'email', 'is_end', 'reason'
     ]

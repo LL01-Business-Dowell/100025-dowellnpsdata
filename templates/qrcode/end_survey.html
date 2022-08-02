@@ -88,6 +88,7 @@
 
                     <div class="end__survey__container">
                         <form action="" method="post">
+                            {% csrf_token %}
                             <div class="endsurvey__form__control__text flex">
                                 <h4>
                                     select your reason to end the <br />
@@ -96,15 +97,15 @@
                             </div>
                             <div class="endsurvey__form__control">
                                 <div class="survey__date__inputs flex padding_center">
-                                    <select name="" id="selector">
-                                        <option value="">Changes to be made in survey form</option>
-                                        <option value="">survey dropped</option>
-                                        <option value="end__survey__message.html" id="link__option">
+                                    <select name="reason" id="reason" required>
+                                        <option value="Changes to be made in survey form">Changes to be made in survey form</option>
+                                        <option value="survey dropped">survey dropped</option>
+                                        <option value="reasons not mentioned above">
                                             reasons not mentioned above
                                         </option>
                                     </select>
                                     <div class="img">
-                                        <img src="img/endsurvey3.png" alt="" />
+                                        <img src="{% static 'assets/img/endsurvey3.png' %}" alt="" />
                                     </div>
                                     <div class="form_control_end__btn padding_center flex">
                                         <a type="submit" id="change__survey__date__btn" class="change__survey__date__btn">
@@ -113,13 +114,11 @@
                                     </div>
                                 </div>
                             </div>
+                            <div class="form_control_date__submit padding_center flex">
+                                <button type="submit">End now</button>
+                                <small>click to end your survey now</small>
+                            </div>
                         </form>
-                        <div class="form_control_date__submit padding_center flex">
-                            <button href="end_survey_response.html" type="submit" id="survey__date__submit__btn">
-                                End now
-                            </button>
-                            <small>click to end your survey now</small>
-                        </div>
                     </div>
                 </section>
 

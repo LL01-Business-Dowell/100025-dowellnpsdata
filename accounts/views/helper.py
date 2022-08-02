@@ -74,6 +74,11 @@ def render_iframe(request):
     today = datetime.now()
     current_date = date(today.year, today.month, today.day)
     message = ''
+    if qr_code.is_end:
+        context = {
+            'message': qr_code.reason
+        }
+        return render(request, 'qrcode/survey_not_started.html', context)
     if qr_code.start_date and qr_code.end_date:
         if qr_code.start_date <= current_date <= qr_code.end_date:
             survey_url = qr_code.url

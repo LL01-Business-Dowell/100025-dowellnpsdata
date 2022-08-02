@@ -71,3 +71,16 @@ class EndSurveyView(View):
             'qr_code': qr_code
         }
         return render(request, self.template_name, context)
+
+    def post(self, request, *args, **kwargs):
+        qr_code = self.model.objects.get(pk=self.kwargs['pk'])
+        if request.method == 'POST':
+            reason = request.POST.get('reason')
+            print(reason)
+            qr_code.reason = reason
+            qr_code.is_end = True
+            qr_code.save()
+        context = {
+            'qr_code': qr_code
+        }
+        return render(request, self.template_name, context)
