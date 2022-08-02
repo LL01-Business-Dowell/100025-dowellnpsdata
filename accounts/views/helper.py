@@ -80,13 +80,25 @@ def render_iframe(request):
         else:
             if qr_code.start_date > current_date:
                 survey_url = None
-                message = "Survey is not started yet."
+                message = 'Survey has not been started yet'
+                context = {
+                    'message': message
+                }
+                return render(request, 'qrcode/survey_not_started.html', context)
             else:
                 survey_url = None
                 message = "Survey is ended."
+                context = {
+                    'message': message
+                }
+                return render(request, 'qrcode/survey_not_started.html', context)
     else:
         survey_url = None
         message = "Survey date is not set yet."
+        context = {
+            'message': message
+        }
+        return render(request, 'qrcode/survey_not_started.html', context)
     context = {
         'survey_url': survey_url,
         'message': message,
