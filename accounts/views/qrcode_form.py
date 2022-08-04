@@ -80,6 +80,7 @@ class EndSurveyView(View):
             qr_code.reason = reason
             qr_code.is_end = True
             qr_code.save()
+            return redirect('survey_pused', qr_code.pk)
         context = {
             'qr_code': qr_code
         }
