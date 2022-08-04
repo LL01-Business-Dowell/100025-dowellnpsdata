@@ -18,4 +18,5 @@ urlpatterns = [
     path('<int:pk>/survey/stop/', views.SurveyStoppedView.as_view(), name='survey_stop'),
     path('<int:pk>/survey/pused/', views.SurveyPusedView.as_view(), name='survey_pused'),
     path('<int:pk>/survey/end/', views.EndSurveyView.as_view(), name='survey_end'),
+    path('<int:pk>/survey/start/', views.SurveyStartView.as_view(), name='survey_start'),
 ]

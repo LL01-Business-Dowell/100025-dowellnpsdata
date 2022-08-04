@@ -47,8 +47,19 @@ class SurveyStoppedView(View):
         return render(request, self.template_name, context)
 
 
+class SurveyStartView(View):
+    model = QrCode
+
+    def get(self, request, *args, **kwargs):
+        qr_code = self.model.objects.get(pk=self.kwargs['pk'])
+        qr_code.is_end = False
+        qr_code.reason = ''
+        qr_code.save()
+        return redirect("survey_end", qr_code.pk)
+
+
 class SurveyPusedView(View):
-    template_name = 'qrcode/survey__pused.html'
+    template_name = 'qrcode/survey_pused.html'
     model = QrCode
 
     def get(self, request, *args, **kwargs):

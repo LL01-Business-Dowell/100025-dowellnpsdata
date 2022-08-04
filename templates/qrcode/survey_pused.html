@@ -128,9 +128,9 @@
                         <div class="progress__line__inner"></div>
                     </div>
                     <div class="form_control_date__submit padding_center flex">
-                        <button href="end_survey_response.html" type="submit" id="survey__date__submit__btn">
+                        <a href="{% url 'survey_start' qr_code.pk %}">
                             Resume now
-                        </button>
+                        </a>
                         <small>click to end your survey now</small>
                     </div>
                 </section>
