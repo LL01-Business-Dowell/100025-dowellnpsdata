@@ -28,15 +28,15 @@ class CreateQrCodeSerializer(serializers.ModelSerializer):
         new_qrcode = QrCode.objects.create(**validated_data)
         Logo_link = validated_data.pop('logo')
         filename = Logo_link.name
-        
+
         logo = Image.open(Logo_link)
         basewidth = 100
 
         wpercent = (basewidth/float(logo.size[0]))
         hsize = int((float(logo.size[1])*float(wpercent)))
         logo = logo.resize((basewidth, hsize), Image.ANTIALIAS)
-        
-     
+
+
         QRcode = qrcode.QRCode(
             error_correction=qrcode.constants.ERROR_CORRECT_H
         )
@@ -44,31 +44,31 @@ class CreateQrCodeSerializer(serializers.ModelSerializer):
 
         # url = validated_data.pop('url')
         survey_url = validated_data['url']
-        url = 'http://' + host + '/iframe?url='+ survey_url
-        
+        url = 'https://' + host + '/iframe?url='+ survey_url
+
 
         QRcode.add_data(url)
-        
+
 
         QRcode.make()
-        
+
 
         QRcolor = 'Black'
-        
+
         # adding color to QR code
         QRimg = QRcode.make_image(
             fill_color=QRcolor, back_color="white").convert('RGB')
-        
+
         # set size of QR code
         pos = ((QRimg.size[0] - logo.size[0]) // 2,
             (QRimg.size[1] - logo.size[1]) // 2)
-        
+
         # box = Image.open('background.png')
         # QRimg.paste(box, pos)
         QRimg.paste(logo,pos)
-        
+
         # QRimg.show()
-        
+
         # save the QR code generated
         QRimg.save(settings.MEDIA_ROOT+'/company_qrcode/'+filename)
         filepath = 'company_qrcode/'+filename
@@ -76,7 +76,7 @@ class CreateQrCodeSerializer(serializers.ModelSerializer):
         with open(settings.MEDIA_ROOT+'/company_qrcode/'+filename, "rb") as image2string:
             converted_string = base64.b64encode(image2string.read())
 
-       
+
 
         new_qrcode.image = converted_string
         new_qrcode.event_id = get_event_id()

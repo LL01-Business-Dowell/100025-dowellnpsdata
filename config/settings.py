@@ -27,7 +27,7 @@ SECRET_KEY = 'django-insecure-25h_dx2a1!#o)7whz7@p7-xt9+4f^0s!p3c6+(mr43_*p@f+0h
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['100025.pythonanywhere.com','127.0.0.1']
 
 
 # Application definition
@@ -40,7 +40,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'django.contrib.sites',
-    
+
     'corsheaders',
     'rest_framework',
     'accounts',
@@ -92,18 +92,29 @@ WSGI_APPLICATION = 'config.wsgi.application'
 
 # Database
 # https://docs.djangoproject.com/en/4.0/ref/settings/#databases
-DATABASES = {
-    'default': {
-        'ENGINE': 'djongo',
-        'NAME': 'dowell_qrcode',
-    }
-}
+# DATABASES = {
+#     'default': {
+#         'ENGINE': 'djongo',
+#         'NAME': 'dowell_qrcode',
+#     }
+# }
 # DATABASES = {
 #     'default': {
 #         'ENGINE': 'django.db.backends.sqlite3',
 #         'NAME': BASE_DIR / 'db.sqlite3',
 #     }
 # }
+DATABASES = {
+        'default': {
+             'ENGINE': 'django.db.backends.mysql', # mysql database python driver.
+             'NAME': '100025$qr_code_db',    # mysql database name.
+             'USER': '100025',   # db login user name.
+             'PASSWORD': 'dowell@msql#db', # db login user password.
+             'HOST': '100025.mysql.pythonanywhere-services.com', # db machine ip or domain, if left empty then the value is localhost.
+            #  'PORT': '3306', # db server listening port number
+         }
+}
+
 
 
 # Password validation
@@ -153,7 +164,8 @@ MEDIA_URL = '/media/'
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
-HOSTNAME = 'localhost:8000'
+# HOSTNAME = 'localhost:8000'
+HOSTNAME = '100025.pythonanywhere.com'
 
 
 

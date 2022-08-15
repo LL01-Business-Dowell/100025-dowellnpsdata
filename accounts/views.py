@@ -1,46 +1,88 @@
-from django.shortcuts import render
+from django.shortcuts import render, redirect
+import sys
 import requests
 from rest_framework.response import Response
 from datetime import datetime
 from django.http import HttpResponse, JsonResponse
 from django.conf import settings
+from accounts.login import get_user_profile
 
 def text_qrcode_page(request):
     return render(request, 'proceed.html')
 
 def render_form(request):
-    if request.method == 'POST' and request.FILES:
-        headers = {
-            "cache-control": "no-cache",
-        }
+    try:
+        if request.method == 'POST' and request.FILES:
+            headers = {
+                "cache-control": "no-cache",
+            }
 
-        formdata = {}
+            formdata = {}
 
-        # formdata['logo'] = request.FILES['logo'].file.getvalue() 
-        files = {'logo': request.FILES['logo']}
-        formdata['brand_name'] = request.POST.get('brand_name')
-        formdata['service'] = request.POST.get('service')
-        formdata['url'] = request.POST.get('url')
-        formdata['location'] = request.POST.get('location')
-        formdata['promotional_sentence'] = request.POST.get('promotional_sentence')
-        host = request.META['HTTP_HOST']
+            # formdata['logo'] = request.FILES['logo'].file.getvalue()
+            files = {'logo': request.FILES['logo']}
+            formdata['brand_name'] = request.POST.get('brand_name')
+            formdata['service'] = request.POST.get('service')
+            formdata['url'] = request.POST.get('url')
+            formdata['location'] = request.POST.get('location')
+            formdata['promotional_sentence'] = request.POST.get('promotional_sentence')
+            host = request.META['HTTP_HOST']
+            print("host")
+            print(host)
+            url = 'https://' + host + '/api/qrcode/'
+            print("url")
+            print(url)
+            res = requests.post(url, data=formdata, files=files)
+            print("res")
+            print(res)
+            print("settings.HOSTNAME")
+            print(settings.HOSTNAME)
+            res_data = res.json()
 
-        url = 'http://' + host + '/api/qrcode/'
-        res = requests.post(url, data=formdata, files=files)
-        res_data = res.json()
+            upload_to_remote_db(res_data)
+            context = {
+                'qrcode': res_data['qr_code'],
+                'link': 'https://'+settings.HOSTNAME+'/iframe?url='+ res_data['url']
 
-        upload_to_remote_db(res_data)
-        context = {
-            'qrcode': res_data['qr_code'],
-            'link': 'http://'+settings.HOSTNAME+'/iframe?url='+ res_data['url']
+            }
 
-        }
+            request.session['form_link'] = res_data['url']
+            return render(request, 'qrcode.html', context)
+    except Exception as err:
+            print("Ecxetption Err")
+            # print(sys.exc_info())
+            # print(err, traceback.format_exc())
+    session = request.GET.get("session_id", None)
+    if session:
+        user = get_user_profile(session)
+        print("Userrrr ------------->>>>>>")
+        print(session)
+        print(type(user))
+        print(user)
 
-        request.session['form_link'] = res_data['url']
-        return render(request, 'qrcode.html', context)
+        if user is None:
+            return redirect("https://100014.pythonanywhere.com/")
+        else:
+            return render(request, 'form.html')
 
-    return render(request, 'form.html')
+    else:
+        return redirect("https://100014.pythonanywhere.com/")
 
+
+
+def home(request):
+    session = request.GET.get("session_id", None)
+    if session:
+        user = get_user_profile(session)
+
+        if user is None:
+            return redirect("https://100014.pythonanywhere.com/")
+        else:
+            return render(request, 'form.html')
+
+
+    else:
+        return redirect("https://100014.pythonanywhere.com/")
 
 def render_qrcode(request):
     return render(request, 'qrcode.html')
