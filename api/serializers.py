@@ -5,7 +5,7 @@ from PIL import Image
 import qrcode
 from django.conf import settings
 import base64
-from accounts.views import get_event_id
+from accounts.views.helper import get_event_id
 from django.conf import settings
 
 

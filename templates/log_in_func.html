@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <title>LOg In</title>
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js"></script>
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/css/bootstrap.min.css" rel="stylesheet">
+        <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.13.0/css/all.min.css" rel="stylesheet">
+        
+        <!--<link href="https://use.fontawesome.com/releases/v5.0.7/css/all.css" rel="stylesheet">-->
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/js/bootstrap.min.js"></script>
+    </head>
+    <body>
+        <h4>Log in</h4>
+        <form name="logInDetails" id="logInfoForm">
+            {% csrf_token %}
+
+        <input type="text" name="loc" id="loc"/>
+        <input type="text" name="os" id="os"/>
+        <input type="text" name="brow" id="brow"/>
+        <input type="text" name="dev" id="dev"/>
+        <input type="text" name="time" id="time"/>
+        <button type="submit" id="submitLogin">Submit</button>
+        </form>
+        <script>
+            var rtime;
+          rtime= new Date().toLocaleString();
+          document.getElementById("time").value=rtime;
+          console.log("retime");
+          console.log(rtime);
+
+          (function () {
+              'use strict';
+  
+              var module = {
+                  options: [],
+                  header: [navigator.platform, navigator.userAgent, navigator.appVersion, navigator.vendor, window.opera],
+                  dataos: [
+                      { name: 'Windows Phone', value: 'Windows Phone', version: 'OS' },
+                      { name: 'Windows', value: 'Win', version: 'NT' },
+                      { name: 'iPhone', value: 'iPhone', version: 'OS' },
+                      { name: 'iPad', value: 'iPad', version: 'OS' },
+                      { name: 'Kindle', value: 'Silk', version: 'Silk' },
+                      { name: 'Android', value: 'Android', version: 'Android' },
+                      { name: 'PlayBook', value: 'PlayBook', version: 'OS' },
+                      { name: 'BlackBerry', value: 'BlackBerry', version: '/' },
+                      { name: 'Macintosh', value: 'Mac', version: 'OS X' },
+                      { name: 'Linux', value: 'Linux', version: 'rv' },
+                      { name: 'Palm', value: 'Palm', version: 'PalmOS' }
+                  ],
+                  databrowser: [
+                      { name: 'Chrome', value: 'Chrome', version: 'Chrome' },
+                      { name: 'Firefox', value: 'Firefox', version: 'Firefox' },
+                      { name: 'Safari', value: 'Safari', version: 'Version' },
+                      { name: 'Internet Explorer', value: 'MSIE', version: 'MSIE' },
+                      { name: 'Opera', value: 'Opera', version: 'Opera' },
+                      { name: 'BlackBerry', value: 'CLDC', version: 'CLDC' },
+                      { name: 'Mozilla', value: 'Mozilla', version: 'Mozilla' }
+                  ],
+                  init: function () {
+                      var agent = this.header.join(' '),
+                          os = this.matchItem(agent, this.dataos),
+                          browser = this.matchItem(agent, this.databrowser);
+  
+                      return { os: os, browser: browser };
+                  },
+                  matchItem: function (string, data) {
+                      var i = 0,
+                          j = 0,
+                          html = '',
+                          regex,
+                          regexv,
+                          match,
+                          matches,
+                          version;
+  
+                      for (i = 0; i < data.length; i += 1) {
+                          regex = new RegExp(data[i].value, 'i');
+                          match = regex.test(string);
+                          if (match) {
+                              regexv = new RegExp(data[i].version + '[- /:;]([\\d._]+)', 'i');
+                              matches = string.match(regexv);
+                              version = '';
+                              if (matches) { if (matches[1]) { matches = matches[1]; } }
+                              if (matches) {
+                                  matches = matches.split(/[._]+/);
+                                  for (j = 0; j < matches.length; j += 1) {
+                                      if (j === 0) {
+                                          version += matches[j] + '.';
+                                      } else {
+                                          version += matches[j];
+                                      }
+                                  }
+                              } else {
+                                  version = '0';
+                              }
+                              return {
+                                  name: data[i].name,
+                                  version: parseFloat(version)
+                              };
+                          }
+                      }
+                      return { name: 'unknown', version: 0 };
+                  }
+              };
+  
+              var e = module.init(),
+                  osname = '',
+                  browsername = '',
+                  platform = '',
+                  vendername = '';
+              osname=e.os.name + e.os.version
+              browsername=e.browser.name +e.browser.version
+              platform=navigator.platform
+              vendername=navigator.vendor
+  
+              document.getElementById("os").value = osname;
+              document.getElementById("brow").value=browsername;
+          }());
+          let text = navigator.userAgent;
+          var mySubString = text.substring(
+              text.indexOf("(") + 1,
+              text.lastIndexOf(") A")
+          );
+          var str
+          r=mySubString.split(";")
+          if (r[2].length>4)
+          {
+            str=r[2]
+          }else{
+                str="could not get device name"
+          }
+          document.getElementById("dev").value = str;
+          </script>
+          <script>
+  
+              var x = document.getElementById("loc");
+  
+  
+                if (navigator.geolocation) {
+                  navigator.geolocation.getCurrentPosition(showPosition);
+                } else {
+                  x.value = "Geolocation is not supported by this browser.";
+                }
+  
+              function showPosition(position) {
+                x.value = position.coords.latitude +
+                " " + position.coords.longitude;
+              }
+  
+              </script>
+              <script>
+                $(function(){
+// DRUG CATEGORY CRUD
+//Category data submission
+
+    $("#submitLogin").click(function(e){
+        e.preventDefault();
+        log_in_data = $('#logInfoForm').serialize();
+        $.ajax({
+            type: "POST",
+            url:"/logger/",
+            data:log_in_data,
+            beforeSend:function(){
+                 alert("beforeSend");
+
+            },
+            cache: false,
+            dataType: "json",
+            success: function(data){
+                alert(log_in_data);
+                if (data.status === "ok"){
+                    $("#my_alert_box").append("<div class='alert alert-success alert-dismissable'><button aria-hidden='true' data-dismiss='alert' class='close' type='button'> × </button>Drug Category Successfuly saved. </div></div>");
+                    $("#new_drug_category_form")[0].reset();
+                }
+                if (data.status === "error"){
+                    $("#my_alert_box").append("<div class='alert alert-danger alert-dismissable'><button aria-hidden='true' data-dismiss='alert' class='close' type='button'> × </button> Error! Please check your data again </div></div>");
+
+                }
+                
+            }
+        });
+        return false
+    });
+});
+              </script>
+    </body>
+</html>
