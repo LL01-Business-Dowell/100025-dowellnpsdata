@@ -112,7 +112,7 @@ DATABASES = {
         'PORT': '3306',
         'USER': 'root',
         #'PASSWORD': '*#Nothing1234',
-        'PASSWORD': '!Mysql1616',
+        'PASSWORD': '',
     }
 }
 

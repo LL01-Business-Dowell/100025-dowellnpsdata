@@ -76,7 +76,14 @@ def render_iframe(request):
     message = ''
     if qr_code.is_end:
         context = {
-            'message': qr_code.reason
+            'message': 'Survey was stopped because '+qr_code.reason,
+            'brand_name': qr_code.brand_name
+        }
+        return render(request, 'qrcode/survey_not_started.html', context)
+    if qr_code.is_paused:
+        context = {
+            'message': 'Survey has been paused',
+            'brand_name': qr_code.brand_name
         }
         return render(request, 'qrcode/survey_not_started.html', context)
     if qr_code.start_date and qr_code.end_date:
@@ -85,16 +92,20 @@ def render_iframe(request):
         else:
             if qr_code.start_date > current_date:
                 survey_url = None
-                message = 'Survey has not been started yet'
+                message = 'Survey will start on '+str(qr_code.start_date)
                 context = {
-                    'message': message
+                    'message': message,
+                    'brand_name': qr_code.brand_name
+
                 }
                 return render(request, 'qrcode/survey_not_started.html', context)
             else:
                 survey_url = None
-                message = "Survey is ended."
+                message = "Survey ended on "+str(qr_code.end_date)
                 context = {
-                    'message': message
+                    'message': message,
+                    'brand_name': qr_code.brand_name
+
                 }
                 return render(request, 'qrcode/survey_not_started.html', context)
     else:

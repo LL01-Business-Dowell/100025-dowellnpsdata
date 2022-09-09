@@ -53,6 +53,7 @@ class SurveyStartView(View):
     def get(self, request, *args, **kwargs):
         qr_code = self.model.objects.get(pk=self.kwargs['pk'])
         qr_code.is_end = False
+        qr_code.is_paused = False
         qr_code.reason = ''
         qr_code.save()
         return redirect("survey_end", qr_code.pk)
@@ -64,6 +65,8 @@ class SurveyPusedView(View):
 
     def get(self, request, *args, **kwargs):
         qr_code = self.model.objects.get(pk=self.kwargs['pk'])
+        qr_code.is_paused = True
+        qr_code.save()
         print(qr_code.start_date, qr_code.end_date)
         context = {
             'qr_code': qr_code

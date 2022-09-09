@@ -72,10 +72,12 @@ class DashboardView(View):
             res = requests.post(url, data=formdata, files=files)
             res_data = res.json()
             upload_to_remote_db(res_data)
+            
+            # added &survey_id='+res_data['id'] to include survey_id in the link in qrcode
             context = {
                 'qrcode': res_data['qr_code'],
                 'pk': res_data['id'],
-                'link': 'http://'+settings.HOSTNAME+'/iframe?url='+ res_data['url']
+                'link': 'http://'+settings.HOSTNAME+'/iframe?survey_id='+str(res_data['id'])
 
             }
             print('returning data')
