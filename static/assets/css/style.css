@@ -19,6 +19,7 @@
 body {
   font-family: "Roboto", sans-serif;
   line-height: 1.5rem;
+  background-color: #e3e3e3;
 }
 a {
   text-decoration: none;
@@ -30,8 +31,11 @@ h2 {
   font-family: "Roboto";
   font-style: normal;
   font-weight: 500;
-  font-size: 1.5rem;
+  font-size: 1rem;
   text-transform: capitalize;
+}
+p {
+  font-size: 0.8rem;
 }
 
 /* reusable components */
@@ -52,10 +56,7 @@ h2 {
 .padding_center {
   padding: 1.5rem 1.5rem;
 }
-.container {
-  /* width: 900px;
-  margin: auto; */
-}
+
 button {
   outline: none;
   border: none;
@@ -68,205 +69,35 @@ input {
 }
 
 main {
-  /* background-color: aqua; */
   display: flex;
   justify-content: center;
   align-items: center;
-  height: auto;
-  width: 375px;
-  position: relative;
-  margin: 0 auto;
-  overflow: hidden;
+  height: 93vh;
+  margin-top: 4vh;
 }
 .container {
-  width: 100%;
-  height: auto;
-  border: 2px solid var(--green-bg);
-  /* margin-top: 10%;
-  margin-bottom: 10%; */
-  /* position: relative; */
+  width: 375px;
+  background-color: #fff;
+  height: 100%;
+  border-radius: 7px;
+  position: relative;
 }
-
 #navbar {
   height: 70px;
   box-shadow: var(--box-shadow-default);
   display: flex;
   align-items: center;
 }
-.feedback__text {
-  background-color: var(--green-bg);
-  height: 100px;
-  text-align: center;
-  color: var(--white-color);
-  margin-top: 5px;
-}
-.feedback__qst {
-  text-align: center;
-}
-.feedback__qst p {
-  padding-top: 1rem;
-}
-.access__report__container {
-  text-align: center;
-}
-.access__report__container h2 {
-  margin-bottom: 2rem;
-}
-.access__report__keys__container {
-  width: 50%;
-}
-.access__report__graph {
-  width: 50%;
-}
-.access__report__keys {
-  background-color: var(--gray-bg);
-  margin-top: 5px;
-  padding: 0.3rem;
-  justify-content: flex-start;
-}
-.access__report__keys small {
-  padding-left: 0.3rem;
-}
-.access__report__keys .red,
-.access__report__keys .yellow,
-.access__report__keys .green {
-  width: 30px;
-  height: 30px;
-}
-.access__report__keys .red {
-  background-color: var(--red-color);
-}
-.access__report__keys .yellow {
-  background-color: var(--yellow-color);
-}
-.access__report__keys .green {
-  background-color: var(--green-bg);
-}
-.feedback__buttons {
-  justify-content: space-between;
-}
-.feedback__buttons #prev {
-  background-color: var(--deep-gray-bg);
-  padding: 0.8rem;
-  min-width: 150px;
-  color: var(--white-color);
-}
-.feedback__buttons #create {
-  background-color: var(--green-bg);
-  padding: 0.8rem;
-  min-width: 120px;
-  color: var(--white-color);
-}
 
-/* style for pop up */
-.close_container {
-  justify-content: space-between;
-  padding: 1.2rem 0rem 1.2rem 0rem;
-}
-.close_container #close {
-  margin-right: 2.2rem;
-  margin-top: 0.5rem;
-}
-.disclaimer {
-  justify-content: space-around;
-  padding: 1.2rem 0rem 1.2rem 0rem;
-}
-.create_survey {
-  height: auto;
-  display: flex;
-  flex-direction: column;
-  /* justify-content: center;
-  align-items: center; */
-  width: 100%;
-  transform: translate(-50%, -50%) scale(0.1);
-  top: 10%;
-  left: 50%;
-  background-color: var(--white-color);
-  width: 100%;
-  /* z-index: 999; */
-  position: absolute;
-  visibility: hidden;
-  transition: 0.5s ease-in-out;
-  border: 1px solid var(--green-bg);
-}
-.show_create_btn {
-  visibility: visible;
-  transform: translate(-50%, -50%) scale(1);
-  top: 50%;
-}
-#qmark {
-  color: var(--red-color);
-  margin-left: 1rem;
-  margin-top: 0.5rem;
-}
-.form_control_image input[type="image"] {
-  border-radius: 50%;
-  background-color: var(--gray-bg);
-  height: 100px;
-  width: 100px;
-  outline: none;
-  border: none;
-}
-.upload__image__cover {
-  position: relative;
-}
-.upload__image__cover button {
-  border-radius: 50%;
-  height: 100px;
-  width: 100px;
-  position: relative;
-}
-.upload__image__cover img {
-  border-radius: 50%;
-  width: 100px;
-}
-.upload__image__cover input[type="file"] {
-  background-color: blueviolet;
-  height: 100px;
-  width: 100px;
-  border-radius: 50%;
-  position: absolute;
-  right: 3%;
-  opacity: 0;
-}
-.form_control_image {
-  position: relative;
-}
-.form_control_image span {
-  position: absolute;
-  flex-direction: column;
-  bottom: 25px;
-  left: 15px;
-  padding: 0.3rem;
-}
-.form_control_image span i {
-  font-weight: 300;
-}
-.form_control_image span i {
-  font-size: 0.9rem;
-  padding-bottom: 0.4rem;
-}
-.form_control input[type="text"],
-input[type="email"],
-input[type="url"],
-textarea,
-select {
-  background-color: var(--gray-bg);
-  padding: 1rem;
-  width: 100%;
-  border-radius: 0.5rem;
-  margin-top: 0.9rem;
-  outline: none;
-  color: #000;
-}
-.form_control option {
-  max-width: 50%;
-}
-.form_control button {
-  width: 100%;
-  background-color: var(--green-bg);
-  color: var(--white-color);
-  padding: 1rem;
+@media (max-width: 768px) {
+  main {
+    width: 375px;
+    height: 100vh;
+    margin-top: 0;
+  }
+  .container {
+    height: auto;
+  }
 }
 
 /* styles for create qr code */

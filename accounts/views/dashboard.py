@@ -42,9 +42,13 @@ class DashboardView(View):
                 context = {}
                 return render(request, self.template_name, context)
             else:
-                return redirect("https://100014.pythonanywhere.com/")
+                context = {}
+                # return redirect("https://100014.pythonanywhere.com/")
+                return render(request, self.template_name, context)
         else:
-            return redirect("https://100014.pythonanywhere.com/")
+            context = {}
+            # return redirect("https://100014.pythonanywhere.com/")
+            return render(request, self.template_name, context)
 
     def post(self, request, *args, **kwargs):
         if request.method == 'POST' and request.FILES:
@@ -74,6 +78,7 @@ class DashboardView(View):
                 'link': 'http://'+settings.HOSTNAME+'/iframe?url='+ res_data['url']
 
             }
+            print('returning data')
 
             request.session['form_link'] = res_data['url']
             return render(request, 'qrcode/create_qr_code.html', context)
