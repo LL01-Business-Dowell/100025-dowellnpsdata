@@ -28,7 +28,7 @@ def get_user_profile(session):
     url = "https://100014.pythonanywhere.com/api/profile/"
     response = requests.post(url, data, headers)
     print(response)
-    return response
+    return response.json()
 
 
 class DashboardView(View):
@@ -36,22 +36,29 @@ class DashboardView(View):
 
     def get(self, request, *args, **kwargs):
         session = request.GET.get("session_id", None)
+        # james test session id
+        # session = 'gt4j8zr8zfvh0go1e2v3fh2sibe9diw9'
         if session:
             user = get_user_profile(session)
             if user:
+                # save customers username to session
+                request.session['username'] = user['username']
                 context = {}
                 return render(request, self.template_name, context)
             else:
                 context = {}
-                # return redirect("https://100014.pythonanywhere.com/")
-                return render(request, self.template_name, context)
+                return redirect("https://100014.pythonanywhere.com/")
+                # return render(request, self.template_name, context)
         else:
             context = {}
-            # return redirect("https://100014.pythonanywhere.com/")
-            return render(request, self.template_name, context)
+            return redirect("https://100014.pythonanywhere.com/")
+            # return render(request, self.template_name, context)
 
     def post(self, request, *args, **kwargs):
         if request.method == 'POST' and request.FILES:
+            # check if user is logged in first
+            if 'username' not in request.session:
+                return redirect("https://100014.pythonanywhere.com/")
 
             headers = {
                 "cache-control": "no-cache",
@@ -66,6 +73,7 @@ class DashboardView(View):
             formdata['url'] = request.POST.get('url')
             formdata['location'] = request.POST.get('location')
             formdata['promotional_sentence'] = request.POST.get('promotional_sentence')
+            formdata['username'] = request.session['username']
             host = request.META['HTTP_HOST']
 
             url = 'http://' + host + '/api/qrcode/'
@@ -76,6 +84,7 @@ class DashboardView(View):
             # added &survey_id='+res_data['id'] to include survey_id in the link in qrcode
             context = {
                 'qrcode': res_data['qr_code'],
+                'promotional_sentence': res_data['promotional_sentence'],
                 'pk': res_data['id'],
                 'link': 'http://'+settings.HOSTNAME+'/iframe?survey_id='+str(res_data['id'])
 

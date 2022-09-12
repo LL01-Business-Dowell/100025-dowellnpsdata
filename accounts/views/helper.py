@@ -37,7 +37,7 @@ def render_form(request):
         upload_to_remote_db(res_data)
         context = {
             'qrcode': res_data['qr_code'],
-            'link': 'http://'+settings.HOSTNAME+'/iframe?url='+ res_data['url']
+            'link': 'http://'+settings.HOSTNAME+'/iframe?survey_id='+ res_data['id']
 
         }
 
@@ -115,10 +115,21 @@ def render_iframe(request):
             'message': message
         }
         return render(request, 'qrcode/survey_not_started.html', context)
+
+    # check if logged in user is the one who uploaded this survey
+    username = request.session.get('username', '')
+    if username == qr_code.username:
+        manage_survey = True
+    else:
+        manage_survey = False
+    if username == '':
+        manage_survey = False
+        
     context = {
         'survey_url': survey_url,
         'message': message,
         'qr_code': qr_code,
+        'manage_survey': manage_survey,
     }
     return render(request, 'iframe.html', context)
 
@@ -205,7 +216,7 @@ class FeedbackView(View):
             upload_to_remote_db(res_data)
             context = {
                 'qrcode': res_data['qr_code'],
-                'link': 'http://'+settings.HOSTNAME+'/iframe?url='+ res_data['url']
+                'link': 'http://'+settings.HOSTNAME+'/iframe?survey_id='+ res_data['id']
 
             }
 
