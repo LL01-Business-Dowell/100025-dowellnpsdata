@@ -206,6 +206,28 @@
         padding: 1rem;
       }
 
+      /* nav menu items */
+      .navlinks {
+        width: 100%;
+        height: 100vh;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        /* transform: translate(-50%, -50%) scale(1); */
+        top: 0;
+        left: 0;
+        position: absolute;
+        background-color: var(--green-bg);
+        visibility: hidden;
+      }
+      .navlinks ul li a {
+        color: var(--white-color);
+      }
+      .show_navlinks {
+        visibility: visible;
+        top: 0;
+      }
       @media (max-width: 768px) {
         .feedback__text {
           padding: 35px 0px 35px 0px;
@@ -229,7 +251,9 @@
         <!-- main section starts -->
         <header class="">
           <nav id="navbar">
-            <span class="padding_center"><i class="fa fa-bars"></i></span>
+            <span class="padding_center navbar__menu"
+              ><i class="fa fa-bars"></i
+            ></span>
           </nav>
         </header>
         <section class="feedback__text flex">
@@ -369,6 +393,18 @@
           </div>
         </section>
         <!-- pop up section ends -->
+
+        <!-- navigation menu starts -->
+        <section class="navlinks">
+          <ul>
+            <li><a href="">menu item1</a></li>
+            <li><a href="">menu item2</a></li>
+            <li><a href="">menu item3</a></li>
+            <li><a href="">menu item4</a></li>
+            <li><a href="">menu item5</a></li>
+          </ul>
+          <span class="navlink-close">x</span>
+        </section>
       </div>
     </main>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
@@ -414,6 +450,19 @@
       });
       closeBtn.addEventListener("click", function () {
         createSurvey.classList.remove("show_create_btn");
+      });
+
+      // script for navlinks
+      //create script for navlinks
+      const navLinks = document.querySelector(".navlinks");
+      const navLinksCloseBtn = document.querySelector(".navlink-close");
+      const navMenu = document.querySelector(".navbar__menu");
+
+      navMenu.addEventListener("click", function () {
+        navLinks.classList.add("show_navlinks");
+      });
+      navLinksCloseBtn.addEventListener("click", function () {
+        navLinks.classList.remove("show_navlinks");
       });
 
       // upload image script
