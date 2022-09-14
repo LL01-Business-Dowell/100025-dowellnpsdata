@@ -11,6 +11,14 @@ class QRCodeFormView(View):
     def get(self, request, *args, **kwargs):
         qr_code = self.model.objects.get(pk=self.kwargs['pk'])
         print(qr_code.start_date, qr_code.end_date)
+
+        if 'user' in request.session:
+            qr_code.name = request.session['user']['first_name'] + ' ' + request.session['user']['last_name']
+            qr_code.email = request.session['user']['email']
+        else:
+            qr_code.name = ''
+            qr_code.email = ''
+
         context = {
             'qr_code': qr_code
         }
@@ -27,7 +35,7 @@ class QRCodeFormView(View):
             qr_code.name = name
             qr_code.email = email
             qr_code.save()
-            return redirect('survey_stop', qr_code.pk)
+            return redirect(f'/iframe/?survey_id={qr_code.pk}')
         context = {
             'qr_code': qr_code
         }

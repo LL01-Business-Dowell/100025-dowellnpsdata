@@ -133,9 +133,44 @@
                             <small>click to end your survey now</small>
                         </div> -->
 
-                        <div class="progress__line__container">
-                            <div class="progress__line__inner"></div>
-                        </div>
+                        
+                        {% if start_survey %}
+                            <div class="form_control_date__submit padding_center flex">
+                                <button >
+                                    <a href="{% url 'survey_start' qr_code.pk %}">
+                                        Start Survey
+                                    </a>
+                                </button>
+
+                                <small>click to start your survey now</small>
+                            </div>
+                        {% endif %}
+
+                        {% if resume_survey %}
+                            <div class="form_control_date__submit padding_center flex">
+                                <button >
+                                    <a href="{% url 'survey_start' qr_code.pk %}">
+                                        Resume Survey
+                                    </a>
+                                </button>
+
+                                <small>click to resume your survey now</small>
+                            </div>
+                        {% endif %}
+                        
+                        {% if edit_dates %}
+                            <div class="form_control_date__submit padding_center flex">
+                                <button >
+                                    <a href="{% url 'set_survey_date' qr_code.pk %}">
+                                        Change Survey Dates
+                                    </a>
+                                </button>
+
+                                <small>click to edit survey dates</small>
+                            </div>
+                        {% endif %}
+
+
                     </div>
                 </section>
 

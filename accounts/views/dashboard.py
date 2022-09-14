@@ -41,8 +41,9 @@ class DashboardView(View):
         if session:
             user = get_user_profile(session)
             if user:
-                # save customers username to session
+                # save customers username and user profile to session
                 request.session['username'] = user['username']
+                request.session['user'] = user
                 context = {}
                 return render(request, self.template_name, context)
             else:

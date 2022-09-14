@@ -30,7 +30,8 @@ class SurveyDateView(View):
         context = {
             'qr_code': qr_code
         }
-        return render(request, self.template_name, context)
+        # return render(request, self.template_name, context)
+        return redirect('create_qr_code_form', qr_code.pk)
 
 class MySurveysView(View):
     template_name = 'qrcode/to____be____set____later.html'

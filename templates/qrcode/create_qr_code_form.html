@@ -28,7 +28,7 @@
                 </header>
                 <section class="create_qr_code">
                     <div class="form_survey_container padding_center">
-                        <form action="" method="post">
+                        <form action="" method="post" id="create_qr_form">
                             {% csrf_token %}
                             <div class="form_control close_container flex">
                                 <span id="qmark"> ? </span>
@@ -58,7 +58,7 @@
 
                             <div class="form_control create_qr_code1 flex mt">
                                 <button id="back" type="submit">Back</button>
-                                <button id="submit" class="btn" type="submit">
+                                <button id="submit" class="btn create_qr_code1_submit" type="submit">
                                     Submit
                                 </button>
                             </div>
