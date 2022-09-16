@@ -35,6 +35,14 @@ class QRCodeFormView(View):
             qr_code.name = name
             qr_code.email = email
             qr_code.save()
+            
+            # display email form to be sent to user
+            context = {
+                'qr_code': qr_code
+            }
+            return render(request, 'qrcode/email__template.html', context)
+
+
             return redirect(f'/iframe/?survey_id={qr_code.pk}')
         context = {
             'qr_code': qr_code

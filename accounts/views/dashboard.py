@@ -37,7 +37,10 @@ class DashboardView(View):
     def get(self, request, *args, **kwargs):
         session = request.GET.get("session_id", None)
         # james test session id
-        # session = 'gt4j8zr8zfvh0go1e2v3fh2sibe9diw9'
+        # uncomment below lines before uploading to live server
+        session = 'gt4j8zr8zfvh0go1e2v3fh2sibe9diw9'
+        return render(request, self.template_name, {})
+
         if session:
             user = get_user_profile(session)
             if user:
@@ -49,11 +52,9 @@ class DashboardView(View):
             else:
                 context = {}
                 return redirect("https://100014.pythonanywhere.com/")
-                # return render(request, self.template_name, context)
         else:
             context = {}
             return redirect("https://100014.pythonanywhere.com/")
-            # return render(request, self.template_name, context)
 
     def post(self, request, *args, **kwargs):
         if request.method == 'POST' and request.FILES:
