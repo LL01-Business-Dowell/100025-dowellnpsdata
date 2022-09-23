@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>end survey</title>
+
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css"
+    />
+    <link rel="stylesheet" href="styles.css" />
+    <script
+      src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.8.0/chart.min.js"
+      integrity="sha512-sW/w8s4RWTdFFSduOTGtk4isV1+190E/GghVffMA9XczdJ2MDzSzLEubKAs5h0wzgSJOQTRYyaz73L3d6RtJSg=="
+      crossorigin="anonymous"
+      referrerpolicy="no-referrer"
+    ></script>
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css"
+    />
+    <style>
+      .container {
+        overflow-x: scroll;
+      }
+      .change__survey__date__btn {
+        background-color: var(--pink-color);
+        color: var(--white-color);
+        padding: 0.5rem;
+        font-size: 15px;
+        border-radius: 0.5rem;
+      }
+      .change__survey__date__btn a {
+        color: var(--white-color);
+      }
+      .survey__date__inputs select {
+        border: 1px solid var(--gray-bg);
+      }
+      /* .survey__date__inputs select option {
+        background-color: var(--gray-bg);
+      } */
+      /* .survey__date__title {
+        height: 50px !important;
+      } */
+      .form_control_end__btn {
+        height: 40px;
+        width: 100%;
+        margin-top: 50px;
+        justify-content: flex-end;
+      }
+      .endsurvey__form__control {
+      }
+      .endsurvey__form__control__text {
+        height: 40px;
+
+        text-align: center;
+        color: rgb(63, 61, 61);
+      }
+      .survey__date__inputs {
+        flex-direction: column;
+      }
+      .end__survey__container {
+        border-top: 1px solid var(--red-color);
+        margin-top: 3px;
+      }
+      .form_control_date__submit {
+        border-top: 1px solid var(--red-color);
+        flex-direction: column;
+        margin-top: 50px;
+      }
+      .form_control_date__submit button {
+        background-color: var(--green-bg);
+        color: var(--white-color);
+        min-width: 200px;
+        padding: 0.8rem;
+      }
+      .img {
+        height: 150px;
+      }
+      .img img {
+        width: 100%;
+      }
+    </style>
+  </head>
+  <body>
+    <main>
+      <div class="container">
+        <!-- main section starts -->
+        <header class="">
+          <nav id="navbar">
+            <span class="padding_center navbar__menu"
+              ><i class="fa fa-bars"></i
+            ></span>
+          </nav>
+        </header>
+
+        <section class="survey__date">
+          <section class="survey__text">
+            <h3>End your survey</h3>
+          </section>
+
+          <div class="end__survey__container">
+            <form action="" method="post">
+              <div class="endsurvey__form__control__text flex">
+                <h4>
+                  select your reason to end the <br />
+                  survey
+                </h4>
+              </div>
+              <div class="endsurvey__form__control">
+                <div class="survey__date__inputs flex padding_center">
+                  <select name="" id="selector">
+                    <option value="">Changes to be made in survey form</option>
+                    <option value="">survey dropped</option>
+                    <option value="end__survey__message.html" id="link__option">
+                      reasons not mentioned above
+                    </option>
+                  </select>
+                  <div class="img">
+                    <img src="img/endsurvey3.png" alt="" />
+                  </div>
+                  <div class="form_control_end__btn padding_center flex">
+                    <button
+                      type="submit"
+                      id="change__survey__date__btn"
+                      class="change__survey__date__btn"
+                    >
+                      change end date
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </form>
+            <div class="form_control_date__submit padding_center flex">
+              <button
+                href="end_survey_response.html"
+                type="submit"
+                id="survey__date__submit__btn"
+              >
+                End now
+              </button>
+              <small>click to end your survey now</small>
+            </div>
+          </div>
+        </section>
+
+        <!-- survey start date pop up -->
+        <section class="survey_date_popup flex">
+          <div class="survey_date_popup_content flex">
+            <div class="survey_date_popup_close flex">
+              <span id="survey-datestart-close">x</span>
+            </div>
+            <h4 class="padding_center items-center">Survey has been ended</h4>
+            <img src="img/endsurvey2.png" alt="" />
+          </div>
+        </section>
+      </div>
+    </main>
+
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+    <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+    <script src="nav-script.js"></script>
+    <script>
+      "use strict";
+      const surveyDateStartBtn = document.querySelector(
+        "#survey__date__submit__btn"
+      );
+      console.log(surveyDateStartBtn);
+      const surveyDateCloseBtn = document.querySelector(
+        "#survey-datestart-close"
+      );
+      const surveyDatePopup = document.querySelector(".survey_date_popup");
+
+      surveyDateStartBtn.addEventListener("click", (e) => {
+        e.preventDefault();
+        surveyDatePopup.classList.add("survey_date_popup_show");
+      });
+      surveyDateCloseBtn.addEventListener("click", () => {
+        surveyDatePopup.classList.remove("survey_date_popup_show");
+      });
+
+      // linking the select option to others page dynamically for messaging
+      const selector = document.querySelector("#selector");
+      const linkSelect = document.querySelector("#link__option");
+
+      // window.location = linkSelect.value + ".html";
+      selector.onchange = function () {
+        let userOptions = this.options[this.selectedIndex];
+        if (userOptions.value != "") {
+          window.open(userOptions.value, "other reasons", "");
+        }
+      };
+    </script>
+  </body>
+</html>

@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css"
+    />
+    <title>An Error has accoured</title>
+    <style>
+      @import url("https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700;900&display=swap");
+      * {
+        box-sizing: border-box;
+        margin: 0;
+        padding: 0;
+      }
+      body {
+        background-color: #e3e3e3;
+        font-family: "Roboto", sans-serif;
+        line-height: 1.5rem;
+      }
+
+      main {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 90vh;
+        margin-top: 5vh;
+      }
+      .error__page__container {
+        width: 375px;
+        background-color: #fff;
+        height: 100%;
+        border-radius: 7px;
+      }
+      /* utilities */
+      .container {
+        padding: 0 1.5rem;
+      }
+      .flex {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+      }
+      img {
+        width: 100%;
+      }
+
+      /* end utilities */
+      header {
+        height: 70px;
+        display: flex;
+        align-items: center;
+        box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;
+      }
+      .page__title {
+        height: 80px;
+      }
+      .page__content__title {
+        height: 60px;
+      }
+      .page__content__title h3 {
+        color: red;
+      }
+      .page__content {
+        border-top: 1px solid red;
+        border-bottom: 1px solid red;
+        padding-bottom: 2rem;
+      }
+      @media (max-width: 768px) {
+        main {
+          height: 100vh;
+          margin-top: 0;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <main>
+      <section class="error__page__container">
+        <header class="container">
+          <nav id="navbar">
+            <span class="padding_center"><i class="fa fa-bars"></i></span>
+          </nav>
+        </header>
+        <div class="page__cover">
+          <div class="page__title flex">
+            <h3>An Error has accoured</h3>
+          </div>
+          <div class="page__content">
+            <div class="page__content__title flex">
+              <h3>Error</h3>
+            </div>
+            <div class="page__content__image">
+              <img src="img/warning.png" alt="" />
+            </div>
+          </div>
+        </div>
+      </section>
+    </main>
+  </body>
+</html>

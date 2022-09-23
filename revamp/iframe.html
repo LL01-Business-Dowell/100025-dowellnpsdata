@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>iframe</title>
+    <style>
+      * {
+        box-sizing: border-box;
+        margin: 0;
+        padding: 0;
+      }
+      main {
+        display: flex;
+        height: 98vh;
+        justify-content: center;
+        align-items: center;
+      }
+      .iframe {
+        height: 85%;
+        border-radius: 30px;
+      }
+      iframe {
+        border-radius: 10px;
+        outline: 0;
+        border: 0;
+        box-shadow: rgba(0, 0, 0, 0.16) 0px 1px 4px;
+      }
+      .iframe__btn {
+        display: flex;
+        justify-content: flex-end;
+        padding-right: 8%;
+      }
+      .iframe__btn button {
+        background-color: #ffb388;
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+        border-radius: 5px;
+        padding: 13px;
+        min-width: 140px;
+        outline: 0;
+        border: 0;
+        color: #fff;
+      }
+    </style>
+  </head>
+  <body>
+    <main>
+      <section class="iframe">
+        <iframe
+          src="https://docs.google.com/forms/d/e/1FAIpQLScyiZIt7TTphKlZFi37zFkjQY6L8gCeKbC1jAcuISq9hKQX5A/viewform"
+          title="work status form"
+          width="395"
+          height="100%"
+        >
+        </iframe>
+        <div class="iframe__btn">
+          <button>End survey</button>
+        </div>
+      </section>
+    </main>
+  </body>
+</html>
