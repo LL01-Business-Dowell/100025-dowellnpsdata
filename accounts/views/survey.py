@@ -2,6 +2,7 @@ from django.views.generic import View
 from django.shortcuts import render
 from django.shortcuts import render, redirect
 from django.http import HttpResponse
+from accounts.views.helper import get_survey_status
 
 from api.models import QrCode
 
@@ -34,7 +35,7 @@ class SurveyDateView(View):
         return redirect('create_qr_code_form', qr_code.pk)
 
 class MySurveysView(View):
-    template_name = 'qrcode/to____be____set____later.html'
+    template_name = 'qrcode/my_surveys.html'
     model = QrCode
 
     def get(self, request, *args, **kwargs):
@@ -46,18 +47,17 @@ class MySurveysView(View):
         username = request.session['username']
         qr_codes = self.model.objects.filter(username=username)
 
-        foo_response = ''
-
         for qr_code in qr_codes:
-            foo_response += f'{qr_code.brand_name}\t {qr_code.start_date}\t {qr_code.promotional_sentence}<br>' 
-
+            survey_status, survey_link, survey_link_text = get_survey_status(qr_code.id)
+            qr_code.survey_status = survey_status
+            qr_code.survey_link = survey_link
+            qr_code.survey_link_text = survey_link_text
 
         context = {
             'qr_codes': qr_codes
         }
 
-        # return render(request, self.template_name, context)
-        return HttpResponse(foo_response)
+        return render(request, self.template_name, context)
 
     def post(self, request, *args, **kwargs):
         qr_code = self.model.objects.get(pk=self.kwargs['pk'])

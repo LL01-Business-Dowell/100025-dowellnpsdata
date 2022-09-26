@@ -146,6 +146,42 @@ def render_iframe(request):
     return render(request, 'iframe.html', context)
 
 
+def get_survey_status(survey_id):
+    survey_status = ''
+    survey_link = ''
+    survey_link_text = ''
+
+    qr_code = get_object_or_404(QrCode, pk=survey_id)
+    today = datetime.now()
+    current_date = date(today.year, today.month, today.day)
+    message = ''
+    if qr_code.is_end:
+        survey_status = 'Ended'
+        survey_link_text = 'Start Survey'
+        survey_link = f'/{survey_id}/survey/start/'
+    if qr_code.is_paused:
+        survey_status = 'Paused'
+        survey_link_text = 'Resume Survey'
+        survey_link = f'/{survey_id}/survey/stop/'
+    if qr_code.start_date and qr_code.end_date:
+        if qr_code.start_date <= current_date <= qr_code.end_date:
+            survey_url = qr_code.url
+        else:
+            if qr_code.start_date > current_date:
+                survey_status = 'Not started'
+                survey_link_text = 'Edit dates'
+                survey_link = f'/{survey_id}/set/survey/date/'
+            else:
+                survey_status = 'Survey Ended'
+                survey_link_text = 'Extend date'
+                survey_link = f'/{survey_id}/set/survey/date/'
+    else:
+        survey_status = 'Date not set'
+        survey_link_text = 'Set dates'
+        survey_link = f'/{survey_id}/set/survey/date/'
+
+    return survey_status, survey_link, survey_link_text
+
 def get_event_id():
     dd = datetime.now()
     time = dd.strftime("%d:%m:%Y,%H:%M:%S")
