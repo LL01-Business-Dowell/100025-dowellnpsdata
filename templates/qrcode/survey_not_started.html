@@ -17,6 +17,10 @@
         ></script>
         <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css" />
         <style>
+           .container {
+        /* overflow-y: scroll;
+        background-color: #fff; */
+      }
             .survey__date {
         background-color: var(--white-color);
       }
@@ -69,20 +73,28 @@
         min-width: 200px;
         padding: 0.8rem;
       }
+      .form_control_date__submit button a{
+       
+        color: var(--white-color);
+       
+      }
       .image__not__started {
         width: 95%;
+        height: 150px;
         margin: 0 auto;
       }
       .image__not__started img {
+       
         width: 100%;
-        width: 80%;
+        height: 100%;
+       
+        object-fit: cover;
       }
 
-      .survey__date {
-        background-color: #e5e5e5;
+      /* .survey__date {
         min-height: 560px;
-      }
-      .progress__line__container {
+      } */
+      /* .progress__line__container {
         height: 2px;
         width: 100%;
         background-color: var(--deep-gray-bg);
@@ -94,8 +106,7 @@
         justify-content: flex-start;
         align-items: center;
         height: 2px;
-        /* border-bottom-right-radius: 50%;
-        border-top-right-radius: 50%; */
+       
         position: relative;
       }
       .progress__line__inner::before {
@@ -106,7 +117,7 @@
         width: 5px;
         background-color: var(--pink-color);
         border-radius: 50%;
-      }
+      } */
         </style>
     </head>
     <body>
