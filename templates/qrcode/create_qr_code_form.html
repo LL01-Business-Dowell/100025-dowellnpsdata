@@ -16,6 +16,52 @@
             referrerpolicy="no-referrer"
         ></script>
         <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css" />
+        <style>
+            .container {
+              overflow-x: scroll;
+            }
+            .create_qr_code p {
+              margin-top: 1rem;
+              font-size: 13px;
+            }
+            .create_qr_code .privacy {
+              margin-top: 1rem;
+              color: var(--red-color);
+            }
+            .create_qr_code1 button:nth-child(1) {
+              background-color: var(--deep-gray-bg);
+              margin-right: 0.4rem;
+            }
+            /* survey date pop up styles */
+            .survey_date_popup {
+              height: 100vh;
+              width: 100%;
+              position: absolute;
+              top: 70px;
+              z-index: 1;
+              background-color: rgba(0, 0, 0, 0.1);
+              visibility: hidden;
+            }
+            .survey_date_popup_show {
+              visibility: visible;
+            }
+            .survey_date_popup_content {
+              flex-direction: column;
+              background-color: var(--white-color);
+              width: 300px;
+              border-radius: 10px;
+            }
+            .survey_date_popup_close {
+              position: relative;
+            }
+            .survey_date_popup_close span {
+              position: absolute;
+              left: 6.5rem;
+              top: 10px;
+              font-family: 25px;
+              cursor: pointer;
+            }
+          </style>
     </head>
     <body>
         <main>
@@ -89,7 +135,7 @@
 
         <script>
             const qrCodeStartBtn = document.querySelector(".create_qr_code1_submit");
-            console.log(qrCodeStartBtn);
+          
             const qrCodeStartBtnCloseBtn = document.querySelector("#survey-datestart-close");
             const surveyDatePopup = document.querySelector(".survey_date_popup");
 
