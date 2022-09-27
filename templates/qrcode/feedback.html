@@ -499,7 +499,7 @@
       const selectId = document.getElementById("countries");
       const optionId = document.getElementById("countries__options");
       const url =
-        "https://100074.pythonanywhere.com/countries/johnDoe123/haikalsb1234/100074/";
+        "https://100074.pythonanywhere.com/countries/{{ user.username }}/{{ session_id }}/{{ user.teamcode }}/";
       fetch(url, {
         method: "GET",
       })
@@ -518,6 +518,9 @@
             option.value = option.textContent = element.name;
             selectId.add(option);
           });
+
+
+          
         })
         .catch((error) => console.error(error));
     </script>
@@ -526,7 +529,7 @@
       const regionId = document.getElementById("regions");
       const regionOptionId = document.getElementById("regions__options");
       const regionUrl =
-        "https://100074.pythonanywhere.com/region/name/India/johnDoe123/haikalsb1234/100074/";
+        "https://100074.pythonanywhere.com/region/name/India/{{ user.username }}/{{ session_id }}/{{ user.teamcode }}/";
       fetch(regionUrl, {
         method: "GET",
       })
