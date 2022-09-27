@@ -23,77 +23,88 @@
         ></script>
         <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css" />
         <style>
+            /* .container {
+              overflow-y: scroll;
+            } */
             .survey__date {
-                height: auto;
+              height: auto;
             }
             .progress__line__container {
-                height: 2px;
-                width: 100%;
-                background-color: var(--deep-gray-bg);
+              height: 2px;
+              width: 100%;
+              background-color: var(--deep-gray-bg);
             }
             .progress__line__inner {
-                display: flex;
-                background-color: var(--pink-color);
-                width: 10%;
-                justify-content: flex-start;
-                align-items: center;
-                height: 2px;
-                /* border-bottom-right-radius: 50%;
-        border-top-right-radius: 50%; */
-                position: relative;
+              display: flex;
+              background-color: var(--pink-color);
+              width: 10%;
+              justify-content: flex-start;
+              align-items: center;
+              height: 2px;
+              /* border-bottom-right-radius: 50%;
+              border-top-right-radius: 50%; */
+              position: relative;
             }
             .progress__line__inner::before {
-                content: "";
-                position: absolute;
-                right: 0;
-                height: 8px;
-                width: 8px;
-                background-color: var(--pink-color);
-                border-radius: 50%;
+              content: "";
+              position: absolute;
+              right: 0;
+              height: 8px;
+              width: 8px;
+              background-color: var(--pink-color);
+              border-radius: 50%;
             }
             .survey__paused__text {
-                text-align: center;
-                padding: 1.5rem 0;
+              text-align: center;
+              padding: 0.4rem 0;
             }
             .survey__paused__text h5 {
-                font-size: 15px;
-                color: var(--deep-gray-bg);
+              font-size: 15px;
+              color: var(--deep-gray-bg);
             }
             .suervey__paused__icon {
-                display: flex;
-                justify-content: center;
-                align-items: center;
-                border-radius: 3px solid var(--deep-gray-bg);
-                height: 40px;
-                width: 45px;
-                margin: 0 auto;
-                border-radius: 50%;
-                position: relative;
-                margin-bottom: 20px;
+              display: flex;
+              justify-content: center;
+              align-items: center;
+              border-radius: 3px solid var(--deep-gray-bg);
+              height: 40px;
+              width: 45px;
+              margin: 0 auto;
+              border-radius: 50%;
+              position: relative;
+              margin-bottom: 20px;
             }
             .suervey__paused__icon span {
-                position: absolute;
-                color: var(--pink-color);
-                font-size: 40px;
+              position: absolute;
+              color: var(--pink-color);
+              font-size: 40px;
             }
             .survey__pause__image {
-                margin: 0 auto;
-                width: 70%;
-                height: 270px;
+              margin: 0 auto;
+              width: 70%;
+              height: 150px;
+              display: flex;
+              justify-content: center;
+              align-items: center;
             }
             .survey__pause__image img {
-                height: 100%;
+              height: 100%;
             }
             .form_control_date__submit {
-                flex-direction: column;
+              flex-direction: column;
             }
             .form_control_date__submit button {
-                background-color: var(--green-bg);
-                color: var(--white-color);
-                min-width: 200px;
-                padding: 0.8rem;
+              background-color: var(--green-bg);
+              color: var(--white-color);
+              min-width: 200px;
+              padding: 0.8rem;
             }
-        </style>
+            @media (max-width: 768px) {
+              .survey__pause__image {
+                height: 270px;
+              }
+            }
+          </style>
     </head>
     <body>
         <main>
