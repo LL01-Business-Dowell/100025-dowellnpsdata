@@ -17,93 +17,96 @@
         ></script>
         <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css" />
         <style>
-            .change__survey__date__btn {
-                background-color: var(--pink-color);
-                color: var(--white-color);
-                padding: 0.5rem;
-                font-size: 15px;
-                border-radius: 0.5rem;
-            }
-            .change__survey__date__btn a {
-                color: var(--white-color);
-            }
-            .survey__date__inputs select {
-                border: none;
-            }
-            .survey__date__inputs select option {
-                background-color: var(--gray-bg);
-            }
-            /* .survey__date__title {
+            .survey__date {
+        background-color: var(--white-color);
+      }
+      .change__survey__date__btn {
+        background-color: var(--pink-color);
+        color: var(--white-color);
+        padding: 0.5rem;
+        font-size: 15px;
+        border-radius: 0.5rem;
+      }
+      .change__survey__date__btn a {
+        color: var(--white-color);
+      }
+      .survey__date__inputs select {
+        border: none;
+      }
+      .survey__date__inputs select option {
+        background-color: var(--gray-bg);
+      }
+      /* .survey__date__title {
         height: 50px !important;
       } */
-            .form_control_end__btn {
-                height: 50px;
-                width: 100%;
-                justify-content: flex-end;
-            }
-            .endsurvey__form__control {
-            }
-            .endsurvey__form__control__text {
-                height: 80px;
+      .form_control_end__btn {
+        height: 50px;
+        width: 100%;
+        justify-content: flex-end;
+      }
+      .endsurvey__form__control {
+      }
+      .endsurvey__form__control__text {
+        height: 80px;
 
-                text-align: center;
-                color: rgb(63, 61, 61);
-            }
-            .survey__date__inputs {
-                flex-direction: column;
-            }
-            .end__survey__container {
-                border-top: 1px solid var(--red-color);
-                margin-top: 3px;
-            }
-            .form_control_date__submit {
-                border-top: 1px solid var(--red-color);
-                flex-direction: column;
-            }
-            .form_control_date__submit button {
-                background-color: var(--green-bg);
-                color: var(--white-color);
-                min-width: 200px;
-                padding: 0.8rem;
-            }
-            .image__not__started {
-                width: 95%;
-                margin: 0 auto;
-            }
-            .image__not__started img {
-                width: 100%;
-                width: 80%;
-            }
+        text-align: center;
+        color: rgb(63, 61, 61);
+      }
+      .survey__date__inputs {
+        flex-direction: column;
+      }
+      .end__survey__container {
+        border-top: 1px solid var(--red-color);
+        margin-top: 3px;
+      }
+      .form_control_date__submit {
+        border-top: 1px solid var(--red-color);
+        flex-direction: column;
+      }
+      .form_control_date__submit button {
+        background-color: var(--green-bg);
+        color: var(--white-color);
+        min-width: 200px;
+        padding: 0.8rem;
+      }
+      .image__not__started {
+        width: 95%;
+        margin: 0 auto;
+      }
+      .image__not__started img {
+        width: 100%;
+        width: 80%;
+      }
 
-            .survey__date {
-                background-color: #e5e5e5;
-                min-height: 560px;
-            }
-            .progress__line__container {
-                height: 2px;
-                width: 100%;
-                background-color: var(--deep-gray-bg);
-            }
-            .progress__line__inner {
-                display: flex;
-                background-color: var(--pink-color);
-                width: 10%;
-                justify-content: flex-start;
-                align-items: center;
-                height: 2px;
-                /* border-bottom-right-radius: 50%;
+      .survey__date {
+        background-color: #e5e5e5;
+        min-height: 560px;
+      }
+      .progress__line__container {
+        height: 2px;
+        width: 100%;
+        background-color: var(--deep-gray-bg);
+      }
+      .progress__line__inner {
+        display: flex;
+        background-color: var(--pink-color);
+        width: 10%;
+        justify-content: flex-start;
+        align-items: center;
+        height: 2px;
+        /* border-bottom-right-radius: 50%;
         border-top-right-radius: 50%; */
-                position: relative;
-            }
-            .progress__line__inner::before {
-                content: "";
-                position: absolute;
-                right: 0;
-                height: 5px;
-                width: 5px;
-                background-color: var(--pink-color);
-                border-radius: 50%;
-            }
+        position: relative;
+      }
+      .progress__line__inner::before {
+        content: "";
+        position: absolute;
+        right: 0;
+        height: 5px;
+        width: 5px;
+        background-color: var(--pink-color);
+        border-radius: 50%;
+      }
         </style>
     </head>
     <body>
