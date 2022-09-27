@@ -24,61 +24,66 @@
         <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css" />
         <style>
             .survey__date {
-                height: auto;
+              height: auto;
             }
             .progress__line__container {
-                height: 2px;
-                width: 100%;
-                background-color: var(--deep-gray-bg);
+              height: 2px;
+              width: 100%;
+              background-color: var(--deep-gray-bg);
             }
             .progress__line__inner {
-                display: flex;
-                background-color: var(--pink-color);
-                width: 10%;
-                justify-content: flex-start;
-                align-items: center;
-                height: 2px;
-                /* border-bottom-right-radius: 50%;
-        border-top-right-radius: 50%; */
-                position: relative;
+              display: flex;
+              background-color: var(--pink-color);
+              width: 10%;
+              justify-content: flex-start;
+              align-items: center;
+              height: 2px;
+              /* border-bottom-right-radius: 50%;
+              border-top-right-radius: 50%; */
+              position: relative;
             }
             .progress__line__inner::before {
-                content: "";
-                position: absolute;
-                right: 0;
-                height: 8px;
-                width: 8px;
-                background-color: var(--pink-color);
-                border-radius: 50%;
+              content: "";
+              position: absolute;
+              right: 0;
+              height: 8px;
+              width: 8px;
+              background-color: var(--pink-color);
+              border-radius: 50%;
             }
             .survey__paused__text {
-                text-align: center;
-                padding: 1.5rem 0;
+              text-align: center;
+              padding: 1rem 0;
             }
             .survey__paused__text h5 {
-                font-size: 15px;
-                color: var(--deep-gray-bg);
+              font-size: 15px;
+              color: var(--deep-gray-bg);
             }
-
+      
             .survey__stopped__image {
-                width: 60%;
-                padding: 5rem 0;
-                margin: 0 auto;
+              width: 60%;
+              padding: 1rem 0;
+              margin: 0 auto;
             }
             .survey__stopped__image img {
-                height: 100%;
+              height: 100%;
             }
             .form_control_date__submit {
-                flex-direction: column;
+              flex-direction: column;
             }
             .form_control_date__submit button {
-                background-color: var(--green-bg);
-                color: var(--white-color);
-                min-width: 200px;
-                padding: 0.8rem;
-                margin-bottom: 0.5rem;
+              background-color: var(--green-bg);
+              color: var(--white-color);
+              min-width: 200px;
+              padding: 0.8rem;
+              margin-bottom: 0.5rem;
             }
-        </style>
+            @media (max-width: 768px) {
+              .survey__stopped__image {
+                padding: 5rem 0;
+              }
+            }
+          </style>
     </head>
     <body>
         <main>
