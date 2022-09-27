@@ -496,10 +496,12 @@
       "teamcode":"100014","phonecode":null,
       "profile_image":"/media/user.png"}
       */
+
+      console.log('{{ user }}');
       const selectId = document.getElementById("countries");
       const optionId = document.getElementById("countries__options");
       const url =
-        "https://100074.pythonanywhere.com/countries/{{ user.username }}/{{ session_id }}/{{ user.teamcode }}/";
+        "https://100074.pythonanywhere.com/countries/{{ user.username }}/{{ session_id }}/100014/";
       fetch(url, {
         method: "GET",
       })
@@ -529,7 +531,7 @@
       const regionId = document.getElementById("regions");
       const regionOptionId = document.getElementById("regions__options");
       const regionUrl =
-        "https://100074.pythonanywhere.com/region/name/India/{{ user.username }}/{{ session_id }}/{{ user.teamcode }}/";
+        "https://100074.pythonanywhere.com/region/name/India/{{ user.username }}/{{ session_id }}/100014/";
       fetch(regionUrl, {
         method: "GET",
       })
