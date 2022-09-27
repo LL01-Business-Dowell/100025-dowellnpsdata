@@ -37,9 +37,9 @@ class DashboardView(View):
     def get(self, request, *args, **kwargs):
         session = request.GET.get("session_id", None)
         # james test session id
-        # uncomment below lines before uploading to live server
+        # comment below lines before uploading to live server
         session = 'gt4j8zr8zfvh0go1e2v3fh2sibe9diw9'
-        return render(request, self.template_name, {})
+        # return render(request, self.template_name, {})
 
         if session:
             user = get_user_profile(session)
@@ -47,7 +47,10 @@ class DashboardView(View):
                 # save customers username and user profile to session
                 request.session['username'] = user['username']
                 request.session['user'] = user
-                context = {}
+                context = {
+                    'user': user,
+                    'session_id': session,
+                }
                 return render(request, self.template_name, context)
             else:
                 context = {}
