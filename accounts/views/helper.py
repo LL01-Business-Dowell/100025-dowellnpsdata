@@ -30,14 +30,14 @@ def render_form(request):
         formdata['promotional_sentence'] = request.POST.get('promotional_sentence')
         host = request.META['HTTP_HOST']
 
-        url = 'http://' + host + '/api/qrcode/'
+        url = 'https://' + host + '/api/qrcode/'
         res = requests.post(url, data=formdata, files=files)
         res_data = res.json()
 
         upload_to_remote_db(res_data)
         context = {
             'qrcode': res_data['qr_code'],
-            'link': 'http://'+settings.HOSTNAME+'/iframe?survey_id='+ res_data['id']
+            'link': 'https://'+settings.HOSTNAME+'/iframe?survey_id='+ res_data['id']
 
         }
 
@@ -211,7 +211,7 @@ def is_survey_owner_logged_in(request, survey_id):
 def upload_to_remote_db(data):
     # print('sanity check')
     # print(data)
-    url = "http://100002.pythonanywhere.com/"
+    url = "https://100002.pythonanywhere.com/"
     # searchstring="ObjectId"+"("+"'"+"6139bd4969b0c91866e40551"+"'"+")"
     payload = {
         "cluster": "nps",
@@ -267,13 +267,13 @@ class FeedbackView(View):
             formdata['promotional_sentence'] = request.POST.get('promotional_sentence')
             host = request.META['HTTP_HOST']
 
-            url = 'http://' + host + '/api/qrcode/'
+            url = 'https://' + host + '/api/qrcode/'
             res = requests.post(url, data=formdata, files=files)
             res_data = res.json()
             upload_to_remote_db(res_data)
             context = {
                 'qrcode': res_data['qr_code'],
-                'link': 'http://'+settings.HOSTNAME+'/iframe?survey_id='+ res_data['id']
+                'link': 'https://'+settings.HOSTNAME+'/iframe?survey_id='+ res_data['id']
 
             }
 
