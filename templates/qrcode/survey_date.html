@@ -17,13 +17,22 @@
         ></script>
         <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css" />
         <style>
+            .container {
+              overflow-y: scroll;
+            }
             .survey__date_fixed {
-                height: calc(100vh - 70px);
+              height: calc(100vh - 70px);
             }
             .survey__date__form__cover__fixed {
-                height: 500px;
+              height: 500px;
             }
-        </style>
+            #survey__date__submit__btn{
+                background-color: var(--green-bg);
+                color: #fff;
+                min-width: 170px;
+                padding: 10px 0px 10px 0px;
+            }
+          </style>
     </head>
 
     <body>
@@ -50,22 +59,22 @@
                             <div class="survey__date__inputs flex padding_center">
                                 <div class="form_control_date">
                                     <label for="start__date">Start date</label>
-                                    <input type="date" value="{{ qr_code.start_date }}" name="start_date" id="start_date" required />
+                                    <input type="date" value="{{ qr_code.start_date|date:'Y-m-d' }}" name="start_date" id="start_date" required />
                                 </div>
                                 <div class="form_control_date">
                                     <label for="end__date">End date</label>
-                                    <input type="date" value="{{ qr_code.end_date }}" name="end_date" id="end_date" required />
+                                    <input type="date" value="{{ qr_code.end_date|date:'Y-m-d' }}" name="end_date" id="end_date" required />
                                 </div>
                             </div>
                             <div class="form_control_date__btn padding_center">
-                                <button type="submit" id="survey__date__btn" class="survey__date__btn survey__date__btn__show">
+                                <button id="survey__date__btn" class="survey__date__btn survey__date__btn__show">
                                     start now
                                 </button>
                             </div>
                             <div class="form_control_date__submit__btn padding_center flex">
-                                <a href="{% url 'create_qr_code_form' qr_code.pk %}" type="submit" id="survey__date__submit__btn">
+                                <button type="submit" id="survey__date__submit__btn">
                                     Proceed
-                                </a>
+                                </button>
                             </div>
                         </form>
                     </div>
@@ -78,7 +87,7 @@
                             <span id="survey-datestart-close">x</span>
                         </div>
                         <h4 class="padding_center items-center">
-                            start and end date of survey <br />
+                            start date of survey <br />
                             has been set
                         </h4>
                         <img src="{% static 'assets/img/image-4.png' %}" alt="" />
@@ -101,12 +110,12 @@
             let parseStartDate;
             let parseEndDate;
 
-            document.querySelector("input[type='date'][name='start__date']").addEventListener("change", function () {
+            document.querySelector("input[type='date'][name='start_date']").addEventListener("change", function () {
                 startDate = this.value;
                 parseStartDate = new Date(startDate);
                 validateDate();
             });
-            document.querySelector("input[type='date'][name='end__date']").addEventListener("change", function () {
+            document.querySelector("input[type='date'][name='end_date']").addEventListener("change", function () {
                 endDate = this.value;
                 parseStartDate = new Date(endDate);
                 validateDate();
@@ -121,6 +130,8 @@
                 }
             };
 
+           
+
             //survey date validate pop up
             const surveyDateStartBtn = document.querySelector("#survey__date__btn");
             console.log(surveyDateStartBtn);
@@ -128,6 +139,7 @@
             const surveyDatePopup = document.querySelector(".survey_date_popup");
 
             surveyDateStartBtn.addEventListener("click", (e) => {
+                document.querySelector("input[type='date'][name='start_date']").value = new Date().toISOString().slice(0, 10);
                 e.preventDefault();
                 surveyDatePopup.classList.add("survey_date_popup_show");
             });

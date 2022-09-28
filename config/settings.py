@@ -12,7 +12,7 @@ https://docs.djangoproject.com/en/4.0/ref/settings/
 
 from pathlib import Path
 import os
-import django_heroku
+# import django_heroku
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -27,7 +27,9 @@ SECRET_KEY = 'django-insecure-25h_dx2a1!#o)7whz7@p7-xt9+4f^0s!p3c6+(mr43_*p@f+0h
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['100025.pythonanywhere.com','127.0.0.1']
+
+ALLOWED_HOSTS = ['*']
+
 
 
 # Application definition
@@ -105,6 +107,7 @@ WSGI_APPLICATION = 'config.wsgi.application'
 #     }
 # }
 DATABASES = {
+
         'default': {
              'ENGINE': 'django.db.backends.mysql', # mysql database python driver.
              'NAME': '100025$qr_code_db',    # mysql database name.
@@ -113,6 +116,7 @@ DATABASES = {
              'HOST': '100025.mysql.pythonanywhere-services.com', # db machine ip or domain, if left empty then the value is localhost.
             #  'PORT': '3306', # db server listening port number
          }
+
 }
 
 
@@ -170,4 +174,4 @@ HOSTNAME = '100025.pythonanywhere.com'
 
 
 # Activate Django-Heroku.
-django_heroku.settings(locals())
+# django_heroku.settings(locals())

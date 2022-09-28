@@ -37,7 +37,7 @@ def render_form(request):
         upload_to_remote_db(res_data)
         context = {
             'qrcode': res_data['qr_code'],
-            'link': 'http://'+settings.HOSTNAME+'/iframe?url='+ res_data['url']
+            'link': 'http://'+settings.HOSTNAME+'/iframe?survey_id='+ res_data['id']
 
         }
 
@@ -76,7 +76,18 @@ def render_iframe(request):
     message = ''
     if qr_code.is_end:
         context = {
-            'message': qr_code.reason
+            'message': 'Survey was stopped because '+qr_code.reason,
+            'brand_name': qr_code.brand_name,
+            'qr_code': qr_code,
+            'start_survey': is_survey_owner_logged_in(request, survey_id)
+        }
+        return render(request, 'qrcode/survey_not_started.html', context)
+    if qr_code.is_paused:
+        context = {
+            'message': 'Survey has been paused',
+            'brand_name': qr_code.brand_name,
+            'qr_code': qr_code,
+            'resume_survey': is_survey_owner_logged_in(request, survey_id)
         }
         return render(request, 'qrcode/survey_not_started.html', context)
     if qr_code.start_date and qr_code.end_date:
@@ -85,32 +96,91 @@ def render_iframe(request):
         else:
             if qr_code.start_date > current_date:
                 survey_url = None
-                message = 'Survey has not been started yet'
+                message = 'Survey will start on '+str(qr_code.start_date)
                 context = {
-                    'message': message
+                    'message': message,
+                    'brand_name': qr_code.brand_name,
+                    'qr_code': qr_code,
+                    'edit_dates': is_survey_owner_logged_in(request, survey_id)
+
                 }
                 return render(request, 'qrcode/survey_not_started.html', context)
             else:
                 survey_url = None
-                message = "Survey is ended."
+                message = "Survey ended on "+str(qr_code.end_date)
                 context = {
-                    'message': message
+                    'message': message,
+                    'brand_name': qr_code.brand_name,
+                    'qr_code': qr_code,
+                    'edit_dates': is_survey_owner_logged_in(request, survey_id)
+
+
                 }
                 return render(request, 'qrcode/survey_not_started.html', context)
     else:
         survey_url = None
         message = "Survey date is not set yet."
         context = {
-            'message': message
+            'message': message,
+            'qr_code': qr_code,
+            'edit_dates': is_survey_owner_logged_in(request, survey_id)
+
         }
         return render(request, 'qrcode/survey_not_started.html', context)
+
+    # check if logged in user is the one who uploaded this survey
+    username = request.session.get('username', '')
+    if username == qr_code.username:
+        manage_survey = True
+    else:
+        manage_survey = False
+    if username == '':
+        manage_survey = False
+        
     context = {
         'survey_url': survey_url,
         'message': message,
         'qr_code': qr_code,
+        'manage_survey': manage_survey,
     }
     return render(request, 'iframe.html', context)
 
+
+def get_survey_status(survey_id):
+    survey_status = ''
+    survey_link = ''
+    survey_link_text = ''
+
+    qr_code = get_object_or_404(QrCode, pk=survey_id)
+    today = datetime.now()
+    current_date = date(today.year, today.month, today.day)
+    message = ''
+    if qr_code.is_end:
+        survey_status = 'Ended'
+        survey_link_text = 'Start Survey'
+        survey_link = f'/{survey_id}/survey/start/'
+    if qr_code.is_paused:
+        survey_status = 'Paused'
+        survey_link_text = 'Resume Survey'
+        survey_link = f'/{survey_id}/survey/stop/'
+    if qr_code.start_date and qr_code.end_date:
+        if qr_code.start_date <= current_date <= qr_code.end_date:
+            survey_url = qr_code.url
+        else:
+            if qr_code.start_date > current_date:
+                survey_status = 'Not started'
+                survey_link_text = 'Edit dates'
+                survey_link = f'/{survey_id}/set/survey/date/'
+            else:
+                survey_status = 'Survey Ended'
+                survey_link_text = 'Extend date'
+                survey_link = f'/{survey_id}/set/survey/date/'
+    else:
+        survey_status = 'Date not set'
+        survey_link_text = 'Set dates'
+        survey_link = f'/{survey_id}/set/survey/date/'
+
+    return survey_status, survey_link, survey_link_text
 
 def get_event_id():
     dd = datetime.now()
@@ -127,6 +197,15 @@ def get_event_id():
 
     r = requests.post(url, json=data)
     return r.text
+
+
+def is_survey_owner_logged_in(request, survey_id):
+    if 'username' in request.session:
+        model = QrCode
+        qr_code = model.objects.get(pk=survey_id)
+        if qr_code.username == request.session['username']:
+            return True
+    return False
 
 
 def upload_to_remote_db(data):
@@ -194,7 +273,7 @@ class FeedbackView(View):
             upload_to_remote_db(res_data)
             context = {
                 'qrcode': res_data['qr_code'],
-                'link': 'http://'+settings.HOSTNAME+'/iframe?url='+ res_data['url']
+                'link': 'http://'+settings.HOSTNAME+'/iframe?survey_id='+ res_data['id']
 
             }
 

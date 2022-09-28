@@ -16,6 +16,11 @@
             referrerpolicy="no-referrer"
         ></script>
         <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css" />
+        <style>
+            .container {
+              overflow-y: scroll;
+            }
+          </style>
     </head>
     <body>
         <main>
@@ -40,7 +45,7 @@
                     </div>
                     <div class="qr_imoji flex">
                         <span><img src="{% static 'assets/img/image 5.png'%}" alt="" /></span>
-                        <span>How do you feel about Apple, Coffee in today's breakfast? </span>
+                        <span>{{ promotional_sentence }}</span>
                     </div>
                     <div class="privacy_policy flex padding_center">
                         <span><input type="checkbox" /></span>

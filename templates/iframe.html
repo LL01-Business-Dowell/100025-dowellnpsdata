@@ -102,9 +102,9 @@
                   </div>
                 </div>
                 {% endif %}
-                {% if survey_url %}
+                {% if manage_survey %}
                     <div class="iframe__btn">
-                        <a href="{% url 'survey_end' qr_code.pk %}" class="btn btn-warning">End survey</a>
+                        <a href="{% url 'survey_end' qr_code.pk %}" class="btn btn-warning">Manage survey</a>
                     </div>
                 {% endif %}
             </section>

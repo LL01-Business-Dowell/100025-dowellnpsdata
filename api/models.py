@@ -17,7 +17,9 @@ class QrCode(models.Model):
     privacy_policy_check = models.BooleanField(default=True)
     name = models.CharField(max_length=255, blank=True, null=True)
     email = models.EmailField(max_length=255, blank=True, null=True)
+    username = models.CharField(max_length=255, blank=True, null=True)
     is_end = models.BooleanField(default=False)
+    is_paused = models.BooleanField(default=False)
     reason = models.CharField(max_length=500, blank=True, null=True)
 
     def __str__(self):
