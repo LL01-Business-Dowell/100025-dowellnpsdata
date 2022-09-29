@@ -4,3 +4,6 @@ media/company-logo/*
 venv
 .vscode
 __pycache__/
+*.sqlite3
+# Ignore the default SQLite database.
+/db/*.sqlite3

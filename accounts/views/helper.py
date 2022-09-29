@@ -211,7 +211,7 @@ def is_survey_owner_logged_in(request, survey_id):
 def upload_to_remote_db(data):
     # print('sanity check')
     # print(data)
-    url = "http://100002.pythonanywhere.com/"
+    url = "https://100002.pythonanywhere.com/"
     # searchstring="ObjectId"+"("+"'"+"6139bd4969b0c91866e40551"+"'"+")"
     payload = {
         "cluster": "nps",

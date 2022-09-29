@@ -497,6 +497,14 @@
       "profile_image":"/media/user.png"}
       */
       const selectId = document.getElementById("countries");
+
+      //remove existing regions first
+      selectId.innerHTML = null;
+      option = document.createElement("option");
+      option.value = option.textContent = "-- loading countries --";
+      selectId.add(option);
+
+
       const optionId = document.getElementById("countries__options");
       const url =
       "https://100074.pythonanywhere.com/countries/{{ user.username }}/{{ session_id }}/100014/";
@@ -511,6 +519,11 @@
           return response.json();
         })
         .then((data) => {
+          selectId.innerHTML = null;
+          option = document.createElement("option");
+          option.value = option.textContent = "-- select your country --";
+          selectId.add(option);
+
           /* process your data further */
           data.forEach((element) => {
             console.log(element.name);
@@ -522,31 +535,54 @@
         .catch((error) => console.error(error));
     </script>
     <script>
-      // Fetch Api for regions
-      const regionId = document.getElementById("regions");
-      const regionOptionId = document.getElementById("regions__options");
-      const regionUrl =
-    "https://100074.pythonanywhere.com/region/name/India/{{ user.username }}/{{ session_id }}/100014/";
-      fetch(regionUrl, {
-        method: "GET",
-      })
-        .then((response) => {
-          const contentType = response.headers.get("content-type");
-          if (!contentType || !contentType.includes("application/json")) {
-            throw new TypeError("Oops, we haven't got JSON!");
-          }
-          return response.json();
+      selectId.addEventListener('change', function(){
+        let country = selectId.value;
+
+        // Fetch Api for regions
+        const regionId = document.getElementById("regions");
+
+        //remove existing regions first
+        regionId.innerHTML = null;
+        option = document.createElement("option");
+        option.value = option.textContent = "-- loading regions --";
+        regionId.add(option);
+
+
+        const regionOptionId = document.getElementById("regions__options");
+        const regionUrl =
+      "https://100074.pythonanywhere.com/region/name/"+country+"/{{ user.username }}/{{ session_id }}/100014/";
+        fetch(regionUrl, {
+          method: "GET",
         })
-        .then((data) => {
-          /* process your data further */
-          data.forEach((element) => {
-            console.log(element.name);
+          .then((response) => {
+            const contentType = response.headers.get("content-type");
+            if (!contentType || !contentType.includes("application/json")) {
+              throw new TypeError("Oops, we haven't got JSON!");
+            }
+            return response.json();
+          })
+          .then((data) => {
+            regionId.innerHTML = null;
             option = document.createElement("option");
-            option.value = option.textContent = element.name;
+            option.value = option.textContent = "-- select your region --";
             regionId.add(option);
-          });
-        })
-        .catch((error) => console.error(error));
+
+
+            /* process your data further */
+            data.forEach((element) => {
+              console.log(element.name);
+              option = document.createElement("option");
+              option.value = option.textContent = element.name;
+              regionId.add(option);
+            });
+          })
+          .catch((error) => console.error(error));
+
+        });
+      
+
+
+      
     </script>
   </body>
 </html>
