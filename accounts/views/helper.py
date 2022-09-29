@@ -21,7 +21,7 @@ def render_form(request):
 
         formdata = {}
 
-        # formdata['logo'] = request.FILES['logo'].file.getvalue() 
+        # formdata['logo'] = request.FILES['logo'].file.getvalue()
         files = {'logo': request.FILES['logo']}
         formdata['brand_name'] = request.POST.get('brand_name')
         formdata['service'] = request.POST.get('service')
@@ -30,14 +30,14 @@ def render_form(request):
         formdata['promotional_sentence'] = request.POST.get('promotional_sentence')
         host = request.META['HTTP_HOST']
 
-        url = 'http://' + host + '/api/qrcode/'
+        url = 'https://' + host + '/api/qrcode/'
         res = requests.post(url, data=formdata, files=files)
         res_data = res.json()
 
         upload_to_remote_db(res_data)
         context = {
             'qrcode': res_data['qr_code'],
-            'link': 'http://'+settings.HOSTNAME+'/iframe?survey_id='+ res_data['id']
+            'link': 'https://'+settings.HOSTNAME+'/iframe?survey_id='+ res_data['id']
 
         }
 
@@ -136,7 +136,7 @@ def render_iframe(request):
         manage_survey = False
     if username == '':
         manage_survey = False
-        
+
     context = {
         'survey_url': survey_url,
         'message': message,
@@ -258,7 +258,7 @@ class FeedbackView(View):
 
             formdata = {}
 
-            # formdata['logo'] = request.FILES['logo'].file.getvalue() 
+            # formdata['logo'] = request.FILES['logo'].file.getvalue()
             files = {'logo': request.FILES['logo']}
             formdata['brand_name'] = request.POST.get('brand_name')
             formdata['service'] = request.POST.get('service')
@@ -267,13 +267,13 @@ class FeedbackView(View):
             formdata['promotional_sentence'] = request.POST.get('promotional_sentence')
             host = request.META['HTTP_HOST']
 
-            url = 'http://' + host + '/api/qrcode/'
+            url = 'https://' + host + '/api/qrcode/'
             res = requests.post(url, data=formdata, files=files)
             res_data = res.json()
             upload_to_remote_db(res_data)
             context = {
                 'qrcode': res_data['qr_code'],
-                'link': 'http://'+settings.HOSTNAME+'/iframe?survey_id='+ res_data['id']
+                'link': 'https://'+settings.HOSTNAME+'/iframe?survey_id='+ res_data['id']
 
             }
 

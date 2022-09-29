@@ -38,7 +38,7 @@ class DashboardView(View):
         session = request.GET.get("session_id", None)
         # james test session id
         # uncomment below lines before uploading to live server
-        session = 'gt4j8zr8zfvh0go1e2v3fh2sibe9diw9'
+        # session = 'gt4j8zr8zfvh0go1e2v3fh2sibe9diw9'
         #return render(request, self.template_name, {})
 
         if session:
@@ -72,7 +72,7 @@ class DashboardView(View):
 
             formdata = {}
 
-            # formdata['logo'] = request.FILES['logo'].file.getvalue() 
+            # formdata['logo'] = request.FILES['logo'].file.getvalue()
             files = {'logo': request.FILES['logo']}
             formdata['brand_name'] = request.POST.get('brand_name')
             formdata['service'] = request.POST.get('service')
@@ -82,17 +82,17 @@ class DashboardView(View):
             formdata['username'] = request.session['username']
             host = request.META['HTTP_HOST']
 
-            url = 'http://' + host + '/api/qrcode/'
+            url = 'https://' + host + '/api/qrcode/'
             res = requests.post(url, data=formdata, files=files)
             res_data = res.json()
             upload_to_remote_db(res_data)
-            
+
             # added &survey_id='+res_data['id'] to include survey_id in the link in qrcode
             context = {
                 'qrcode': res_data['qr_code'],
                 'promotional_sentence': res_data['promotional_sentence'],
                 'pk': res_data['id'],
-                'link': 'http://'+settings.HOSTNAME+'/iframe?survey_id='+str(res_data['id'])
+                'link': 'https://'+settings.HOSTNAME+'/iframe?survey_id='+str(res_data['id'])
 
             }
             print('returning data')
