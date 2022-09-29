@@ -36,7 +36,7 @@ class LoInFunc(View):
         conn="random"
         #  ["otp","loc",dev,"os","brow","time","ip","conn","username","password"]
         url="https://100014.pythonanywhere.com/api/login/"
-        userurl="http://100014.pythonanywhere.com/api/user/"
+        userurl="https://100014.pythonanywhere.com/api/user/"
         payload = {"otp": otp, "loc": loc, "dev": dev,
             "os": os, "brow": brow,"time":time,
             "ip": ip, "conn": conn,"username":username, 

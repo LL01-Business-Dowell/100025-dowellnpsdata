@@ -82,7 +82,7 @@ class DashboardView(View):
             formdata['username'] = request.session['username']
             host = request.META['HTTP_HOST']
 
-            url = 'http://' + host + '/api/qrcode/'
+            url = 'https://' + host + '/api/qrcode/'
             res = requests.post(url, data=formdata, files=files)
             res_data = res.json()
             upload_to_remote_db(res_data)
@@ -92,7 +92,7 @@ class DashboardView(View):
                 'qrcode': res_data['qr_code'],
                 'promotional_sentence': res_data['promotional_sentence'],
                 'pk': res_data['id'],
-                'link': 'http://'+settings.HOSTNAME+'/iframe?survey_id='+str(res_data['id'])
+                'link': 'https://'+settings.HOSTNAME+'/iframe?survey_id='+str(res_data['id'])
 
             }
             print('returning data')
