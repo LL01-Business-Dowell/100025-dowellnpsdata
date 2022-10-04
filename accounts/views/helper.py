@@ -147,9 +147,9 @@ def render_iframe(request):
 
 
 def get_survey_status(survey_id):
-    survey_status = ''
-    survey_link = ''
-    survey_link_text = ''
+    survey_status = 'Survey Ongoing'
+    survey_link = f'/iframe/?survey_id={survey_id}'
+    survey_link_text = 'View Survey'
 
     qr_code = get_object_or_404(QrCode, pk=survey_id)
     today = datetime.now()
@@ -160,9 +160,9 @@ def get_survey_status(survey_id):
         survey_link_text = 'Start Survey'
         survey_link = f'/{survey_id}/survey/start/'
     if qr_code.is_paused:
-        survey_status = 'Paused'
+        survey_status = f'Survey paused because {qr_code.reason}'
         survey_link_text = 'Resume Survey'
-        survey_link = f'/{survey_id}/survey/stop/'
+        survey_link = f'/{survey_id}/survey/start/'
     if qr_code.start_date and qr_code.end_date:
         if qr_code.start_date <= current_date <= qr_code.end_date:
             survey_url = qr_code.url

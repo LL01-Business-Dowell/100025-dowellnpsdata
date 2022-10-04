@@ -2,7 +2,7 @@ from django.views.generic import View
 from django.shortcuts import render
 from django.shortcuts import render, redirect
 from django.http import HttpResponse
-from accounts.views.helper import get_survey_status
+from accounts.views.helper import get_survey_status, is_survey_owner_logged_in
 
 from api.models import QrCode
 
@@ -44,6 +44,21 @@ class MySurveysView(View):
         if 'username' not in request.session:
             return redirect("https://100014.pythonanywhere.com/")
 
+        survey_id = request.GET.get('delete', '')
+        message = ''
+
+        if survey_id:
+            try:
+                qr_code = self.model.objects.get(pk=survey_id)
+
+                if is_survey_owner_logged_in(request, survey_id):
+                    qr_code.delete()
+                    message = 'Survey deleted Successfully'
+            except:
+                pass
+            
+
+
         username = request.session['username']
         qr_codes = self.model.objects.filter(username=username)
 
@@ -54,7 +69,8 @@ class MySurveysView(View):
             qr_code.survey_link_text = survey_link_text
 
         context = {
-            'qr_codes': qr_codes
+            'qr_codes': qr_codes,
+            'message': message
         }
 
         return render(request, self.template_name, context)
