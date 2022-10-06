@@ -75,7 +75,7 @@
       .create__survey__container button {
         outline: none;
         border: 0;
-        background-color: rgb(83, 135, 53);
+        background-color: rgb(19, 19, 19);
         padding: 7px 15px;
         color: #fff;
         transition: 0.5s ease-in;
@@ -91,12 +91,22 @@
         align-items: center;
         gap: 5px;
       }
+      center {
+        background-color: #198754;
+        padding: 10px 0px 10px 0px;
+        color: #fff;
+        margin-bottom: 5px;
+      }
+      .hide {
+        display: none;
+        transition: 0.5s ease-out;
+      }
     </style>
   </head>
   <body>
     <div class="container mt-5 mb-5">
       {% if message %}
-        <center><p>{{ message }}</p></center>
+      <center id="center"><p>{{ message }}</p></center>
       {% endif %}
       <div class="create__survey__container">
         <a href="">
@@ -122,13 +132,17 @@
         </thead>
         <tbody>
           {% for qr_code in qr_codes %}
-            <tr>
-              <td>{{ qr_code.brand_name }}</td>
-              <td>{{ qr_code.promotional_sentence }}</td>
-              <td>{{ qr_code.survey_status }}</td>
-              <td><a href="{{ qr_code.survey_link }}">{{ qr_code.survey_link_text }}</a></td>
-              <td><a href="?delete={{ qr_code.id }}">Delete Survey</a></td>
-            </tr>
+          <tr>
+            <td>{{ qr_code.brand_name }}</td>
+            <td>{{ qr_code.promotional_sentence }}</td>
+            <td>{{ qr_code.survey_status }}</td>
+            <td>
+              <a href="{{ qr_code.survey_link }}"
+                >{{ qr_code.survey_link_text }}</a
+              >
+            </td>
+            <td><a href="?delete={{ qr_code.id }}">Delete Survey</a></td>
+          </tr>
           {% endfor %}
         </tbody>
         <tfoot>
@@ -171,6 +185,12 @@
       $(document).ready(function () {
         $("#example").DataTable();
       });
+    </script>
+    <script>
+      const successAlert = document.getElementById("center");
+      setTimeout(() => {
+        successAlert.classList.add("hide");
+      }, "4000");
     </script>
   </body>
 </html>
