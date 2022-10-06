@@ -149,7 +149,7 @@ def render_iframe(request):
 def get_survey_status(survey_id):
     survey_status = 'Survey Ongoing'
     survey_link = f'/iframe/?survey_id={survey_id}'
-    survey_link_text = 'View Survey'
+    survey_link_text = 'Fill Survey'
 
     qr_code = get_object_or_404(QrCode, pk=survey_id)
     today = datetime.now()
