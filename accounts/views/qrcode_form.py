@@ -1,5 +1,5 @@
 from django.views.generic import View
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, get_object_or_404
 
 from api.models import QrCode
 
@@ -44,6 +44,19 @@ class QRCodeFormView(View):
 
 
             return redirect(f'/my_surveys')
+        context = {
+            'qr_code': qr_code
+        }
+        return render(request, self.template_name, context)
+
+
+class SurveyPreviewEmailView(View):
+    template_name = 'qrcode/email__template.html'
+    model = QrCode
+
+    def get(self, request, *args, **kwargs):
+        survey_id = request.GET.get('survey_id', '')
+        qr_code = get_object_or_404(QrCode, pk=survey_id)
         context = {
             'qr_code': qr_code
         }
