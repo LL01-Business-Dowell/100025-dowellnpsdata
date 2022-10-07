@@ -102,6 +102,19 @@ class SurveyPusedView(View):
         }
         return render(request, self.template_name, context)
 
+    def post(self, request, *args, **kwargs):
+        qr_code = self.model.objects.get(pk=self.kwargs['pk'])
+        if request.method == 'POST':
+            reason = request.POST.get('reason')
+            print(reason)
+            qr_code.is_paused = True
+            qr_code.save()
+            return redirect('survey_pused', qr_code.pk)
+        context = {
+            'qr_code': qr_code
+        }
+        return render(request, self.template_name, context)
+
 
 class EndSurveyView(View):
     template_name = 'qrcode/end_survey.html'

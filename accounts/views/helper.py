@@ -79,6 +79,7 @@ def render_iframe(request):
             'message': 'Survey was stopped because '+qr_code.reason,
             'brand_name': qr_code.brand_name,
             'qr_code': qr_code,
+            'status_image': 'endsurvey2.png',
             'start_survey': is_survey_owner_logged_in(request, survey_id)
         }
         return render(request, 'qrcode/survey_not_started.html', context)
@@ -87,6 +88,7 @@ def render_iframe(request):
             'message': 'Survey has been paused',
             'brand_name': qr_code.brand_name,
             'qr_code': qr_code,
+            'status_image': 'endsurvey.png',
             'resume_survey': is_survey_owner_logged_in(request, survey_id)
         }
         return render(request, 'qrcode/survey_not_started.html', context)
@@ -101,6 +103,7 @@ def render_iframe(request):
                     'message': message,
                     'brand_name': qr_code.brand_name,
                     'qr_code': qr_code,
+                    'status_image': 'checklist.png',
                     'edit_dates': is_survey_owner_logged_in(request, survey_id)
 
                 }
@@ -112,6 +115,7 @@ def render_iframe(request):
                     'message': message,
                     'brand_name': qr_code.brand_name,
                     'qr_code': qr_code,
+                    'status_image': 'checklist.png',
                     'edit_dates': is_survey_owner_logged_in(request, survey_id)
 
 
@@ -123,6 +127,7 @@ def render_iframe(request):
         context = {
             'message': message,
             'qr_code': qr_code,
+            'status_image': 'checklist.png',
             'edit_dates': is_survey_owner_logged_in(request, survey_id)
 
         }
@@ -156,11 +161,11 @@ def get_survey_status(survey_id):
     current_date = date(today.year, today.month, today.day)
     message = ''
     if qr_code.is_end:
-        survey_status = 'Ended'
+        survey_status = 'Survey Ended'
         survey_link_text = 'Start Survey'
         survey_link = f'/{survey_id}/survey/start/'
     if qr_code.is_paused:
-        survey_status = f'Survey paused because {qr_code.reason}'
+        survey_status = f'Survey paused until {qr_code.start_date}'
         survey_link_text = 'Resume Survey'
         survey_link = f'/{survey_id}/survey/start/'
     if qr_code.start_date and qr_code.end_date:

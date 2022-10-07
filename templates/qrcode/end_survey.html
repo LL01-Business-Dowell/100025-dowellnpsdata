@@ -116,7 +116,7 @@
                                         <img src="{% static 'assets/img/endsurvey3.png' %}" alt="" />
                                     </div>
                                     <div class="form_control_end__btn padding_center flex">
-                                        <a type="submit" id="change__survey__date__btn" class="change__survey__date__btn">
+                                        <a type="submit" href="{% url 'set_survey_date' qr_code.pk %}" id="change__survey__date__btn" class="change__survey__date__btn">
                                             change end date
                                         </a>
                                     </div>
