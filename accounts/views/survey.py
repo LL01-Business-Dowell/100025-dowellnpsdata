@@ -14,9 +14,18 @@ class SurveyDateView(View):
     def get(self, request, *args, **kwargs):
         qr_code = self.model.objects.get(pk=self.kwargs['pk'])
         print(qr_code.start_date, qr_code.end_date)
-        context = {
-            'qr_code': qr_code
-        }
+        pause_survey = request.GET.get('pause_survey', '')
+
+        if pause_survey:
+            context = {
+                'qr_code': qr_code,
+                'pause_survey': True,
+            }
+        else:
+            context = {
+                'qr_code': qr_code
+            }
+        
         return render(request, self.template_name, context)
 
     def post(self, request, *args, **kwargs):
@@ -24,13 +33,22 @@ class SurveyDateView(View):
         if request.method == 'POST':
             start_date = request.POST.get('start_date')
             end_date = request.POST.get('end_date')
+            pause_survey = request.POST.get('pause_survey')
             print(start_date, end_date)
+
+            if pause_survey == '1':
+                qr_code.is_paused = True
+
             qr_code.start_date = start_date
             qr_code.end_date = end_date
             qr_code.save()
         context = {
             'qr_code': qr_code
         }
+
+        if pause_survey == '1':
+            return redirect('/my_surveys')
+
         # return render(request, self.template_name, context)
         return redirect('create_qr_code_form', qr_code.pk)
 

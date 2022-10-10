@@ -164,11 +164,11 @@ def get_survey_status(survey_id):
         survey_status = 'Survey Ended'
         survey_link_text = 'Start Survey'
         survey_link = f'/{survey_id}/survey/start/'
-    if qr_code.is_paused:
+    elif qr_code.is_paused:
         survey_status = f'Survey paused until {qr_code.start_date}'
         survey_link_text = 'Resume Survey'
         survey_link = f'/{survey_id}/survey/start/'
-    if qr_code.start_date and qr_code.end_date:
+    elif qr_code.start_date and qr_code.end_date:
         if qr_code.start_date <= current_date <= qr_code.end_date:
             survey_url = qr_code.url
         else:
