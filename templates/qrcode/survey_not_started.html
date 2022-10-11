@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
     {% load static %}
+    {% static "" as baseUrl %}
     <head>
         <meta charset="UTF-8" />
         <meta http-equiv="X-UA-Compatible" content="IE=edge" />
@@ -140,7 +141,7 @@
                             <h4>{{ message }}</h4>
                         </div>
                         <div class="image__not__started padding_center">
-                            <img src="{% static 'assets/img/checklist-bg.png' %}" alt="" />
+                            <img src="{{ baseUrl }}assets/img/{{ status_image }}" alt="" />
                         </div>
                         <!-- <div class="form_control_date__submit padding_center flex">
                             <button href="end_survey_response.html" type="submit" id="survey__date__submit__btn">End now</button>

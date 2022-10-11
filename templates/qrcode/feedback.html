@@ -133,8 +133,8 @@
       .form_control_image input[type="image"] {
         border-radius: 50%;
         background-color: var(--gray-bg);
-        height: 100px;
-        width: 100px;
+        max-height: 100px;
+        max-width: 100px;
         outline: none;
         border: none;
       }
@@ -278,7 +278,7 @@
                 <div class="key__value red"></div>
                 <small class="key__text">Link clicks/scans</small>
               </div>
-              <div class=" flex">
+              <div class="flex">
                 <div class="key__vaccess__report__keysalue yellow"></div>
                 <small class="key__text">Locations</small>
               </div>
@@ -393,18 +393,6 @@
           </div>
         </section>
         <!-- pop up section ends -->
-
-        <!-- navigation menu starts -->
-        <section class="navlinks">
-          <ul>
-            <li><a href="">menu item1</a></li>
-            <li><a href="">menu item2</a></li>
-            <li><a href="">menu item3</a></li>
-            <li><a href="">menu item4</a></li>
-            <li><a href="">menu item5</a></li>
-          </ul>
-          <span class="navlink-close">x</span>
-        </section>
       </div>
     </main>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
@@ -486,7 +474,6 @@
     <script>
       // Fetch Api for countries
 
-
       /*
       {
       "id":38,"username":"lav",
@@ -504,10 +491,9 @@
       option.value = option.textContent = "-- loading countries --";
       selectId.add(option);
 
-
       const optionId = document.getElementById("countries__options");
       const url =
-      "https://100074.pythonanywhere.com/countries/{{ user.username }}/{{ session_id }}/100014/";
+        "https://100074.pythonanywhere.com/countries/{{ user.username }}/{{ session_id }}/100014/";
       fetch(url, {
         method: "GET",
       })
@@ -535,7 +521,7 @@
         .catch((error) => console.error(error));
     </script>
     <script>
-      selectId.addEventListener('change', function(){
+      selectId.addEventListener("change", function () {
         let country = selectId.value;
 
         // Fetch Api for regions
@@ -547,10 +533,11 @@
         option.value = option.textContent = "-- loading regions --";
         regionId.add(option);
 
-
         const regionOptionId = document.getElementById("regions__options");
         const regionUrl =
-      "https://100074.pythonanywhere.com/region/name/"+country+"/{{ user.username }}/{{ session_id }}/100014/";
+          "https://100074.pythonanywhere.com/region/name/" +
+          country +
+          "/{{ user.username }}/{{ session_id }}/100014/";
         fetch(regionUrl, {
           method: "GET",
         })
@@ -567,7 +554,6 @@
             option.value = option.textContent = "-- select your region --";
             regionId.add(option);
 
-
             /* process your data further */
             data.forEach((element) => {
               console.log(element.name);
@@ -577,12 +563,7 @@
             });
           })
           .catch((error) => console.error(error));
-
-        });
-      
-
-
-      
+      });
     </script>
   </body>
 </html>
