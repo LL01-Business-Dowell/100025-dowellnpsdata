@@ -82,7 +82,7 @@ class DashboardView(View):
             formdata['username'] = request.session['username']
             host = request.META['HTTP_HOST']
 
-            url = 'https://' + host + '/api/qrcode/'
+            url = 'http://' + host + '/api/qrcode/'
             res = requests.post(url, data=formdata, files=files)
             res_data = res.json()
             upload_to_remote_db(res_data)

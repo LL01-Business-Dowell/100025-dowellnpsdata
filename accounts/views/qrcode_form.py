@@ -1,5 +1,5 @@
 from django.views.generic import View
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, get_object_or_404
 
 from api.models import QrCode
 
@@ -37,13 +37,26 @@ class QRCodeFormView(View):
             qr_code.save()
             
             # display email form to be sent to user
-            context = {
-                'qr_code': qr_code
-            }
-            return render(request, 'qrcode/email__template.html', context)
+            # context = {
+            #     'qr_code': qr_code
+            # }
+            # return render(request, 'qrcode/email__template.html', context)
 
 
-            return redirect(f'/iframe/?survey_id={qr_code.pk}')
+            return redirect(f'/my_surveys')
+        context = {
+            'qr_code': qr_code
+        }
+        return render(request, self.template_name, context)
+
+
+class SurveyPreviewEmailView(View):
+    template_name = 'qrcode/email__template.html'
+    model = QrCode
+
+    def get(self, request, *args, **kwargs):
+        survey_id = request.GET.get('survey_id', '')
+        qr_code = get_object_or_404(QrCode, pk=survey_id)
         context = {
             'qr_code': qr_code
         }
@@ -84,6 +97,19 @@ class SurveyPusedView(View):
         qr_code.is_paused = True
         qr_code.save()
         print(qr_code.start_date, qr_code.end_date)
+        context = {
+            'qr_code': qr_code
+        }
+        return render(request, self.template_name, context)
+
+    def post(self, request, *args, **kwargs):
+        qr_code = self.model.objects.get(pk=self.kwargs['pk'])
+        if request.method == 'POST':
+            reason = request.POST.get('reason')
+            print(reason)
+            qr_code.is_paused = True
+            qr_code.save()
+            return redirect('survey_pused', qr_code.pk)
         context = {
             'qr_code': qr_code
         }

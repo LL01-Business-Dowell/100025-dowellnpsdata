@@ -44,7 +44,7 @@ class CreateQrCodeSerializer(serializers.ModelSerializer):
 
         # url = validated_data.pop('url')
         survey_url = validated_data['url']
-        url = 'https://' + host + '/iframe?survey_id='+ str(new_qrcode.id)
+        url = 'http://' + host + '/iframe?survey_id='+ str(new_qrcode.id)
         
 
         QRcode.add_data(url)

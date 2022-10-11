@@ -13,6 +13,7 @@ urlpatterns = [
     path('qrcode', render_qrcode, name='qrcode'),
     path('iframe/', render_iframe, name='iframe'),
     path('my_surveys/', views.MySurveysView.as_view(), name='my_surveys'),
+    path('preview_email/', views.SurveyPreviewEmailView.as_view(), name='preview_email'),
     path('', views.DashboardView.as_view(), name='feedback'),
     path('<int:pk>/set/survey/date/', views.SurveyDateView.as_view(), name='set_survey_date'),
     path('<int:pk>/create/qrcode/form/', views.QRCodeFormView.as_view(), name='create_qr_code_form'),

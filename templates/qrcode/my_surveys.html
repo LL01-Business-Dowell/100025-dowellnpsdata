@@ -24,6 +24,13 @@
       rel="stylesheet"
       href="https://cdn.datatables.net/1.12.1/css/dataTables.bootstrap4.min.css"
     />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.0/css/all.min.css"
+      integrity="sha512-xh6O/CkQoPOWDdYTDqeRdPCVd1SpvCA9XXcUnZS2FmJNp1coAFzvtCN9BmamE+4aHK8yyUHUSCcJHgXloTyT2A=="
+      crossorigin="anonymous"
+      referrerpolicy="no-referrer"
+    />
 
     <title>dowell's data table</title>
     <style>
@@ -62,10 +69,53 @@
         color: rgb(83, 135, 53);
         /* padding: 10px 60px; */
       }
+      .create__survey__container {
+        margin-bottom: 15px;
+      }
+      .create__survey__container button {
+        outline: none;
+        border: 0;
+        background-color: rgb(19, 19, 19);
+        padding: 7px 15px;
+        color: #fff;
+        transition: 0.5s ease-in;
+      }
+      .create__survey__container button:hover {
+        background-color: rgb(10, 22, 3);
+      }
+      .create__survey__container a {
+        text-decoration: none;
+      }
+      .create__survey__btn {
+        display: flex;
+        align-items: center;
+        gap: 5px;
+      }
+      center {
+        background-color: #198754;
+        padding: 10px 0px 10px 0px;
+        color: #fff;
+        margin-bottom: 5px;
+      }
+      .hide {
+        display: none;
+        transition: 0.5s ease-out;
+      }
     </style>
   </head>
   <body>
     <div class="container mt-5 mb-5">
+      {% if message %}
+      <center id="center"><p>{{ message }}</p></center>
+      {% endif %}
+      <div class="create__survey__container">
+        <a href="/">
+          <button class="create__survey__btn">
+            <i class="fa fa-plus"></i>
+            <span> create new survey</span>
+          </button>
+        </a>
+      </div>
       <table
         id="example"
         class="table table-striped table-bordered"
@@ -77,6 +127,8 @@
             <th>Promotional Sentence</th>
             <th>Survey Status</th>
             <th>Manage Survey</th>
+            <th>Preview Email</th>
+            <th>Delete Survey</th>
           </tr>
         </thead>
         <tbody>
@@ -85,7 +137,9 @@
               <td>{{ qr_code.brand_name }}</td>
               <td>{{ qr_code.promotional_sentence }}</td>
               <td>{{ qr_code.survey_status }}</td>
-              <td id="table__links"><a href="{{ qr_code.survey_link }}">{{ qr_code.survey_link_text }}</a></td>
+              <td><a href="{{ qr_code.survey_link }}">{{ qr_code.survey_link_text }}</a></td>
+              <td><a href="/preview_email?survey_id={{ qr_code.id }}" target="_blank">Preview Email</a></td>
+              <td><a href="?delete={{ qr_code.id }}">Delete Survey</a></td>
             </tr>
           {% endfor %}
         </tbody>
@@ -95,6 +149,8 @@
             <th>Promotional Sentence</th>
             <th>Survey Status</th>
             <th>Manage Survey</th>
+            <th>Preview Email</th>
+            <th>Delete Survey</th>
           </tr>
         </tfoot>
       </table>
@@ -129,6 +185,12 @@
       $(document).ready(function () {
         $("#example").DataTable();
       });
+    </script>
+    <script>
+      const successAlert = document.getElementById("center");
+      setTimeout(() => {
+        successAlert.classList.add("hide");
+      }, "4000");
     </script>
   </body>
 </html>

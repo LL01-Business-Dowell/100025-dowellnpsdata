@@ -1,6 +1,6 @@
 from .dashboard import DashboardView
 from .survey import SurveyDateView, MySurveysView
-from .qrcode_form import QRCodeFormView, SurveyStoppedView, SurveyPusedView, EndSurveyView, SurveyStartView
+from .qrcode_form import QRCodeFormView, SurveyStoppedView, SurveyPusedView, EndSurveyView, SurveyStartView, SurveyPreviewEmailView
 from .login import LoInFunc
 
 __all__ = [
@@ -13,4 +13,5 @@ __all__ = [
     EndSurveyView,
     SurveyStartView,
     LoInFunc,
+    SurveyPreviewEmailView,
 ]
