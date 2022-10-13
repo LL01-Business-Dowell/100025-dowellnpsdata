@@ -333,6 +333,7 @@ select {
   /* min-width: 3rem; */
   padding: 1rem;
   border-radius: 0.3rem;
+  cursor: pointer;
 }
 
 /* styles for survey date */
