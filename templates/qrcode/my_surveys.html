@@ -133,14 +133,24 @@
         </thead>
         <tbody>
           {% for qr_code in qr_codes %}
-            <tr>
-              <td>{{ qr_code.brand_name }}</td>
-              <td>{{ qr_code.promotional_sentence }}</td>
-              <td>{{ qr_code.survey_status }}</td>
-              <td><a href="{{ qr_code.survey_link }}">{{ qr_code.survey_link_text }}</a></td>
-              <td><a href="/preview_email?survey_id={{ qr_code.id }}" target="_blank">Preview Email</a></td>
-              <td><a href="?delete={{ qr_code.id }}">Delete Survey</a></td>
-            </tr>
+          <tr>
+            <td>{{ qr_code.brand_name }}</td>
+            <td>{{ qr_code.promotional_sentence }}</td>
+            <td>{{ qr_code.survey_status }}</td>
+            <td>
+              <a href="{{ qr_code.survey_link }}"
+                >{{ qr_code.survey_link_text }}</a
+              >
+            </td>
+            <td>
+              <a
+                href="/preview_email?survey_id={{ qr_code.id }}"
+                target="_blank"
+                >Preview Email</a
+              >
+            </td>
+            <td><a href="?delete={{ qr_code.id }}">Delete Survey</a></td>
+          </tr>
           {% endfor %}
         </tbody>
         <tfoot>
