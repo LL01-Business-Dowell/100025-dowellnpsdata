@@ -38,11 +38,15 @@ class DashboardView(View):
         session = request.GET.get("session_id", None)
         # james test session id
         # uncomment below lines before uploading to live server
-        session = 'gt4j8zr8zfvh0go1e2v3fh2sibe9diw9'
+        # session = 'gt4j8zr8zfvh0go1e2v3fh2sibe9diw9'
         #return render(request, self.template_name, {})
 
-        if session:
-            user = get_user_profile(session)
+        # if user is already logged-in in session don't redirect to login page
+        if session or 'user' in request.session:
+            if session:
+                user = get_user_profile(session)
+            else:
+                user = request.session['user']
             if user:
                 # save customers username and user profile to session
                 request.session['username'] = user['username']
