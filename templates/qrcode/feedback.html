@@ -11,14 +11,24 @@
       rel="stylesheet"
       href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css"
     />
+    <!-- 
+    <link
+    href="https://fonts.googleapis.com/css?family=Lato:300,400,700&display=swap"
+    rel="stylesheet"
+  /> -->
+    <!-- 
+  <link
+    rel="stylesheet"
+    href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css"
+  /> -->
+
+    <link rel="stylesheet" href="{% static 'assets/api-css/style.css' %}" />
     <link rel="stylesheet" href="{% static 'assets/css/style.css' %}" />
-    <script
-      src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.8.0/chart.min.js"
-      integrity="sha512-sW/w8s4RWTdFFSduOTGtk4isV1+190E/GghVffMA9XczdJ2MDzSzLEubKAs5h0wzgSJOQTRYyaz73L3d6RtJSg=="
-      crossorigin="anonymous"
-      referrerpolicy="no-referrer"
-    ></script>
+
     <style>
+      .form-control .multiselect-search {
+        padding-top: 60px !important;
+      }
       .feedback__text {
         background-color: var(--green-bg);
         padding: 5px 0px 5px 0px;
@@ -149,7 +159,8 @@
       }
       .upload__image__cover img {
         border-radius: 50%;
-        width: 100px;
+        max-width: 100px;
+        max-height: 100px;
       }
       .upload__image__cover input[type="file"] {
         background-color: blueviolet;
@@ -295,7 +306,7 @@
         </section>
         <section class="feedback__buttons padding_center flex">
           <button id="prev">Preview</button>
-          <button id="create">Create own survey</button>
+          <button id="create">Create survey</button>
         </section>
 
         <!-- main section ends -->
@@ -351,13 +362,34 @@
                   required
                 />
               </div>
-              <div class="form_control">
+              <!-- <div class="form_control">
                 <select name="location" id="location" required>
                   <option value="">--select the survey form--</option>
                   <option value="1">one</option>
                   <option value="2">two</option>
                 </select>
+              </div> -->
+              <!-- 
+                start country api selector
+               -->
+              <div class="dropdown-container">
+                <div class="dropdown-button noselect w-100">
+                  <div class="dropdown-label">Select countries</div>
+                  <div class="dropdown-quantity">
+                    (<span class="quantity">Empty</span>)
+                  </div>
+                  <i class="fa fa-chevron-down"></i>
+                </div>
+                <div class="dropdown-list" style="display: none">
+                  <input
+                    type="search"
+                    placeholder="Search states"
+                    class="dropdown-search"
+                  />
+                  <ul></ul>
+                </div>
               </div>
+              <!-- end country api selector -->
               <div class="form_control">
                 <select name="countries" id="countries" required>
                   <option value="">--select your country--</option>
@@ -397,6 +429,11 @@
       </div>
     </main>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.0/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-3-typeahead/4.0.2/bootstrap3-typeahead.min.js"></script>
+
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-multiselect/0.9.13/js/bootstrap-multiselect.js"></script>
     <script>
       "use strict";
 
@@ -439,19 +476,6 @@
       });
       closeBtn.addEventListener("click", function () {
         createSurvey.classList.remove("show_create_btn");
-      });
-
-      // script for navlinks
-      //create script for navlinks
-      const navLinks = document.querySelector(".navlinks");
-      const navLinksCloseBtn = document.querySelector(".navlink-close");
-      const navMenu = document.querySelector(".navbar__menu");
-
-      navMenu.addEventListener("click", function () {
-        navLinks.classList.add("show_navlinks");
-      });
-      navLinksCloseBtn.addEventListener("click", function () {
-        navLinks.classList.remove("show_navlinks");
       });
 
       // upload image script
@@ -534,7 +558,7 @@
         option.value = option.textContent = "-- loading regions --";
         regionId.add(option);
 
-        const regionOptionId = document.getElementById("regions__options");
+        // const regionOptionId = document.getElementById("regions__options");
         const regionUrl =
           "https://100074.pythonanywhere.com/region/name/" +
           country +
@@ -566,5 +590,11 @@
           .catch((error) => console.error(error));
       });
     </script>
+
+    <script src="js/jquery.min.js"></script>
+    <script src="js/popper.js"></script>
+    <script src="js/bootstrap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/lodash.js/3.5.0/lodash.min.js"></script>
+    <script src="{% static 'assets/js/main.js' %}"></script>
   </body>
 </html>

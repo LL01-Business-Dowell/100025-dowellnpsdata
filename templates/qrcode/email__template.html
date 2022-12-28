@@ -62,6 +62,46 @@
 		}
 		@media screen and (max-width: 400px) { 
 		}
+
+		/* style for tool tip */
+		.tooltip {
+  position: relative;
+  display: inline-block;
+}
+
+.tooltip .tooltiptext {
+  visibility: hidden;
+  width: 140px;
+  background-color: #555;
+  color: #fff;
+  text-align: center;
+  border-radius: 6px;
+  padding: 5px;
+  position: absolute;
+  z-index: 1;
+  bottom: 150%;
+  left: 50%;
+  margin-left: -75px;
+  opacity: 0;
+  transition: opacity 0.3s;
+}
+
+.tooltip .tooltiptext::after {
+  content: "";
+  position: absolute;
+  top: 100%;
+  left: 50%;
+  margin-left: -5px;
+  border-width: 5px;
+  border-style: solid;
+  border-color: #555 transparent transparent transparent;
+}
+
+.tooltip:hover .tooltiptext {
+  visibility: visible;
+  opacity: 1;
+}
+</style>
 	</style>
 </head>
 <body>
@@ -91,10 +131,20 @@
 						</tr>
 						<tr>
 							<td>
-								<p style="line-height: 20px;">
+								<p style="line-height: 20px;" id="iframe">
 									Embeded Code: 
 									< iframe src="{{ qr_code.url }}" title="Survey" data-survey-id="{{ qr_code.pk }}" width="350" height="100%"> </iframe>
 								</p>
+								<!-- <div>
+									<input type="text" value={{ qr_code.url }} id="myInput">
+
+<div class="tooltip">
+<button onclick="myFunction()" onmouseout="outFunc()">
+  <span class="tooltiptext" id="myTooltip">Copy to clipboard</span>
+  Copy your link
+  </button>
+</div
+								</div> -->
 							</td>
 						</tr>
 						
@@ -180,5 +230,29 @@
 			</tr>
 		</table>
 	</div>
+	<script>
+		function myFunction() {
+  var copyText = document.getElementById("myInput");
+  copyText.select();
+  copyText.setSelectionRange(0, 99999);
+  navigator.clipboard.writeText(copyText.value);
+  
+  var tooltip = document.getElementById("myTooltip");
+  tooltip.innerHTML = "Copied: " + copyText.value;
+}
+
+function outFunc() {
+  var tooltip = document.getElementById("myTooltip");
+  tooltip.innerHTML = "Copy to clipboard";
+}
+	</script>
+
+<script>
+	const url = location.href
+	const iframeURL = url.replace('preview_email', 'iframe')
+	const iframe = document.getElementById('iframe')
+	iframe.innerText = `Embeded Code: 
+	<iframe src="${iframeURL}" title="Survey" data-survey-id="3" width="350" height="100%"> `					
+	</script>
 </body>
 </html>
