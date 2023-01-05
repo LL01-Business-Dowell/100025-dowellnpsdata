@@ -11,18 +11,7 @@
       rel="stylesheet"
       href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css"
     />
-    <!-- 
-    <link
-    href="https://fonts.googleapis.com/css?family=Lato:300,400,700&display=swap"
-    rel="stylesheet"
-  /> -->
-    <!-- 
-  <link
-    rel="stylesheet"
-    href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css"
-  /> -->
 
-    <link rel="stylesheet" href="{% static 'assets/api-css/style.css' %}" />
     <link rel="stylesheet" href="{% static 'assets/css/style.css' %}" />
 
     <style>
@@ -372,23 +361,7 @@
               <!-- 
                 start country api selector
                -->
-              <div class="dropdown-container">
-                <div class="dropdown-button noselect w-100">
-                  <div class="dropdown-label">Select countries</div>
-                  <div class="dropdown-quantity">
-                    (<span class="quantity">Empty</span>)
-                  </div>
-                  <i class="fa fa-chevron-down"></i>
-                </div>
-                <div class="dropdown-list" style="display: none">
-                  <input
-                    type="search"
-                    placeholder="Search states"
-                    class="dropdown-search"
-                  />
-                  <ul></ul>
-                </div>
-              </div>
+
               <!-- end country api selector -->
               <div class="form_control">
                 <select name="countries" id="countries" required>
@@ -432,8 +405,6 @@
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.0/jquery.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-3-typeahead/4.0.2/bootstrap3-typeahead.min.js"></script>
 
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-multiselect/0.9.13/js/bootstrap-multiselect.js"></script>
     <script>
       "use strict";
 
@@ -590,11 +561,5 @@
           .catch((error) => console.error(error));
       });
     </script>
-
-    <script src="js/jquery.min.js"></script>
-    <script src="js/popper.js"></script>
-    <script src="js/bootstrap.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/lodash.js/3.5.0/lodash.min.js"></script>
-    <script src="{% static 'assets/js/main.js' %}"></script>
   </body>
 </html>
