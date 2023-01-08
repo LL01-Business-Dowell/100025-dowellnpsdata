@@ -96,7 +96,7 @@ class DashboardView(View):
             # added &survey_id='+res_data['id'] to include survey_id in the link in qrcode
             context = {
                 'qrcode': res_data['qr_code'],
-                'location': res_data['location'],
+                'location': res_data['countries'],
                 'promotional_sentence': res_data['promotional_sentence'],
                 'pk': res_data['id'],
                 'link': 'https://'+settings.HOSTNAME+'/iframe?survey_id='+str(res_data['id'])

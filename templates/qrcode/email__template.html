@@ -135,7 +135,7 @@
 									Embeded Code: 
 									< iframe src="{{ qr_code.url }}" title="Survey" data-survey-id="{{ qr_code.pk }}" width="350" height="100%"> </iframe>
 								</p>
-								<p style="display: none;" id="hidden__country">{{qr_code.location}}</p>
+								<p  id="hidden__country">{{qr_code.location}}</p>
 								<!-- <div>
 									<input type="text" value={{ qr_code.url }} id="myInput">
 
@@ -262,7 +262,8 @@ function outFunc() {
 	(function () {
 		const qrImage = document.querySelector('.qr_img')
 		let hiddenCountry = document.querySelector('#hidden__country').textContent.toLowerCase()
-	  function success(position) {
+	   console.log(hiddenCountry)
+		function success(position) {
 		const latitude = position.coords.latitude;
 		const longitude = position.coords.longitude;
 
@@ -271,11 +272,9 @@ function outFunc() {
 		fetch(convertLocation)
 		  .then((res) => res.json())
 		  .then((data) => {
-			[data].forEach(data=>{
-				if(data.countryName!==hiddenCountry){
+			if(data.countryName.toLowerCase()!==hiddenCountry){
 					qrImage.innerHTML = '<h3>sorry, this survey is not available in your country</h2>'
 				}
-			})
 		  });
 	  }
 

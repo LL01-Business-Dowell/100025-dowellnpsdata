@@ -11,10 +11,108 @@
       rel="stylesheet"
       href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css"
     />
-
     <link rel="stylesheet" href="{% static 'assets/css/style.css' %}" />
 
     <style>
+      /* css for multiselect */
+      .countries__toggler,
+      .regions__toggler {
+        display: flex;
+        justify-content: space-between;
+        font-size: 0.95rem;
+        padding: 0.6rem;
+        border: 1px solid #e3e3e3;
+        margin-top: 0.5rem;
+        color: gray;
+        cursor: pointer;
+      }
+      .countries__toggler span i,
+      .regions__toggler span i {
+        color: hsla(102, 63%, 60%, 1);
+      }
+      .country__search,
+      .region__search {
+        width: 100%;
+        height: 1rem;
+        font-size: 1.1rem;
+        padding: 1.3rem 0 1.3rem 0.6rem;
+        border: 1px solid #e3e3e3;
+      }
+      .hide {
+        display: none;
+      }
+      .countries__label,
+      .regions__label {
+        display: flex;
+        flex-direction: column;
+        margin-top: 10px;
+        max-height: 15rem;
+        overflow-y: scroll;
+      }
+
+      .checkbox__container {
+        /* display: block; */
+        position: relative;
+        padding-left: 35px;
+        margin-bottom: 12px;
+        cursor: pointer;
+        font-size: 20px;
+        color: gray;
+        cursor: pointer;
+        -webkit-user-select: none;
+        -moz-user-select: none;
+        -ms-user-select: none;
+        user-select: none;
+      }
+      .checkbox__container input {
+        position: absolute;
+        cursor: pointer;
+        opacity: 0;
+        height: 0;
+        width: 0;
+      }
+      .checkmark {
+        position: absolute;
+        top: 0;
+        left: 0;
+        height: 25px;
+        width: 25px;
+        background-color: #eee;
+        /* border: 1px solid hsla(102, 63%, 60%, 1); */
+      }
+      .checkbox__container:hover input ~ .checkmark {
+        background-color: #ccc;
+      }
+      /* When the checkbox is checked, add a blue background */
+      .checkbox__container input:checked ~ .checkmark {
+        background-color: hsla(102, 63%, 60%, 1);
+      }
+
+      /* Create the checkmark/indicator (hidden when not checked) */
+      .checkmark:after {
+        content: "";
+        position: absolute;
+        display: none;
+      }
+
+      /* Show the checkmark when checked */
+      .checkbox__container input:checked ~ .checkmark:after {
+        display: block;
+      }
+
+      /* Style the checkmark/indicator */
+      .checkbox__container .checkmark:after {
+        left: 9px;
+        top: 5px;
+        width: 5px;
+        height: 10px;
+        border: solid white;
+        border-width: 0 3px 3px 0;
+        -webkit-transform: rotate(45deg);
+        -ms-transform: rotate(45deg);
+        transform: rotate(45deg);
+      }
+      /* end css for multiselect */
       .form-control .multiselect-search {
         padding-top: 60px !important;
       }
@@ -363,7 +461,7 @@
                -->
 
               <!-- end country api selector -->
-              <div class="form_control">
+              <!-- <div class="form_control">
                 <select name="countries" id="countries" required>
                   <option value="">--select your country--</option>
                 </select>
@@ -372,6 +470,32 @@
                 <select name="regions" id="regions" required>
                   <option value="">--select your city--</option>
                 </select>
+              </div> -->
+              <p class="countries__toggler">
+                Select country/countries
+                <span> <i class="fa fa-arrow-circle-down"></i></span>
+              </p>
+              <div class="countries__container">
+                <input
+                  class="country__search"
+                  oninput="searchCountry()"
+                  type="search"
+                  placeholder="search country..."
+                />
+                <div class="countries__label"></div>
+              </div>
+              <p class="regions__toggler">
+                Select region/regions
+                <span> <i class="fa fa-arrow-circle-down"></i></span>
+              </p>
+              <div class="regions__container">
+                <input
+                  class="region__search"
+                  oninput="searchRegion()"
+                  type="search"
+                  placeholder="search region..."
+                />
+                <div class="regions__label"></div>
               </div>
               <div class="form_control">
                 <textarea
@@ -468,6 +592,152 @@
       });
     </script>
     <script>
+      // countries
+      const toggleCountry = document.querySelector(".countries__toggler");
+      const toggleRegion = document.querySelector(".regions__toggler");
+      const countriesContainer = document.querySelector(
+        ".countries__container"
+      );
+      const regionsContainer = document.querySelector(".regions__container");
+      const countrySearchQuery = document.querySelector(".country__search");
+      const regionSearchQuery = document.querySelector(".region__search");
+      const countriesDataContainer =
+        document.querySelector(".countries__label");
+
+      // hide section initially
+      countriesContainer.classList.add("hide");
+      regionsContainer.classList.add("hide");
+
+      toggleCountry.addEventListener("click", function () {
+        // toggle section hide and show
+        countriesContainer.classList.toggle("hide");
+      });
+      toggleRegion.addEventListener("click", function () {
+        // toggle section hide and show
+        regionsContainer.classList.toggle("hide");
+      });
+
+      //   script to search country
+      function searchCountry() {
+        const countriesCheckBoxLabel = document.querySelectorAll(
+          ".countries__label label"
+        );
+        for (label of countriesCheckBoxLabel) {
+          let hideElement = label;
+          hideElement.classList.add("hide");
+          let element = label.childNodes;
+          for (label of element) {
+            if (label.value !== undefined) {
+              if (
+                label.value
+                  .toLowerCase()
+                  .includes(countrySearchQuery.value.toLowerCase())
+              ) {
+                hideElement.classList.remove("hide");
+              }
+            }
+          }
+        }
+      }
+
+      //   script for region search
+      function searchRegion() {
+        const regionsCheckBoxLabel = document.querySelectorAll(
+          ".regions__label label"
+        );
+        for (label of regionsCheckBoxLabel) {
+          let hideElement = label;
+          hideElement.classList.add("hide");
+          let element = label.childNodes;
+          for (label of element) {
+            if (label.value !== undefined) {
+              if (
+                label.value
+                  .toLowerCase()
+                  .includes(regionSearchQuery.value.toLowerCase())
+              ) {
+                hideElement.classList.remove("hide");
+              }
+            }
+          }
+        }
+      }
+
+      (function () {
+        const apiCountriesURL =
+          "https://100074.pythonanywhere.com/countries/{{ user.username }}/{{ session_id }}/100014/";
+
+        fetch(apiCountriesURL, {
+          method: "GET",
+        })
+          .then((res) => {
+            const contentType = res.headers.get("Content-Type");
+            if (!contentType || !contentType.includes("application/json")) {
+              throw new TypeError("no data was fetched");
+            }
+            return res.json();
+          })
+          .then((data) => {
+            data.forEach((country) => {
+              countriesDataContainer.innerHTML += `<label for="${country.name}"      class="checkbox__container"
+              >${country.name}
+              <input
+                type="checkbox"
+                name="${country.name}"
+                id="${country.name}"
+                value="${country.name}"
+              />
+
+              <span class="checkmark"></span>
+            </label>`;
+              const countryCheckBoxes = document.querySelectorAll(
+                "input[type=checkbox]"
+              );
+              countryCheckBoxes.forEach((checkBox) => {
+                // console.log(checkBox.value);
+                checkBox.addEventListener("change", function () {
+                  loadRegion(checkBox.value);
+                });
+              });
+            });
+          });
+      })();
+    </script>
+    <script>
+      function loadRegion(country) {
+        const regionsDataContainer = document.querySelector(".regions__label");
+        const regionUrl = `https://100074.pythonanywhere.com/region/name/${country}/{{ user.username }}/{{ session_id }}/100014/`;
+
+        fetch(regionUrl, {
+          method: "GET",
+        })
+          .then((response) => {
+            const contentType = response.headers.get("content-type");
+            if (!contentType || !contentType.includes("application/json")) {
+              throw new TypeError("Oops, we haven't got JSON!");
+            }
+            return response.json();
+          })
+          .then((data) => {
+            /* process your data further */
+            data.forEach((region) => {
+              regionsDataContainer.innerHTML += `<label for="${region.name}"      class="checkbox__container"
+              >${region.name}
+              <input
+                type="checkbox"
+                name="${region.name}"
+                id="${region.name}"
+                value="${region.name}"
+              />
+
+              <span class="checkmark"></span>
+            </label>`;
+            });
+          })
+          .catch((error) => console.error(error));
+      }
+    </script>
+    <!-- <script>
       // Fetch Api for countries
 
       /*
@@ -560,6 +830,6 @@
           })
           .catch((error) => console.error(error));
       });
-    </script>
+    </script> -->
   </body>
 </html>
