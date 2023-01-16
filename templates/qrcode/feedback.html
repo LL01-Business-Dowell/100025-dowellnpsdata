@@ -49,6 +49,28 @@
         max-height: 15rem;
         overflow-y: scroll;
       }
+      /* tags styling */
+      .country__tags__container {
+        max-width: 400px;
+      }
+      .country__tag {
+        min-width: 130px;
+        padding: 0.3rem;
+        border-radius: 1.2rem;
+        border: 1px solid rgb(39, 38, 38);
+        background-color: rgb(255, 255, 255);
+        color: rgb(39, 38, 38);
+        font-size: 0.8rem;
+
+        box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;
+        margin: 5px;
+      }
+
+      .country__tag span {
+        cursor: pointer;
+        margin-left: 1.5rem;
+      }
+      /* End tags styling */
 
       .checkbox__container {
         /* display: block; */
@@ -476,6 +498,7 @@
                 <span> <i class="fa fa-arrow-circle-down"></i></span>
               </p>
               <div class="countries__container">
+                <div class="country__tags__container"></div>
                 <input
                   class="country__search"
                   oninput="searchCountry()"
@@ -663,7 +686,23 @@
         }
       }
 
+      // delete countries
+      function deleteCountries(removeCheck) {
+        const countryRemover = document.querySelectorAll(".country__remover");
+        for (let i = 0; i < countryRemover.length; i++) {
+          countryRemover[i].addEventListener("click", function () {
+            console.log(countryRemover[i], i);
+            countryRemover[i].parentElement.remove();
+            removeCheck = false;
+            console.log(removeCheck, "******");
+          });
+        }
+      }
       (function () {
+        let countriesTagContainer = document.querySelector(
+          ".country__tags__container"
+        );
+        countriesDataContainer.innerHTML = "<p>Loading countries ...</p>";
         const apiCountriesURL =
           "https://100074.pythonanywhere.com/countries/{{ user.username }}/{{ session_id }}/100014/";
 
@@ -678,6 +717,7 @@
             return res.json();
           })
           .then((data) => {
+            countriesDataContainer.innerHTML = null;
             data.forEach((country) => {
               countriesDataContainer.innerHTML += `<label for="${country.name}"      class="checkbox__container"
               >${country.name}
@@ -697,6 +737,13 @@
                 // console.log(checkBox.value);
                 checkBox.addEventListener("change", function () {
                   loadRegion(checkBox.value);
+                  if (checkBox.checked) {
+                    countriesTagContainer.innerHTML += `<button class="country__tag">
+              ${checkBox.value} <span class="country__remover"><i class="fa fa-times-circle"></i
+            ></span>
+            </button>`;
+                  }
+                  deleteCountries(checkBox.checked);
                 });
               });
             });
