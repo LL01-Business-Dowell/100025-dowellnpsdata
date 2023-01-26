@@ -81,12 +81,23 @@ class DashboardView(View):
             formdata['brand_name'] = request.POST.get('brand_name')
             formdata['service'] = request.POST.get('service')
             formdata['url'] = request.POST.get('url')
-            formdata['location'] = request.POST.get('countries')
+            formdata['country'] = request.POST.getlist('country')
+            formdata['region'] = request.POST.getlist('regions')
             formdata['promotional_sentence'] = request.POST.get('promotional_sentence')
             formdata['username'] = request.session['username']
             host = request.META['HTTP_HOST']
 
             url = 'http://' + host + '/api/qrcode/'
+            
+            dta = formdata["country"]
+            c = '-'.join(dta)
+            formdata["country"] = c
+
+
+            dta2 = formdata['region']
+            r = '-'.join(dta2)
+            formdata['region'] = r
+
             res = requests.post(url, data=formdata, files=files)
 
            
@@ -96,7 +107,8 @@ class DashboardView(View):
             # added &survey_id='+res_data['id'] to include survey_id in the link in qrcode
             context = {
                 'qrcode': res_data['qr_code'],
-                'location': res_data['countries'],
+                'country': res_data['country'],
+                'region': r,
                 'promotional_sentence': res_data['promotional_sentence'],
                 'pk': res_data['id'],
                 'link': 'https://'+settings.HOSTNAME+'/iframe?survey_id='+str(res_data['id'])

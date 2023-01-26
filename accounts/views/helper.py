@@ -71,6 +71,15 @@ def render_qrcode(request):
 def render_iframe(request):
     survey_id = request.GET.get('survey_id', '')
     qr_code = get_object_or_404(QrCode, pk=survey_id)
+
+    a = qr_code.country
+    country = a.split("-")
+    print(country)
+
+    r = qr_code.region
+    region = r.split("-")
+    print(region)
+
     today = datetime.now()
     current_date = date(today.year, today.month, today.day)
     message = ''
@@ -80,7 +89,10 @@ def render_iframe(request):
             'brand_name': qr_code.brand_name,
             'qr_code': qr_code,
             'status_image': 'endsurvey2.png',
-            'start_survey': is_survey_owner_logged_in(request, survey_id)
+            'start_survey': is_survey_owner_logged_in(request, survey_id),
+            'country': country,
+            'region': region
+
         }
         return render(request, 'qrcode/survey_not_started.html', context)
     if qr_code.is_paused:
@@ -89,7 +101,9 @@ def render_iframe(request):
             'brand_name': qr_code.brand_name,
             'qr_code': qr_code,
             'status_image': 'endsurvey.png',
-            'resume_survey': is_survey_owner_logged_in(request, survey_id)
+            'resume_survey': is_survey_owner_logged_in(request, survey_id),
+            'country': country,
+            'region': region
         }
         return render(request, 'qrcode/survey_not_started.html', context)
     if qr_code.start_date and qr_code.end_date:
@@ -104,8 +118,9 @@ def render_iframe(request):
                     'brand_name': qr_code.brand_name,
                     'qr_code': qr_code,
                     'status_image': 'checklist.png',
-                    'edit_dates': is_survey_owner_logged_in(request, survey_id)
-
+                    'edit_dates': is_survey_owner_logged_in(request, survey_id),
+                    'country': country,
+                    'region': region
                 }
                 return render(request, 'qrcode/survey_not_started.html', context)
             else:
@@ -116,7 +131,9 @@ def render_iframe(request):
                     'brand_name': qr_code.brand_name,
                     'qr_code': qr_code,
                     'status_image': 'checklist.png',
-                    'edit_dates': is_survey_owner_logged_in(request, survey_id)
+                    'edit_dates': is_survey_owner_logged_in(request, survey_id),
+                    'country': country,
+                    'region': region
 
 
                 }
@@ -128,7 +145,9 @@ def render_iframe(request):
             'message': message,
             'qr_code': qr_code,
             'status_image': 'checklist.png',
-            'edit_dates': is_survey_owner_logged_in(request, survey_id)
+            'edit_dates': is_survey_owner_logged_in(request, survey_id),
+            'country': country,
+            'region': region
 
         }
         return render(request, 'qrcode/survey_not_started.html', context)
@@ -147,6 +166,8 @@ def render_iframe(request):
         'message': message,
         'qr_code': qr_code,
         'manage_survey': manage_survey,
+        'country': country,
+        'region': region
     }
     return render(request, 'iframe.html', context)
 
