@@ -699,6 +699,7 @@
         }
       }
       (function () {
+        let countryList = []
         let countriesTagContainer = document.querySelector(
           ".country__tags__container"
         );
@@ -730,23 +731,47 @@
 
               <span class="checkmark"></span>
             </label>`;
-              const countryCheckBoxes = document.querySelectorAll(
+            //   const countryCheckBoxes = document.querySelectorAll(
+            //     "input[type=checkbox]"
+            //   );
+            //   countryCheckBoxes.forEach((checkBox) => {
+            //     // console.log(checkBox.value);
+            //     checkBox.addEventListener("change", function () {
+            //       loadRegion(checkBox.value);
+            //       if (checkBox.checked) {
+            //         countriesTagContainer.innerHTML += `<button class="country__tag">
+            //   ${checkBox.value} <span class="country__remover"><i class="fa fa-times-circle"></i
+            // ></span>
+            // </button>`;
+            //       }
+            //       deleteCountries(checkBox.checked);
+            //     });
+            //   });
+            });
+            const countryCheckBoxes = document.querySelectorAll(
                 "input[type=checkbox]"
               );
               countryCheckBoxes.forEach((checkBox) => {
                 // console.log(checkBox.value);
+
                 checkBox.addEventListener("change", function () {
-                  loadRegion(checkBox.value);
                   if (checkBox.checked) {
-                    countriesTagContainer.innerHTML += `<button class="country__tag">
-              ${checkBox.value} <span class="country__remover"><i class="fa fa-times-circle"></i
-            ></span>
-            </button>`;
+                    countryList.push(checkBox.value)
+                    console.log(countryList, '++++')
+                    let countryCounter = checkBox.value
+                    const result = countryList.filter((country)=>country===countryCounter).length
+                    console.table('country:',countryCounter,  'count:',result)
+                    if(result===1){
+                      loadRegion(checkBox.value);
+                      countriesTagContainer.innerHTML += `<button class="country__tag">
+                        ${checkBox.value} <span class="country__remover">x</span>
+                      </button>`;
+                    }
+                    
                   }
                   deleteCountries(checkBox.checked);
                 });
               });
-            });
           });
       })();
     </script>
