@@ -265,11 +265,14 @@
         height: 80px;
         width: 80px;
         position: relative;
+        
       }
       .upload__image__cover img {
         border-radius: 50%;
         max-width: 100px;
         max-height: 100px;
+        cursor: pointer;
+        
       }
       .upload__image__cover input[type="file"] {
         background-color: blueviolet;
@@ -279,9 +282,11 @@
         position: absolute;
         right: 3%;
         opacity: 0;
+        cursor: pointer;
       }
       .form_control_image {
         position: relative;
+      
       }
       .form_control_image span {
         position: absolute;
@@ -298,9 +303,11 @@
         font-size: 0.9rem;
         padding-bottom: 0.4rem;
         color: gray;
+     
       }
       .form_control_image small {
         color: gray;
+      
       }
       .form_control input[type="text"],
       input[type="email"],
@@ -724,7 +731,7 @@
               >${country.name}
               <input
                 type="checkbox"
-                name="${country.name}"
+                name="country"
                 id="${country.name}"
                 value="${country.name}"
               />
@@ -757,7 +764,6 @@
                 checkBox.addEventListener("change", function () {
                   if (checkBox.checked) {
                     countryList.push(checkBox.value)
-                    console.log(countryList, '++++')
                     let countryCounter = checkBox.value
                     const result = countryList.filter((country)=>country===countryCounter).length
                     console.table('country:',countryCounter,  'count:',result)

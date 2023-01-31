@@ -114,7 +114,7 @@ class DashboardView(View):
                 'link': 'https://'+settings.HOSTNAME+'/iframe?survey_id='+str(res_data['id'])
 
             }
-            print('returning data')
+            print(context, 'returning data')
 
             request.session['form_link'] = res_data['url']
             return render(request, 'qrcode/create_qr_code.html', context)
