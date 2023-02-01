@@ -92,6 +92,14 @@
         object-fit: cover;
       }
 
+      .survey__error{
+        height: calc(100vh - 25vh);
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        text-align: center;
+      }
       /* .survey__date {
         min-height: 560px;
       } */
@@ -136,17 +144,14 @@
                         <h3>{% if brand_name %}{{ brand_name }}{% endif %} Survey Status</h3>
                     </section>
 
-                    <div class="end__survey__container">
+                    <div class="end__survey__container survey__content">
                         <div class="endsurvey__form__control__text flex">
                             <h4>{{ message }}</h4>
                         </div>
                         <div class="image__not__started padding_center">
                             <img src="{{ baseUrl }}assets/img/{{ status_image }}" alt="" />
                         </div>
-                        <!-- <div class="form_control_date__submit padding_center flex">
-                            <button href="end_survey_response.html" type="submit" id="survey__date__submit__btn">End now</button>
-                            <small>click to end your survey now</small>
-                        </div> -->
+                      
 
                         
                         {% if start_survey %}
@@ -185,7 +190,7 @@
                             </div>
                         {% endif %}
 
-
+                        <p  id="hidden__country">{{qr_code.country}}</p>
                     </div>
                 </section>
 
@@ -223,5 +228,38 @@
                 surveyDatePopup.classList.remove("survey_date_popup_show");
             });
         </script>
+          <script>
+            (function () {
+              const surveyContent = document.querySelector('.survey__content')
+              let hiddenCountry = document.querySelector('#hidden__country').textContent.toLowerCase()
+              console.log(hiddenCountry)
+              function success(position) {
+              const latitude = position.coords.latitude;
+              const longitude = position.coords.longitude;
+
+              const convertLocation = `https://api.bigdatacloud.net/data/reverse-geocode-client?latitude=${latitude}&longitude=${longitude}&localityLanguage=en`;
+
+              fetch(convertLocation)
+                .then((res) => res.json())
+                .then((data) => {
+                if(data.countryName.toLowerCase()!==hiddenCountry){
+                    surveyContent.innerHTML = '<div class="survey__error"><h3>sorry, this survey is not available in your region</h2></div>'
+                  }
+                });
+              }
+
+              function error() {
+              alert("Unable to retrieve your location");
+              }
+
+              if (!navigator.geolocation) {
+              alert("Geolocation is not supported by your browser");
+              } else {
+              status.textContent = "Locating…";
+              navigator.geolocation.getCurrentPosition(success, error);
+              }
+              
+            })();
+      </script>
     </body>
 </html>
