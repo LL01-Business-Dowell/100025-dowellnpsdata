@@ -135,7 +135,7 @@
 									Embeded Code: 
 									< iframe src="{{ qr_code.url }}" title="Survey" data-survey-id="{{ qr_code.pk }}" width="350" height="100%"> </iframe>
 								</p>
-								<p  id="hidden__country">{{qr_code.country}}</p>
+								
 								<!-- <div>
 									<input type="text" value={{ qr_code.url }} id="myInput">
 
@@ -256,41 +256,7 @@ function outFunc() {
 	<iframe src="${iframeURL}" title="Survey" data-survey-id="3" width="350" height="100%"> `					
 </script>
 
-<!-- detect user location -->
-<script>
-	
-	(function () {
-		const qrImage = document.querySelector('.qr_img')
-		let hiddenCountry = document.querySelector('#hidden__country').textContent.toLowerCase()
-	   console.log(hiddenCountry)
-		function success(position) {
-		const latitude = position.coords.latitude;
-		const longitude = position.coords.longitude;
 
-		const convertLocation = `https://api.bigdatacloud.net/data/reverse-geocode-client?latitude=${latitude}&longitude=${longitude}&localityLanguage=en`;
-
-		fetch(convertLocation)
-		  .then((res) => res.json())
-		  .then((data) => {
-			if(data.countryName.toLowerCase()!==hiddenCountry){
-					qrImage.innerHTML = '<h3>sorry, this survey is not available in your country</h2>'
-				}
-		  });
-	  }
-
-	  function error() {
-		alert("Unable to retrieve your location");
-	  }
-
-	  if (!navigator.geolocation) {
-		alert("Geolocation is not supported by your browser");
-	  } else {
-		status.textContent = "Locating…";
-		navigator.geolocation.getCurrentPosition(success, error);
-	  }
-	  
-	})();
-  </script>
 
 </body>
 </html>
