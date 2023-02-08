@@ -54,7 +54,8 @@
       .region__tags__container {
         max-width: 400px;
       }
-      .country__tag {
+      .country__tag,
+      .region__tag {
         min-width: 130px;
         padding: 0.3rem;
         border-radius: 1.2rem;
@@ -67,7 +68,8 @@
         margin: 5px;
       }
 
-      .country__tag span {
+      .country__tag span,
+      .region__tag span {
         cursor: pointer;
         margin-left: 1.5rem;
       }
@@ -702,6 +704,18 @@
           });
         }
       }
+      // delete regions
+      function deleteRegions(removeCheck) {
+        const regionRemover = document.querySelectorAll(".region__remover");
+        for (let i = 0; i < regionRemover.length; i++) {
+          regionRemover[i].addEventListener("click", function () {
+            console.log(regionRemover[i], i);
+            regionRemover[i].parentElement.remove();
+            removeCheck = false;
+            console.log(removeCheck, "******");
+          });
+        }
+      }
       (function () {
         let countryList = [];
         let countriesTagContainer = document.querySelector(
@@ -735,22 +749,6 @@
 
               <span class="checkmark"></span>
             </label>`;
-              //   const countryCheckBoxes = document.querySelectorAll(
-              //     "input[type=checkbox]"
-              //   );
-              //   countryCheckBoxes.forEach((checkBox) => {
-              //     // console.log(checkBox.value);
-              //     checkBox.addEventListener("change", function () {
-              //       loadRegion(checkBox.value);
-              //       if (checkBox.checked) {
-              //         countriesTagContainer.innerHTML += `<button class="country__tag">
-              //   ${checkBox.value} <span class="country__remover"><i class="fa fa-times-circle"></i
-              // ></span>
-              // </button>`;
-              //       }
-              //       deleteCountries(checkBox.checked);
-              //     });
-              //   });
             });
             const countryCheckBoxes = document.querySelectorAll(
               "input[type=checkbox]"
@@ -812,10 +810,24 @@
                 name="regions"
                 id="${region.name}"
                 value="${region.name}"
+                class="region__inputs"
               />
 
               <span class="checkmark"></span>
             </label>`;
+            });
+            const regionCheckBoxes =
+              document.querySelectorAll(".region__inputs");
+            console.log("###", regionCheckBoxes);
+            regionCheckBoxes.forEach((checkBox) => {
+              checkBox.addEventListener("change", function () {
+                if (checkBox.checked) {
+                  regionsTagContainer.innerHTML += `<button class="region__tag">
+                        ${checkBox.value} <span class="region__remover">x</span>
+                      </button>`;
+                }
+                deleteRegions(checkBox.checked);
+              });
             });
           })
           .catch((error) => console.error(error));
