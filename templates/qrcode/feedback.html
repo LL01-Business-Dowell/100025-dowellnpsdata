@@ -622,6 +622,7 @@
     </script>
     <script>
       // countries
+
       const toggleCountry = document.querySelector(".countries__toggler");
       const toggleRegion = document.querySelector(".regions__toggler");
       const countriesContainer = document.querySelector(
@@ -784,6 +785,7 @@
     </script>
     <script>
       function loadRegion(country) {
+        let regionList = [];
         const regionsDataContainer = document.querySelector(".regions__label");
         let regionsTagContainer = document.querySelector(
           ".region__tags__container"
@@ -816,15 +818,28 @@
               <span class="checkmark"></span>
             </label>`;
             });
+
             const regionCheckBoxes =
               document.querySelectorAll(".region__inputs");
             console.log("###", regionCheckBoxes);
             regionCheckBoxes.forEach((checkBox) => {
               checkBox.addEventListener("change", function () {
                 if (checkBox.checked) {
-                  regionsTagContainer.innerHTML += `<button class="region__tag">
+                  regionList.push(checkBox.value);
+                  toggleRegion.innerText = `${
+                    regionList.length === 1
+                      ? "1 region selected"
+                      : regionList.length + " regions selected"
+                  }`;
+                  let regionCounter = checkBox.value;
+                  const result = regionList.filter(
+                    (region) => region === regionCounter
+                  ).length;
+                  if (result === 1) {
+                    regionsTagContainer.innerHTML += `<button class="region__tag">
                         ${checkBox.value} <span class="region__remover">x</span>
                       </button>`;
+                  }
                 }
                 deleteRegions(checkBox.checked);
               });
