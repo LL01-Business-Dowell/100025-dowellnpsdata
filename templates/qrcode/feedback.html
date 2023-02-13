@@ -498,7 +498,7 @@
                   <option value="">--select your city--</option>
                 </select>
               </div> -->
-              <p class="countries__toggler">
+              <p class="countries__toggler btn">
                 Select country/countries
                 <span> <i class="fa fa-arrow-circle-down"></i></span>
               </p>
@@ -646,6 +646,24 @@
         // toggle section hide and show
         regionsContainer.classList.toggle("hide");
       });
+
+      // hide container when clicked outside
+
+      window.onclick = (e) => {
+        if (!e.target.matches(".countries__toggler")) {
+          if (!countriesContainer.classList.contains("hide")) {
+            countriesContainer.classList.add("hide");
+          }
+        }
+        if (!e.target.matches(".regions__toggler")) {
+          if (!regionsContainer.classList.contains("hide")) {
+            regionsContainer.classList.add("hide");
+          }
+        }
+      };
+      countriesContainer.addEventListener("click", (e) => e.stopPropagation());
+      regionsContainer.addEventListener("click", (e) => e.stopPropagation());
+      // end hide container when clicked outside
 
       //   script to search country
       function searchCountry() {
@@ -821,7 +839,7 @@
 
             const regionCheckBoxes =
               document.querySelectorAll(".region__inputs");
-            console.log("###", regionCheckBoxes);
+
             regionCheckBoxes.forEach((checkBox) => {
               checkBox.addEventListener("change", function () {
                 if (checkBox.checked) {
