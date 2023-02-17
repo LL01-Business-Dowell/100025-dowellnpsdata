@@ -3,6 +3,14 @@ from django.shortcuts import render, redirect, get_object_or_404
 
 from api.models import QrCode
 
+# this is the mail 
+from django.shortcuts import redirect, render
+from django.contrib import messages
+from django.contrib.auth.models import auth, User
+from django.template.loader import render_to_string
+from django.core.mail import EmailMessage
+from django.conf import settings
+
 
 class QRCodeFormView(View):
     template_name = 'qrcode/create_qr_code_form.html'
@@ -35,6 +43,18 @@ class QRCodeFormView(View):
             qr_code.name = name
             qr_code.email = email
             qr_code.save()
+
+
+            message = 'DOWELL RESEARCH'
+            html_template = 'qrcode/email__template.html'
+            html_msg =  render_to_string(html_template)
+            subject = 'welcome to the dowell'
+            email_from = settings.EMAIL_HOST_USER
+            recipient_list = [qr_code.email]
+            message = EmailMessage(subject, html_msg, email_from, recipient_list)
+            message.content_subtype = 'html'
+            message.send()
+            print("mail send")
             
             # display email form to be sent to user
             # context = {

@@ -166,7 +166,12 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 HOSTNAME = 'localhost:8000'
 
-
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_HOST = 'smtp.gmail.com' # gmail
+EMAIL_PORT = 587
+EMAIL_USE_TLS = True
+EMAIL_HOST_USER = 'docs@dowellresearch.sg'
+EMAIL_HOST_PASSWORD = 'jpcjzsnzarucochh'
 
 # Activate Django-Heroku.
 # django_heroku.settings(locals())
