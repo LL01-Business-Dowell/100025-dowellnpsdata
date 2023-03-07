@@ -125,6 +125,7 @@
 							<td class="qr_img flex">
 								<center>
 									<img src="/media/{{ qr_code.qr_code }}" alt="..." height="240"  class="img-thumbnail mb-2">
+									<!-- <img src="https://100025.pythonanywhere.com/media/{{ qr_code.qr_code }}" alt="..." height="240"  class="img-thumbnail mb-2"> -->
 								</center>
 							</td>
 							
@@ -193,25 +194,24 @@
 					<table width="100%">
 						<tr>
 							<td>
-								<h4><b>Welcome to {{ qr_code.brand_name }}</b></h4>
-								<p>Hello {{ qr_code.name }}</p>
-								<p>Hello {{ qr_code.name }},
-
-									We are excited to welcome you to Dowell and are even more excited about what we have planned. You are well on your way to creating beautiful visual products.
+								<h4><b>{{ qr_code.brand_name }}  Survey</b></h4>
+								<h5>Dear {{ qr_code.name }}, </h5>
+								<p>
+									Attached is a qr code image and also an embedding link for the survey created.
 								</p>
 									
-									<p><b>Preview of the survey invitation in uxlivinglab page</b></p>
 									
-									<p>Whether you're here for your brand, a cause, or just for fun, welcome back! If there is anything you need, we will be here every step of the way.</p>
+									
+									<p>Always a pleasure to work with you.</p>
 									
 									<p>
 										Thank you, <br>
-									Dowell
+									Dowell UX Living Lab 
 									</p>
-									<p style="margin-top:40px ;">
+									<!-- <p style="margin-top:40px ;">
 										<a href="/iframe/?survey_id={{ qr_code.pk }}" target="_blank" style="background-color: hsla(126, 53%, 56%, 1);
-									 padding: 10px; min-width: 150px; color: #fff; text-decoration: none; border-radius: 8px;">let us begin</a>
-									</p>
+									 padding: 10px; min-width: 150px; color: #fff; text-decoration: none; border-radius: 8px;">Preview</a>
+									</p> -->
 							</td>
 						</tr>
 						<tr >
@@ -219,8 +219,8 @@
 								<table width="100%" style="margin: 20px 0 ;">
 									<tr>
 										<td style="text-align:center ;">
-											<p>Sent by Govinda’s <a href="">check our blog  @yourbrandapp</a></p>
-											<p>44 De Haro Street, Suite 199, San Francisco, CA 94108</a></p>
+											<p>Copyright message dowell @2023.</p>
+											<p></a></p>
 										</td>
 									</tr>
 								</table>
