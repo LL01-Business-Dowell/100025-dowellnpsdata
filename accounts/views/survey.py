@@ -22,10 +22,13 @@ class SurveyDateView(View):
             context = {
                 'qr_code': qr_code,
                 'pause_survey': True,
+                'is_survey_owner_logged_in': is_survey_owner_logged_in(request, self.kwargs['pk'])
             }
         else:
             context = {
-                'qr_code': qr_code
+                'qr_code': qr_code,
+                'is_survey_owner_logged_in': is_survey_owner_logged_in(request, self.kwargs['pk'])
+
             }
 
         return render(request, self.template_name, context)

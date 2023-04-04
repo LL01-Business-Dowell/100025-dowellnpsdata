@@ -107,6 +107,7 @@ WSGI_APPLICATION = 'config.wsgi.application'
 #     }
 # }
 DATABASES = {
+<<<<<<< HEAD
 
         'default': {
              'ENGINE': 'django.db.backends.mysql', # mysql database python driver.
@@ -117,6 +118,17 @@ DATABASES = {
             #  'PORT': '3306', # db server listening port number
          }
 
+=======
+    'default': {
+        'ENGINE': 'django.db.backends.mysql',
+        'NAME': 'dowell_qrcode_franklin_db7',
+        'HOST': '127.0.0.1',
+        'PORT': '3306',
+        'USER': 'root',
+        'PASSWORD': 'pass123456'
+        # 'PASSWORD':'',
+    }
+>>>>>>> 650e282dc5399bf368859f94b78590260620c601
 }
 
 
@@ -171,7 +183,12 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 # HOSTNAME = 'localhost:8000'
 HOSTNAME = '100025.pythonanywhere.com'
 
-
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_HOST = 'smtp.gmail.com' # gmail
+EMAIL_PORT = 587
+EMAIL_USE_TLS = True
+EMAIL_HOST_USER = 'docs@dowellresearch.sg'
+EMAIL_HOST_PASSWORD = 'jpcjzsnzarucochh'
 
 # Activate Django-Heroku.
 # django_heroku.settings(locals())

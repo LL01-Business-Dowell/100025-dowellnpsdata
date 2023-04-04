@@ -62,6 +62,46 @@
 		}
 		@media screen and (max-width: 400px) {
 		}
+
+		/* style for tool tip */
+		.tooltip {
+  position: relative;
+  display: inline-block;
+}
+
+.tooltip .tooltiptext {
+  visibility: hidden;
+  width: 140px;
+  background-color: #555;
+  color: #fff;
+  text-align: center;
+  border-radius: 6px;
+  padding: 5px;
+  position: absolute;
+  z-index: 1;
+  bottom: 150%;
+  left: 50%;
+  margin-left: -75px;
+  opacity: 0;
+  transition: opacity 0.3s;
+}
+
+.tooltip .tooltiptext::after {
+  content: "";
+  position: absolute;
+  top: 100%;
+  left: 50%;
+  margin-left: -5px;
+  border-width: 5px;
+  border-style: solid;
+  border-color: #555 transparent transparent transparent;
+}
+
+.tooltip:hover .tooltiptext {
+  visibility: visible;
+  opacity: 1;
+}
+</style>
 	</style>
 </head>
 <body>
@@ -85,12 +125,14 @@
 							<td class="qr_img flex">
 								<center>
 									<img src="/media/{{ qr_code.qr_code }}" alt="..." height="240"  class="img-thumbnail mb-2">
+									<!-- <img src="https://100025.pythonanywhere.com/media/{{ qr_code.qr_code }}" alt="..." height="240"  class="img-thumbnail mb-2"> -->
 								</center>
 							</td>
 
 						</tr>
 						<tr>
 							<td>
+<<<<<<< HEAD
 								<!--<p style="line-height: 20px;">-->
 								<h4>Embeded Code</h4>
 
@@ -100,6 +142,23 @@
 								<!--</p>-->
 								</code>
 
+=======
+								<p style="line-height: 20px;" id="iframe">
+									Embeded Code: 
+									< iframe src="{{ qr_code.url }}" title="Survey" data-survey-id="{{ qr_code.pk }}" width="350" height="100%"> </iframe>
+								</p>
+								
+								<!-- <div>
+									<input type="text" value={{ qr_code.url }} id="myInput">
+
+<div class="tooltip">
+<button onclick="myFunction()" onmouseout="outFunc()">
+  <span class="tooltiptext" id="myTooltip">Copy to clipboard</span>
+  Copy your link
+  </button>
+</div
+								</div> -->
+>>>>>>> 650e282dc5399bf368859f94b78590260620c601
 							</td>
 						</tr>
 
@@ -147,25 +206,32 @@
 					<table width="100%">
 						<tr>
 							<td>
-								<h4><b>Welcome to {{ qr_code.brand_name }}</b></h4>
-								<p>Hello {{ qr_code.name }}</p>
-								<p>Hello {{ qr_code.name }},
-
-									We are excited to welcome you to Dowell and are even more excited about what we have planned. You are well on your way to creating beautiful visual products.
+								<h4><b>{{ qr_code.brand_name }}  Survey</b></h4>
+								<h5>Dear {{ qr_code.name }}, </h5>
+								<p>
+									Attached is a qr code image and also an embedding link for the survey created.
 								</p>
+<<<<<<< HEAD
 
 									<p><b>Preview of the survey invitation in uxlivinglab page</b></p>
 
 									<p>Whether you're here for your brand, a cause, or just for fun, welcome back! If there is anything you need, we will be here every step of the way.</p>
 
+=======
+									
+									
+									
+									<p>Always a pleasure to work with you.</p>
+									
+>>>>>>> 650e282dc5399bf368859f94b78590260620c601
 									<p>
 										Thank you, <br>
-									Dowell
+									Dowell UX Living Lab 
 									</p>
-									<p style="margin-top:40px ;">
+									<!-- <p style="margin-top:40px ;">
 										<a href="/iframe/?survey_id={{ qr_code.pk }}" target="_blank" style="background-color: hsla(126, 53%, 56%, 1);
-									 padding: 10px; min-width: 150px; color: #fff; text-decoration: none; border-radius: 8px;">let us begin</a>
-									</p>
+									 padding: 10px; min-width: 150px; color: #fff; text-decoration: none; border-radius: 8px;">Preview</a>
+									</p> -->
 							</td>
 						</tr>
 						<tr >
@@ -173,8 +239,13 @@
 								<table width="100%" style="margin: 20px 0 ;">
 									<tr>
 										<td style="text-align:center ;">
+<<<<<<< HEAD
 											<p>Sent by Dowell Feedback <a href="#"></a></p>
 											<!--<p>44 De Haro Street, Suite 199, San Francisco, CA 94108</a></p>-->
+=======
+											<p>Copyright message dowell @2023.</p>
+											<p></a></p>
+>>>>>>> 650e282dc5399bf368859f94b78590260620c601
 										</td>
 									</tr>
 								</table>
@@ -185,5 +256,32 @@
 			</tr>
 		</table>
 	</div>
+	<script>
+		function myFunction() {
+  var copyText = document.getElementById("myInput");
+  copyText.select();
+  copyText.setSelectionRange(0, 99999);
+  navigator.clipboard.writeText(copyText.value);
+  
+  var tooltip = document.getElementById("myTooltip");
+  tooltip.innerHTML = "Copied: " + copyText.value;
+}
+
+function outFunc() {
+  var tooltip = document.getElementById("myTooltip");
+  tooltip.innerHTML = "Copy to clipboard";
+}
+	</script>
+
+<script>
+	const url = location.href
+	const iframeURL = url.replace('preview_email', 'iframe')
+	const iframe = document.getElementById('iframe')
+	iframe.innerText = `Embeded Code: 
+	<iframe src="${iframeURL}" title="Survey" data-survey-id="3" width="350" height="100%"> `					
+</script>
+
+
+
 </body>
 </html>
