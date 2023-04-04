@@ -3,14 +3,16 @@ from django.shortcuts import render
 from django.shortcuts import render, redirect
 from django.http import HttpResponse
 from accounts.views.helper import get_survey_status, is_survey_owner_logged_in
-
+from django.views.decorators.clickjacking import xframe_options_exempt
+from django.views.decorators.csrf import csrf_exempt
 from api.models import QrCode
 
 
 class SurveyDateView(View):
     template_name = 'qrcode/survey_date.html'
     model = QrCode
-
+    @csrf_exempt
+    @xframe_options_exempt
     def get(self, request, *args, **kwargs):
         qr_code = self.model.objects.get(pk=self.kwargs['pk'])
         print(qr_code.start_date, qr_code.end_date)
@@ -25,9 +27,10 @@ class SurveyDateView(View):
             context = {
                 'qr_code': qr_code
             }
-        
-        return render(request, self.template_name, context)
 
+        return render(request, self.template_name, context)
+    @csrf_exempt
+    @xframe_options_exempt
     def post(self, request, *args, **kwargs):
         qr_code = self.model.objects.get(pk=self.kwargs['pk'])
         if request.method == 'POST':
@@ -55,9 +58,10 @@ class SurveyDateView(View):
 class MySurveysView(View):
     template_name = 'qrcode/my_surveys.html'
     model = QrCode
-
+    @csrf_exempt
+    @xframe_options_exempt
     def get(self, request, *args, **kwargs):
-        
+
         # check if user is logged in first
         if 'username' not in request.session:
             return redirect("https://100014.pythonanywhere.com/")
@@ -74,7 +78,7 @@ class MySurveysView(View):
                     message = 'Survey deleted Successfully'
             except:
                 pass
-            
+
 
 
         username = request.session['username']
@@ -92,7 +96,8 @@ class MySurveysView(View):
         }
 
         return render(request, self.template_name, context)
-
+    @csrf_exempt
+    @xframe_options_exempt
     def post(self, request, *args, **kwargs):
         qr_code = self.model.objects.get(pk=self.kwargs['pk'])
         pass

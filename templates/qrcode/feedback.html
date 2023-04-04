@@ -143,18 +143,20 @@
       }
       .upload__image__cover button {
         border-radius: 50%;
-        height: 80px;
-        width: 80px;
+        max-height: 80px;
+        max-width: 80px;
         position: relative;
       }
       .upload__image__cover img {
         border-radius: 50%;
-        width: 100px;
+        /*width: 100px;*/
+        max-height: 80px;
+        max-width: 80px;
       }
       .upload__image__cover input[type="file"] {
         background-color: blueviolet;
-        height: 80px;
-        width: 80px;
+        max-height: 80px;
+        max-width: 80px;
         border-radius: 50%;
         position: absolute;
         right: 3%;
@@ -449,9 +451,9 @@
       navMenu.addEventListener("click", function () {
         navLinks.classList.add("show_navlinks");
       });
-      navLinksCloseBtn.addEventListener("click", function () {
-        navLinks.classList.remove("show_navlinks");
-      });
+    //   navLinksCloseBtn.addEventListener("click", function () {
+    //     navLinks.classList.remove("show_navlinks");
+    //   });
 
       // upload image script
       const uploadIcon = document.querySelector("#upload__icon");
@@ -464,7 +466,8 @@
           image.style.display = "block";
           reader.addEventListener("load", function () {
             image.setAttribute("src", this.result);
-            // console.log(this.result);
+            console.log("this.result");
+            console.log(this.result);
             uploadIcon.style.display = "none";
           });
           reader.readAsDataURL(file);

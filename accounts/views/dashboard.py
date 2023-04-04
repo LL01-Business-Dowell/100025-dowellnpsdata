@@ -8,7 +8,8 @@ from django.conf import settings
 from django.views.generic import View
 from django.contrib.auth.mixins import LoginRequiredMixin
 from accounts.views.helper import upload_to_remote_db
-
+from django.views.decorators.clickjacking import xframe_options_exempt
+from django.views.decorators.csrf import csrf_exempt
 
 def get_key():
     username = "dowellFeedback"
@@ -33,7 +34,8 @@ def get_user_profile(session):
 
 class DashboardView(View):
     template_name = 'qrcode/feedback.html'
-
+    @csrf_exempt
+    @xframe_options_exempt
     def get(self, request, *args, **kwargs):
         session = request.GET.get("session_id", None)
         # james test session id
@@ -55,11 +57,14 @@ class DashboardView(View):
                 return render(request, self.template_name, context)
             else:
                 context = {}
-                return redirect("https://100014.pythonanywhere.com/")
+                # return redirect("https://100014.pythonanywhere.com/")
+                return redirect("https://100014.pythonanywhere.com/?redirect_url=https://100025.pythonanywhere.com/")
         else:
             context = {}
-            return redirect("https://100014.pythonanywhere.com/")
-
+            # return redirect("https://100014.pythonanywhere.com/")
+            return redirect("https://100014.pythonanywhere.com/?redirect_url=https://100025.pythonanywhere.com/")
+    @csrf_exempt
+    @xframe_options_exempt
     def post(self, request, *args, **kwargs):
         if request.method == 'POST' and request.FILES:
             # check if user is logged in first
