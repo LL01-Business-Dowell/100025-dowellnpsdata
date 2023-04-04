@@ -38,15 +38,33 @@ class DashboardView(View):
         session = request.GET.get("session_id", None)
         # james test session id
         # uncomment below lines before uploading to live server
-        session = 'gt4j8zr8zfvh0go1e2v3fh2sibe9diw9'
+        # session = 'gt4j8zr8zfvh0go1e2v3fh2sibe9diw9'
         #return render(request, self.template_name, {})
 
         # if user is already logged-in in session don't redirect to login page
-        if session or 'user' in request.session:
-            if session:
-                user = get_user_profile(session)
-            else:
-                user = request.session['user']
+        # if session or 'user' in request.session:
+        #     if session:
+        #         user = get_user_profile(session)
+        #     else:
+        #         user = request.session['user']
+        #     if user:
+        #         # save customers username and user profile to session
+        #         request.session['username'] = user['username']
+        #         request.session['user'] = user
+        #         #context = {}
+        #         context = {
+        #             'user': user,
+        #             'session_id': session
+        #         }
+        #         return render(request, self.template_name, context)
+        #     else:
+        #         context = {}
+        #         return redirect("https://100014.pythonanywhere.com/")
+        # else:
+        #     context = {}
+        #     return redirect("https://100014.pythonanywhere.com/")
+        if session:
+            user = get_user_profile(session)
             if user:
                 # save customers username and user profile to session
                 request.session['username'] = user['username']
@@ -59,10 +77,12 @@ class DashboardView(View):
                 return render(request, self.template_name, context)
             else:
                 context = {}
-                return redirect("https://100014.pythonanywhere.com/")
+                # return redirect("https://100014.pythonanywhere.com/")
+                return redirect("https://100014.pythonanywhere.com/?redirect_url=https://100025.pythonanywhere.com/")
         else:
             context = {}
-            return redirect("https://100014.pythonanywhere.com/")
+            # return redirect("https://100014.pythonanywhere.com/")
+            return redirect("https://100014.pythonanywhere.com/?redirect_url=https://100025.pythonanywhere.com/")
 
     def post(self, request, *args, **kwargs):
         if request.method == 'POST' and request.FILES:

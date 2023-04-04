@@ -11,6 +11,8 @@ from django.template.loader import render_to_string
 from django.core.mail import EmailMessage
 from django.conf import settings
 
+from .email_handler import mail_sender
+
 
 class QRCodeFormView(View):
     template_name = 'qrcode/create_qr_code_form.html'
@@ -39,21 +41,32 @@ class QRCodeFormView(View):
             name = request.POST.get('name')
             email = request.POST.get('email')
             print(checkbox, name, email)
+            print("hdihsihishdi")
+            print(qr_code.qr_code)
+            print(str(qr_code.qr_code))
             qr_code.checkbox = checkbox
             qr_code.name = name
             qr_code.email = email
             qr_code.save()
 
 
-            message = 'DOWELL RESEARCH'
-            html_template = 'qrcode/email__template.html'
-            html_msg =  render_to_string(html_template)
-            subject = 'welcome to the dowell'
-            email_from = settings.EMAIL_HOST_USER
-            recipient_list = [qr_code.email]
-            message = EmailMessage(subject, html_msg, email_from, recipient_list)
-            message.content_subtype = 'html'
-            message.send()
+            # message = 'DOWELL RESEARCH'
+            # html_template = 'qrcode/email__template.html'
+            # html_msg =  render_to_string(html_template)
+            # subject = 'welcome to the dowell'
+            # email_from = settings.EMAIL_HOST_USER
+            # recipient_list = [qr_code.email]
+            # message = EmailMessage(subject, html_msg, email_from, recipient_list)
+            # host = request.META['HTTP_HOST']
+            host = settings.HOSTNAME
+
+            qr_code_src = 'https://' + host + '/media/'+str(qr_code.qr_code)
+            data_survey_id =  qr_code.id
+            survey_title =  qr_code.brand_name
+            user_name = qr_code.username
+            res = mail_sender(email, name,qr_code_src, data_survey_id,survey_title, user_name )
+            # message.content_subtype = 'html'
+            # message.send()
             print("mail send")
             
             # display email form to be sent to user
@@ -62,8 +75,14 @@ class QRCodeFormView(View):
             # }
             # return render(request, 'qrcode/email__template.html', context)
 
-
-            return redirect(f'/my_surveys')
+            if not res['error']:
+                return redirect(f'/my_surveys')
+            else:
+                context = {
+            'qr_code': qr_code,
+            'Error': res['status']
+        }
+            return render(request, self.template_name, context)
         context = {
             'qr_code': qr_code
         }

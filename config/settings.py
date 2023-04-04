@@ -107,12 +107,12 @@ WSGI_APPLICATION = 'config.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
-        'NAME': 'dowell_qrcode_db',
+        'NAME': 'dowell_qrcode_franklin_db7',
         'HOST': '127.0.0.1',
         'PORT': '3306',
         'USER': 'root',
-        # 'PASSWORD': 'pass123456'
-        'PASSWORD':'',
+        'PASSWORD': 'pass123456'
+        # 'PASSWORD':'',
     }
 }
 
