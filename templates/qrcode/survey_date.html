@@ -1,179 +1,232 @@
 {% load static %}
 <!DOCTYPE html>
 <html lang="en">
-    <head>
-        <meta charset="UTF-8" />
-        <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-        <title>create qr code</title>
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>create qr code</title>
 
-        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" />
-        <link rel="stylesheet" href="{% static 'assets/css/style.css' %}" />
-        <script
-            src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.8.0/chart.min.js"
-            integrity="sha512-sW/w8s4RWTdFFSduOTGtk4isV1+190E/GghVffMA9XczdJ2MDzSzLEubKAs5h0wzgSJOQTRYyaz73L3d6RtJSg=="
-            crossorigin="anonymous"
-            referrerpolicy="no-referrer"
-        ></script>
-        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css" />
-        <style>
-            .container {
-              overflow-y: scroll;
-            }
-            .survey__date_fixed {
-              height: calc(100vh - 70px);
-            }
-            .survey__date__form__cover__fixed {
-              height: 500px;
-            }
-            #survey__date__submit__btn{
-                background-color: var(--green-bg);
-                color: #fff;
-                min-width: 170px;
-                padding: 10px 0px 10px 0px;
-            }
-          </style>
-    </head>
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css"
+    />
+    <link rel="stylesheet" href="{% static 'assets/css/style.css' %}" />
+    <script
+      src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.8.0/chart.min.js"
+      integrity="sha512-sW/w8s4RWTdFFSduOTGtk4isV1+190E/GghVffMA9XczdJ2MDzSzLEubKAs5h0wzgSJOQTRYyaz73L3d6RtJSg=="
+      crossorigin="anonymous"
+      referrerpolicy="no-referrer"
+    ></script>
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css"
+    />
+    <style>
+      .container {
+        overflow-y: scroll;
+      }
+      .survey__date_fixed {
+        height: calc(100vh - 70px);
+      }
+      .survey__date__form__cover__fixed {
+        height: 500px;
+      }
+      #survey__date__submit__btn {
+        background-color: var(--green-bg);
+        color: #fff;
+        min-width: 170px;
+        padding: 10px 0px 10px 0px;
+      }
+      .navbar {
+        display: flex;
+        justify-content: space-between;
+      }
+      .navbar a {
+        color: #fff;
+        background-color: hsla(102, 63%, 60%, 1);
+        padding: 5px 20px 5px 20px;
+        margin-right: 10px;
+        border-radius: 5px;
+        font-size: 12px;
+      }
+    </style>
+  </head>
 
-    <body>
-        <main>
-            <div class="container">
-                <!-- main section starts -->
-                <header class="">
-                    <nav id="navbar">
-                        <span class="padding_center"><i class="fa fa-bars"></i></span>
-                    </nav>
-                </header>
+  <body>
+    <main>
+      <div class="container">
+        <!-- main section starts -->
+        <header class="">
+          <nav id="navbar" class="navbar">
+            <span class="padding_center"><i class="fa fa-bars"></i></span>
+            {% if is_survey_owner_logged_in %}
+            <a href="{% url 'my_surveys'%}">Visit dashboard</a>
+            {% endif %}
+          </nav>
+        </header>
 
-                <section class="survey__date_fixed">
-                    {% if pause_survey %}
-                        <section class="survey__text">
-                            <h3>Pausing Survey</h3>
-                        </section>
-                    {% else %}
-                        <section class="survey__text">
-                            <h3>select a start and stop date of survey</h3>
-                        </section>
-                    {% endif %}
+        <section class="survey__date_fixed">
+          {% if pause_survey %}
+          <section class="survey__text">
+            <h3>Pausing Survey</h3>
+          </section>
+          {% else %}
+          <section class="survey__text">
+            <h3>select a start and stop date of survey</h3>
+          </section>
+          {% endif %}
 
-                    <div class="survey__date__form__cover__fixed flex">
-                        <form method="post" action="" class="">
-                            {% csrf_token %}
-                            
-                            {% if pause_survey %}
-                                <input type="hidden" value="1" name="pause_survey" id="pause_survey" required />
-                                <section class="survey__date__title padding_center">
-                                    select the date when survey should resume
-                                </section>
-                            {% else %}
-                                <input type="hidden" value="0" name="pause_survey" id="pause_survey" required />
-                                <section class="survey__date__title padding_center">
-                                    select the duration of survey that has to be shown
-                                </section>
-                            {% endif %}
-                            <div class="survey__date__inputs flex padding_center">
-                                <div class="form_control_date">
-                                    {% if pause_survey %}
-                                        <label for="start__date">Resume date</label>
-                                        <input type="date" value="" name="start_date" id="start_date" required />
-                                
-                                    {% else %}
-                                        <label for="start__date">Start date</label>
-                                        <input type="date" value="{{ qr_code.start_date|date:'Y-m-d' }}" name="start_date" id="start_date" required />
-                                
-                                    {% endif %}
+          <div class="survey__date__form__cover__fixed flex">
+            <form method="post" action="" class="">
+              {% csrf_token %} {% if pause_survey %}
+              <input
+                type="hidden"
+                value="1"
+                name="pause_survey"
+                id="pause_survey"
+                required
+              />
+              <section class="survey__date__title padding_center">
+                select the date when survey should resume
+              </section>
+              {% else %}
+              <input
+                type="hidden"
+                value="0"
+                name="pause_survey"
+                id="pause_survey"
+                required
+              />
+              <section class="survey__date__title padding_center">
+                select the duration of survey that has to be shown
+              </section>
+              {% endif %}
+              <div class="survey__date__inputs flex padding_center">
+                <div class="form_control_date">
+                  {% if pause_survey %}
+                  <label for="start__date">Resume date</label>
+                  <input
+                    type="date"
+                    value=""
+                    name="start_date"
+                    id="start_date"
+                    required
+                  />
 
-                             </div>
-                                <div class="form_control_date">
-                                    <label for="end__date">End date</label>
-                                    <input type="date" value="{{ qr_code.end_date|date:'Y-m-d' }}" name="end_date" id="end_date" required />
-                                </div>
-                            </div>
-                            <div class="form_control_date__btn padding_center">
-                                
-                                {% if pause_survey %}
-                                    
-                                {% else %}
-                                    <button id="survey__date__btn" class="survey__date__btn survey__date__btn__show">
-                                        start now
-                                    </button>
-                                {% endif %}
-                            </div>
-                            <div class="form_control_date__submit__btn padding_center flex">
-                                <button type="submit" id="survey__date__submit__btn">
-                                    Proceed
-                                </button>
-                            </div>
-                        </form>
-                    </div>
-                </section>
+                  {% else %}
+                  <label for="start__date">Start date</label>
+                  <input
+                    type="date"
+                    value="{{ qr_code.start_date|date:'Y-m-d' }}"
+                    name="start_date"
+                    id="start_date"
+                    required
+                  />
 
-                <!-- survey start date pop up -->
-                <section class="survey_date_popup flex">
-                    <div class="survey_date_popup_content flex">
-                        <div class="survey_date_popup_close flex">
-                            <span id="survey-datestart-close">x</span>
-                        </div>
-                        <h4 class="padding_center items-center">
-                            start date of survey <br />
-                            has been set
-                        </h4>
-                        <img src="{% static 'assets/img/image-4.png' %}" alt="" />
-                    </div>
-                </section>
+                  {% endif %}
+                </div>
+                <div class="form_control_date">
+                  <label for="end__date">End date</label>
+                  <input
+                    type="date"
+                    value="{{ qr_code.end_date|date:'Y-m-d' }}"
+                    name="end_date"
+                    id="end_date"
+                    required
+                  />
+                </div>
+              </div>
+              <div class="form_control_date__btn padding_center">
+                {% if pause_survey %} {% else %}
+                <button
+                  id="survey__date__btn"
+                  class="survey__date__btn survey__date__btn__show"
+                >
+                  start now
+                </button>
+                {% endif %}
+              </div>
+              <div class="form_control_date__submit__btn padding_center flex">
+                <button type="submit" id="survey__date__submit__btn">
+                  Proceed
+                </button>
+              </div>
+            </form>
+          </div>
+        </section>
+
+        <!-- survey start date pop up -->
+        <section class="survey_date_popup flex">
+          <div class="survey_date_popup_content flex">
+            <div class="survey_date_popup_close flex">
+              <span id="survey-datestart-close">x</span>
             </div>
-        </main>
+            <h4 class="padding_center items-center">
+              start date of survey <br />
+              has been set
+            </h4>
+            <img src="{% static 'assets/img/image-4.png' %}" alt="" />
+          </div>
+        </section>
+      </div>
+    </main>
 
-        <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
-        <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
-        <script>
-            "use strict";
+    <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+    <script>
+      "use strict";
 
-            //get the start now btn
-            const startNowBtn = document.querySelector(".survey__date__btn");
+      //get the start now btn
+      const startNowBtn = document.querySelector(".survey__date__btn");
 
-            let startDate;
-            let endDate;
-            let parseStartDate;
-            let parseEndDate;
+      let startDate;
+      let endDate;
+      let parseStartDate;
+      let parseEndDate;
 
-            document.querySelector("input[type='date'][name='start_date']").addEventListener("change", function () {
-                startDate = this.value;
-                parseStartDate = new Date(startDate);
-                validateDate();
-            });
-            document.querySelector("input[type='date'][name='end_date']").addEventListener("change", function () {
-                endDate = this.value;
-                parseStartDate = new Date(endDate);
-                validateDate();
-            });
+      document
+        .querySelector("input[type='date'][name='start_date']")
+        .addEventListener("change", function () {
+          startDate = this.value;
+          parseStartDate = new Date(startDate);
+          validateDate();
+        });
+      document
+        .querySelector("input[type='date'][name='end_date']")
+        .addEventListener("change", function () {
+          endDate = this.value;
+          parseStartDate = new Date(endDate);
+          validateDate();
+        });
 
-            const validateDate = () => {
-                if (startDate && endDate) {
-                    // if (parseEndDate <= parseStartDate) {
-                    //   console.log("end must be in the future");
-                    // }
-                    startNowBtn.classList.add("survey__date__btn__show");
-                }
-            };
+      const validateDate = () => {
+        if (startDate && endDate) {
+          // if (parseEndDate <= parseStartDate) {
+          //   console.log("end must be in the future");
+          // }
+          startNowBtn.classList.add("survey__date__btn__show");
+        }
+      };
 
-           
+      //survey date validate pop up
+      const surveyDateStartBtn = document.querySelector("#survey__date__btn");
+      console.log(surveyDateStartBtn);
+      const surveyDateCloseBtn = document.querySelector(
+        "#survey-datestart-close"
+      );
+      const surveyDatePopup = document.querySelector(".survey_date_popup");
 
-            //survey date validate pop up
-            const surveyDateStartBtn = document.querySelector("#survey__date__btn");
-            console.log(surveyDateStartBtn);
-            const surveyDateCloseBtn = document.querySelector("#survey-datestart-close");
-            const surveyDatePopup = document.querySelector(".survey_date_popup");
-
-            surveyDateStartBtn.addEventListener("click", (e) => {
-                document.querySelector("input[type='date'][name='start_date']").value = new Date().toISOString().slice(0, 10);
-                e.preventDefault();
-                surveyDatePopup.classList.add("survey_date_popup_show");
-            });
-            surveyDateCloseBtn.addEventListener("click", () => {
-                surveyDatePopup.classList.remove("survey_date_popup_show");
-            });
-        </script>
-    </body>
+      surveyDateStartBtn.addEventListener("click", (e) => {
+        document.querySelector("input[type='date'][name='start_date']").value =
+          new Date().toISOString().slice(0, 10);
+        e.preventDefault();
+        surveyDatePopup.classList.add("survey_date_popup_show");
+      });
+      surveyDateCloseBtn.addEventListener("click", () => {
+        surveyDatePopup.classList.remove("survey_date_popup_show");
+      });
+    </script>
+  </body>
 </html>

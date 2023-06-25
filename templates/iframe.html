@@ -104,6 +104,8 @@
                 {% endif %}
                 {% if manage_survey %}
                     <div class="iframe__btn">
+                        <a href="{% url 'my_surveys'%}" class="btn btn-warning"style="margin-right: 20px;">Visit dashboard</a>
+
                         <a href="{% url 'survey_end' qr_code.pk %}" class="btn btn-warning">Manage survey</a>
                     </div>
                 {% endif %}
