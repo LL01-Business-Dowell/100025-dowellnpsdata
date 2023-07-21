@@ -20,26 +20,28 @@ from django.contrib.sites.models import Site
 import qrcode
 from PIL import Image
 
-    
+
 
 
 class QrCodeViewSet(viewsets.ModelViewSet):
-    
+
     queryset = QrCode.objects.all()
 
 
     def get_serializer_class(self):
         if self.action == 'create':
+            print("action = create")
             return CreateQrCodeSerializer
         if self.action == 'retrive':
+            print("action = retieve")
             return ListQrCodeSerializer
         return ListQrCodeSerializer
 
     # def create(self, request):
     #     print('from api')
     #     print(request.data)
-    
-    
 
-    
+
+
+
 

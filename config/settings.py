@@ -107,8 +107,6 @@ WSGI_APPLICATION = 'config.wsgi.application'
 #     }
 # }
 DATABASES = {
-<<<<<<< HEAD
-
         'default': {
              'ENGINE': 'django.db.backends.mysql', # mysql database python driver.
              'NAME': '100025$qr_code_db',    # mysql database name.
@@ -117,18 +115,6 @@ DATABASES = {
              'HOST': '100025.mysql.pythonanywhere-services.com', # db machine ip or domain, if left empty then the value is localhost.
             #  'PORT': '3306', # db server listening port number
          }
-
-=======
-    'default': {
-        'ENGINE': 'django.db.backends.mysql',
-        'NAME': 'dowell_qrcode_franklin_db7',
-        'HOST': '127.0.0.1',
-        'PORT': '3306',
-        'USER': 'root',
-        'PASSWORD': 'pass123456'
-        # 'PASSWORD':'',
-    }
->>>>>>> 650e282dc5399bf368859f94b78590260620c601
 }
 
 

@@ -6,7 +6,7 @@ from django.http import HttpResponse, JsonResponse
 from django.conf import settings
 from django.views.generic import View
 from django.contrib.auth.mixins import LoginRequiredMixin
-
+import json
 from api.models import QrCode
 
 
@@ -208,21 +208,55 @@ def get_survey_status(survey_id):
 
     return survey_status, survey_link, survey_link_text
 
-def get_event_id():
-    dd = datetime.now()
-    time = dd.strftime("%d:%m:%Y,%H:%M:%S")
-    url = "https://100003.pythonanywhere.com/event_creation"
-    data = {"platformcode": "FB", "citycode": "101", "daycode": "0",
-            "dbcode": "pfm", "ip_address": "192.168.0.41",
-            "login_id": "lav", "session_id": "new",
-            "processcode": "1", "regional_time": time,
-            "dowell_time": time, "location": "22446576",
-            "objectcode": "1", "instancecode": "100051", "context": "afdafa ",
-            "document_id": "3004", "rules": "some rules", "status": "work"
-            }
+# def get_event_id():
+#     dd = datetime.now()
+#     time = dd.strftime("%d:%m:%Y,%H:%M:%S")
+#     url = "https://100003.pythonanywhere.com/event_creation"
+#     data = {"platformcode": "FB", "citycode": "101", "daycode": "0",
+#             "dbcode": "pfm", "ip_address": "192.168.0.41",
+#             "login_id": "lav", "session_id": "new",
+#             "processcode": "1", "regional_time": time,
+#             "dowell_time": time, "location": "22446576",
+#             "objectcode": "1", "instancecode": "100051", "context": "afdafa ",
+#             "document_id": "3004", "rules": "some rules", "status": "work"
+#             }
 
-    r = requests.post(url, json=data)
-    return r.text
+#     r = requests.post(url, json=data)
+#     return r.text
+def get_event_id():
+
+    url="https://uxlivinglab.pythonanywhere.com/create_event"
+
+    data={
+        "platformcode":"FB" ,
+        "citycode":"101",
+        "daycode":"0",
+        "dbcode":"pfm" ,
+        "ip_address":"192.168.0.41", # get from dowell track my ip function
+        "login_id":"lav", #get from login function
+        "session_id":"new", #get from login function
+        "processcode":"1",
+        "location":"22446576", # get from dowell track my ip function
+        "objectcode":"1",
+        "instancecode":"100051",
+        "context":"afdafa ",
+        "document_id":"3004",
+        "rules":"some rules",
+        "status":"work",
+        "data_type": "learn",
+        "purpose_of_usage": "add",
+        "colour":"color value",
+        "hashtags":"hash tag alue",
+        "mentions":"mentions value",
+        "emojis":"emojis",
+        "bookmarks": "a book marks"
+    }
+
+    r=requests.post(url,json=data)
+    if r.status_code == 201:
+        return json.loads(r.text)
+    else:
+        return json.loads(r.text)['error']
 
 
 def is_survey_owner_logged_in(request, survey_id):

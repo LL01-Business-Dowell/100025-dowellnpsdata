@@ -1,4 +1,5 @@
 from django.shortcuts import render, redirect
+from api.serializers import *
 import requests
 import json
 from rest_framework.response import Response
@@ -11,6 +12,7 @@ from accounts.views.helper import upload_to_remote_db
 from django.views.decorators.clickjacking import xframe_options_exempt
 from django.views.decorators.csrf import csrf_exempt
 
+# from .serializers import ListQrCodeSerializer, CreateQrCodeSerializer
 def get_key():
     username = "dowellFeedback"
     password = "DOWELL@qrcode2022"
@@ -93,14 +95,15 @@ class DashboardView(View):
             if 'username' not in request.session:
                 return redirect("https://100014.pythonanywhere.com/")
 
-            headers = {
-                "cache-control": "no-cache",
-            }
+            # headers = {
+            #     "cache-control": "no-cache",
+            # }
 
             formdata = {}
 
             # formdata['logo'] = request.FILES['logo'].file.getvalue()
             files = {'logo': request.FILES['logo']}
+            formdata['logo'] =request.FILES['logo']
             formdata['brand_name'] = request.POST.get('brand_name')
             formdata['service'] = request.POST.get('service')
             formdata['url'] = request.POST.get('url')
@@ -120,15 +123,19 @@ class DashboardView(View):
             dta2 = formdata['region']
             r = '-'.join(dta2)
             formdata['region'] = r
+            print("Serializer files type", type(files['logo']))
+            print("Serializer files ", files)
+            serializer = CreateQrCodeSerializer(data=formdata)
+            if serializer.is_valid():
+                serializer.save()
+                # print("res", res)
+                print("serializer", serializer.data)
+                res_data = serializer.data
 
-            res = requests.post(url, data=formdata, files=files)
-
-
-            res_data = res.json()
-            upload_to_remote_db(res_data)
-
-            # added &survey_id='+res_data['id'] to include survey_id in the link in qrcode
-            context = {
+                upload_to_remote_db(res_data)
+                # file_url = request.build_absolute_uri(settings.MEDIA_URL + file_path)
+                # return Response({'file_url': file_url}, status=status.HTTP_201_CREATED)
+                context = {
                 'qrcode': res_data['qr_code'],
                 'country': res_data['country'],
                 'region': r,
@@ -137,9 +144,29 @@ class DashboardView(View):
                 'link': 'https://'+settings.HOSTNAME+'/iframe?survey_id='+str(res_data['id'])
 
             }
-            print(context, 'returning data')
+                print(context, 'returning data')
 
-            request.session['form_link'] = res_data['url']
-            return render(request, 'qrcode/create_qr_code.html', context)
+                request.session['form_link'] = res_data['url']
+                return render(request, 'qrcode/create_qr_code.html', context)
+            # res = requests.post(url, data=formdata, files=files)
+
+
+            # res_data = res.json()
+            # upload_to_remote_db(res_data)
+
+            # # added &survey_id='+res_data['id'] to include survey_id in the link in qrcode
+            # context = {
+            #     'qrcode': res_data['qr_code'],
+            #     'country': res_data['country'],
+            #     'region': r,
+            #     'promotional_sentence': res_data['promotional_sentence'],
+            #     'pk': res_data['id'],
+            #     'link': 'https://'+settings.HOSTNAME+'/iframe?survey_id='+str(res_data['id'])
+
+            # }
+            # print(context, 'returning data')
+
+            # request.session['form_link'] = res_data['url']
+            # return render(request, 'qrcode/create_qr_code.html', context)
         context = {}
         return render(request, self.template_name, context)

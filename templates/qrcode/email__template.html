@@ -132,22 +132,21 @@
 						</tr>
 						<tr>
 							<td>
-<<<<<<< HEAD
 								<!--<p style="line-height: 20px;">-->
-								<h4>Embeded Code</h4>
+								<!--<h4>Embeded Code</h4>-->
 
-								    <code style="line-height: 20px;">
+								<!--    <code style="line-height: 20px;">-->
 
-									< iframe src="{{ qr_code.url }}" title="Survey" data-survey-id="{{ qr_code.pk }}" width="350" height="100%"> </iframe>
+								<!--	< iframe src="{{ qr_code.url }}" title="Survey" data-survey-id="{{ qr_code.pk }}" width="350" height="100%"> </iframe>-->
 								<!--</p>-->
-								</code>
+								<!--</code>-->
 
-=======
+
 								<p style="line-height: 20px;" id="iframe">
-									Embeded Code: 
+									Embeded Code:
 									< iframe src="{{ qr_code.url }}" title="Survey" data-survey-id="{{ qr_code.pk }}" width="350" height="100%"> </iframe>
 								</p>
-								
+
 								<!-- <div>
 									<input type="text" value={{ qr_code.url }} id="myInput">
 
@@ -158,7 +157,6 @@
   </button>
 </div
 								</div> -->
->>>>>>> 650e282dc5399bf368859f94b78590260620c601
 							</td>
 						</tr>
 
@@ -211,22 +209,11 @@
 								<p>
 									Attached is a qr code image and also an embedding link for the survey created.
 								</p>
-<<<<<<< HEAD
-
-									<p><b>Preview of the survey invitation in uxlivinglab page</b></p>
-
-									<p>Whether you're here for your brand, a cause, or just for fun, welcome back! If there is anything you need, we will be here every step of the way.</p>
-
-=======
-									
-									
-									
 									<p>Always a pleasure to work with you.</p>
-									
->>>>>>> 650e282dc5399bf368859f94b78590260620c601
+
 									<p>
 										Thank you, <br>
-									Dowell UX Living Lab 
+									Dowell UX Living Lab
 									</p>
 									<!-- <p style="margin-top:40px ;">
 										<a href="/iframe/?survey_id={{ qr_code.pk }}" target="_blank" style="background-color: hsla(126, 53%, 56%, 1);
@@ -239,13 +226,11 @@
 								<table width="100%" style="margin: 20px 0 ;">
 									<tr>
 										<td style="text-align:center ;">
-<<<<<<< HEAD
 											<p>Sent by Dowell Feedback <a href="#"></a></p>
 											<!--<p>44 De Haro Street, Suite 199, San Francisco, CA 94108</a></p>-->
-=======
+
 											<p>Copyright message dowell @2023.</p>
 											<p></a></p>
->>>>>>> 650e282dc5399bf368859f94b78590260620c601
 										</td>
 									</tr>
 								</table>
@@ -262,7 +247,7 @@
   copyText.select();
   copyText.setSelectionRange(0, 99999);
   navigator.clipboard.writeText(copyText.value);
-  
+
   var tooltip = document.getElementById("myTooltip");
   tooltip.innerHTML = "Copied: " + copyText.value;
 }
@@ -277,8 +262,8 @@ function outFunc() {
 	const url = location.href
 	const iframeURL = url.replace('preview_email', 'iframe')
 	const iframe = document.getElementById('iframe')
-	iframe.innerText = `Embeded Code: 
-	<iframe src="${iframeURL}" title="Survey" data-survey-id="3" width="350" height="100%"> `					
+	iframe.innerText = `Embeded Code:
+	<iframe src="${iframeURL}" title="Survey" data-survey-id="3" width="350" height="100%"> `
 </script>
 
 
