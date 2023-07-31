@@ -9,7 +9,7 @@ starts or after it ends then they will get feedback to say the same otherwise th
 <div>
 
 
-  
+
 ### step 1
 <div>First we click "create my own survey button" </div>
 <img src='https://res.cloudinary.com/dhmvn4nnf/image/upload/v1667206561/sbs-email-template/dowell/Feedback_lnmbtk.jpg' height='300' width='200'/>
@@ -19,18 +19,22 @@ starts or after it ends then they will get feedback to say the same otherwise th
 survey should take part, then a promotional sentence at the bottom. Then click create a survey.</div>
 <img src='https://res.cloudinary.com/dhmvn4nnf/image/upload/v1667206560/sbs-email-template/dowell/Create_servey_qhp4cw.jpg' height='300' width='200'/>
 
+
 ### step 3
 <div>The QR code is then created and displayed. After clicking the privacy policy button we set the survey timeline </div>
 <img src='https://res.cloudinary.com/dhmvn4nnf/image/upload/v1667206561/sbs-email-template/dowell/Create_QR_code_juazmx.jpg' height='300' width='200'/>
+
 
 ### step 4
 <div>At this stage, we set the start and end dates</div>
 <img src='https://res.cloudinary.com/dhmvn4nnf/image/upload/v1667206560/sbs-email-template/dowell/survey_date_1_ucdb4x.jpg' height='300' width='200'/>
 
+
 ### step 5
 <div>Feedback is given on the success or failure
 </div>
 <img src='https://res.cloudinary.com/dhmvn4nnf/image/upload/v1667206560/sbs-email-template/dowell/survey_date_1_1_iutxdq.jpg' height='300' width='200'/>
+
 
 ### step 6
 <div>The creator details are collected here. The email filled in here will receive the details about the survey created/
