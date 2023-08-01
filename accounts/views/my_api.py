@@ -17,6 +17,20 @@ def my_date(date_str):
     date_object = datetime.strptime(date_str, '%d-%m-%Y').date()
     
     return date_object
+
+
+def processApikey(api_key):
+            url = f'https://100105.pythonanywhere.com/api/v3/process-services/?type=api_service&api_key={api_key}'
+            print(api_key)
+            print(url)
+            payload = {
+                "service_id" : "DOWELL10016"
+            }
+
+            response = requests.post(url, json=payload)
+            return response.text
+        
+        
 class GetDowellSurvey(APIView):
     def get(self, request, format=None):
         return JsonResponse({"data":"Kindly use a POST request instead of GET"})
@@ -31,6 +45,7 @@ class GetDowellSurvey(APIView):
         try:
             # formdata["logo"] = myDict["logo"]
             api_key = myDict['api_key']
+            process_api_response = processApikey(api_key)
             # api_key = "dfb47207-be23-43e6-86db-3940919509a3"
             company_id = myDict['company_id']
             formdata['logo'] = myDict['logo']
@@ -126,6 +141,7 @@ class GetDowellSurvey(APIView):
             formdata = {}
             files = {}
             api_key = myDict['api_key']
+            process_api_response = processApikey(api_key)
             # api_key = "dfb47207-be23-43e6-86db-3940919509a3"
             company_id = myDict['company_id']
             formdata['logo'] = myDict['logo']
@@ -164,3 +180,8 @@ class GetDowellSurvey(APIView):
             return Response(str(e), status=status.HTTP_400_BAD_REQUEST)
         except Http404:
             return Response("Survey not found", status=status.HTTP_404_NOT_FOUND)
+        
+        
+        
+        
+        
