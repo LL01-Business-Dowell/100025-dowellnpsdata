@@ -118,6 +118,7 @@ WSGI_APPLICATION = 'config.wsgi.application'
 #         'PORT': '3306',  
 #     }
 # }
+
 DATABASES = {
         'default': {
              'ENGINE': 'django.db.backends.mysql', # mysql database python driver.

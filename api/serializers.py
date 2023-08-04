@@ -122,7 +122,9 @@ class CreateQrCodeSerializer(serializers.ModelSerializer):
             new_qrcode.image = converted_string
             new_qrcode.event_id = get_event_id()
             new_qrcode.save()
+            print("This is the validated data in serializer to be save", new_qrcode)
             return new_qrcode
+        
         except Exception as ex:
 
             print("Exception is serializwe ", ex)
