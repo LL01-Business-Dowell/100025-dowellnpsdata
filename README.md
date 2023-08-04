@@ -91,7 +91,7 @@ The `POST` method is used to create a new Dowell Survey, and the `PUT` method is
 | email                  | string   | The email                 |
 | start_date                  | string   | The date the survey should tart                 |
 | end_date                  | string   | The The date the survey should end                 |
-| ... (other parameters)| ...      | ...                                              |
+                                            |
 
 #### Responses
 
