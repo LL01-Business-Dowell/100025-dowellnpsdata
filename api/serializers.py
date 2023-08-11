@@ -129,6 +129,28 @@ class CreateQrCodeSerializer(serializers.ModelSerializer):
 
             print("Exception is serializwe ", ex)
             print(ex, traceback.format_exc())
+            
+            
+            
+class UpdateQrCodeSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = QrCode
+        fields = ['logo']
+
+    def update(self, instance, validated_data):
+        try:
+            logo = validated_data.pop('logo')
+
+            # Update the logo field of the existing instance
+            instance.logo = logo
+            instance.save()
+
+            return instance
+        except Exception as ex:
+            print("Exception in serializer: ", ex)
+            print(traceback.format_exc())
+            raise ex
+
             # print(traceback.format_exc())
     # or
             # print(sys.exc_info()[2])

@@ -299,7 +299,7 @@ def upload_to_remote_db(data):
     }
 
     response = requests.post(url, headers=headers, json=payload)
-    print(response.text)
+
 
 
 class FeedbackView(View):

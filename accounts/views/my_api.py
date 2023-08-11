@@ -52,8 +52,9 @@ class GetDowellSurvey(APIView):
             api_key = request.query_params.get('api_key')
             print('This is the params api', api_key)
             process_api_response = processApikey(api_key)
+       
             if process_api_response.status_code == 200:
-                print('This is the api_key response', type(process_api_response))
+                print('This is the api_key response', process_api_response)
                 company_id = myDict['company_id']
                 formdata['logo'] = myDict['logo']
                 formdata["brand_name"] = myDict["brand_name"]
@@ -76,25 +77,27 @@ class GetDowellSurvey(APIView):
                 r = '-'.join(dta2)
                 formdata['region'] = r
                 url = 'https://' + host + '/api/qrcode/'
-                print("formdata ", formdata)
-                print("url ", url)
+                # print("formdata ", formdata)
+                # print("url ", url)
 
                 # serializer = QrCodeFileSerializer(data=request.data)
                 serializer = CreateQrCodeSerializer(data=formdata)
                 if serializer.is_valid():
                     res = serializer.save()
-                    print("this is the res data", res)
-                    print("serializer", serializer.data)
+                    # print("this is the res data", res)
+                    # print("serializer", serializer.data)
                     res_data = serializer.data
 
                     upload_to_remote_db(res_data)
                     # file_url = request.build_absolute_uri(settings.MEDIA_URL + file_path)
                     # return Response({'file_url': file_url}, status=status.HTTP_201_CREATED)
+                    
                     context = {
                         'qrcode': res_data['qr_code'],
                         'link': 'https://'+settings.HOSTNAME+'/iframe?survey_id=' + str(res_data['id'])
 
                     }
+                    
                     qrcode_type = "Link"
                     quantity = 1
                     company_id = company_id
@@ -135,94 +138,65 @@ class GetDowellSurvey(APIView):
         except Http404:
             return Response("Kindly check your payload ", status=status.HTTP_400_BAD_REQUEST)
 
-    def put(self, request, pk, format=None):
-
+    def put(self, request, qrcode_id, format=None):
+    
         try:
             try:
-                survey = QrCode.objects.get(id=pk)
+               
+                myDict = request.data
+                pro_id = myDict['SurveyId']
+                survey = QrCode.objects.get(id=pro_id)
+                print(f"Survey found {survey}")
             except QrCode.DoesNotExist:
                 raise Http404("Survey not found")
             
-            myDict = request.data
+            
+            print(f"my dict data  {myDict}")
             formdata = {}
             files = {}
             api_key = request.query_params.get('api_key')
             process_api_response = processApikey(api_key)
-            process_api_response = processApikey(api_key)
             if process_api_response.status_code == 200:
                 company_id = myDict['company_id']
+                description = myDict['description']
+                qrcode_color = myDict["qrcode_color"]
                 formdata['logo'] = myDict['logo']
-                formdata["brand_name"] = myDict["brand_name"]
-                formdata["service"] = myDict["service"]
-                formdata["url"] = myDict["url"]
-                formdata["country"] = myDict.getlist("country")
-                formdata["region"] = myDict.getlist("region")
-                formdata["promotional_sentence"] = myDict["promotional_sentence"]
-                formdata["username"] = myDict["username"]
-                formdata["name"] = myDict["name"]
-                formdata["email"] = myDict["email"]
-                formdata["start_date"] = my_date(myDict["start_date"])
-                formdata["end_date"] = my_date(myDict["end_date"])
+                link = myDict["link"]
+                created_by = myDict["created_by"]
                 host = request.META['HTTP_HOST']
-                dta = formdata["country"]
-                c = '-'.join(dta)
-                formdata["country"] = c
-
-                dta2 = formdata['region']
-                r = '-'.join(dta2)
-                formdata['region'] = r
-                url = 'https://' + host + '/api/qrcode/'
-                print("formdata ", formdata)
-                print("url ", url)
-                serializer = CreateQrCodeSerializer(survey, data=formdata)
+                
+                
+                serializer = UpdateQrCodeSerializer(survey,data=formdata)
                 if serializer.is_valid():
                     res = serializer.save()
-                    
                     res_data = serializer.data
-
                     upload_to_remote_db(res_data)
-                    # file_url = request.build_absolute_uri(settings.MEDIA_URL + file_path)
-                    # return Response({'file_url': file_url}, status=status.HTTP_201_CREATED)
-                    context = {
-                        'qrcode': res_data['qr_code'],
-                        'link': 'https://'+settings.HOSTNAME+'/iframe?survey_id=' + str(res_data['id'])
 
-                    }
-                    
-                    qrcode_type = "Link"
-                    quantity = 1
+                    logo = res_data['logo']
                     company_id = company_id
-                    link = 'https://'+settings.HOSTNAME + \
-                        '/iframe?survey_id=' + str(res_data['id'])
-                    description = res_data['promotional_sentence']
-                    created_by = res_data['username']
-
-                    qrcode_url = 'https://100099.pythonanywhere.com/api/v2/qr-code/?api_key=' + api_key
-                    payload = {"qrcode_type": qrcode_type,
-                            "quantity": quantity,
-                            "company_id": company_id,
-                            # "logo":logo,
-                            "link": link,
-                            "description": description,
-                            "created_by": created_by}
+                    link = link
+                    created_by = created_by
+                    qrcode_color = qrcode_color
+                    description = description
+                   
+                    
+                    qrcode_url = f'https://100099.pythonanywhere.com/api/v2/update-qr-code/{qrcode_id}/?api_key=' + api_key
+                    payload = {
+                        "logo": logo,
+                        "company_id": company_id,
+                        "link": link,
+                        "description": description,
+                        "created_by": created_by,
+                        "qrcode_color": qrcode_color,
+                    }
                     headers = {"Content-Type": "multipart/form-data"}
-
-                    print("files === ", files)
-                    res = requests.post(qrcode_url, data=payload)
-                    # res = {"qr_code_generator_response": res}
-                    print("res === ", res)
-                    print("res.text === ", res.text)
-                    print("type res.text === ", type(res.text))
+                    res = requests.put(qrcode_url, data=payload)
                     res_obj = json.loads(res.text)
-                    print("res_obj === ", res_obj)
-
                     return Response(res_obj, status=status.HTTP_200_OK)
                 else:
                     return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
             else:
                 return Response("API Key validation failed.", status=status.HTTP_400_BAD_REQUEST)
-                    
-         
         except CustomError:
             return Response("Kindly check your payload ", status=status.HTTP_400_BAD_REQUEST)
         except Http404:
