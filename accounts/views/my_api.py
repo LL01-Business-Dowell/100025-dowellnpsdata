@@ -52,8 +52,8 @@ class GetDowellSurvey(APIView):
             api_key = request.query_params.get('api_key')
             print('This is the params api', api_key)
             process_api_response = processApikey(api_key)
-            # if process_api_response.status_code == 200:
-            if api_key == '76092219-c570-4c86-88f0-efa63966e06b':
+            if process_api_response.status_code == 200:
+         
                 print('This is the api_key response', process_api_response)
                 company_id = myDict['company_id']
                 formdata['logo'] = myDict['logo']
@@ -157,8 +157,7 @@ class GetDowellSurvey(APIView):
             api_key = request.query_params.get('api_key')
             # process_api_response = processApikey(api_key)
             process_api_response = api_key
-            # if process_api_response.status_code == 200:
-            if api_key == '76092219-c570-4c86-88f0-efa63966e06b':
+            if process_api_response.status_code == 200:
                 company_id = myDict['company_id']
                 description = myDict['description']
                 qrcode_color = myDict["qrcode_color"]
