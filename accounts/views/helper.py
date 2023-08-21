@@ -271,7 +271,41 @@ def is_survey_owner_logged_in(request, survey_id):
 def upload_to_remote_db(data):
     # print('sanity check')
     # print(data)
-    url = "https://100002.pythonanywhere.com/"
+    # url = "https://100002.pythonanywhere.com/"
+    url = "http://uxlivinglab.pythonanywhere.com/"
+    # searchstring="ObjectId"+"("+"'"+"6139bd4969b0c91866e40551"+"'"+")"
+    payload = {
+        "cluster": "nps",
+
+        "database": "voc_survey",
+
+        "collection": "client_voc_data",
+
+        "document": "client_voc_data",
+
+        "team_member_ID": "76888881",
+
+        "function_ID": "ABCDE",
+
+        "command": "insert",
+
+        "field": data,
+        "update_field": {
+            "order_nos": 21
+        },
+        "platform": "bangalore"
+    }
+    headers = {
+        'Content-Type': 'application/json'
+    }
+
+    response = requests.post(url, headers=headers, json=payload)
+    
+def update_to_remote_db(data):
+    # print('sanity check')
+    # print(data)
+    # url = "https://100002.pythonanywhere.com/"
+    url = "http://uxlivinglab.pythonanywhere.com/"
     # searchstring="ObjectId"+"("+"'"+"6139bd4969b0c91866e40551"+"'"+")"
     payload = {
         "cluster": "nps",

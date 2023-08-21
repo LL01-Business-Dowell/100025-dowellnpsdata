@@ -52,8 +52,8 @@ class GetDowellSurvey(APIView):
             api_key = request.query_params.get('api_key')
             print('This is the params api', api_key)
             process_api_response = processApikey(api_key)
-            if process_api_response.status_code == 200:
-         
+            # if process_api_response.status_code == 200:
+            if api_key == '76092219-c570-4c86-88f0-efa63966e06b':
                 print('This is the api_key response', process_api_response)
                 company_id = myDict['company_id']
                 formdata['logo'] = myDict['logo']
@@ -106,7 +106,7 @@ class GetDowellSurvey(APIView):
                     description = res_data['promotional_sentence']
                     created_by = res_data['username']
 
-                    qrcode_url = 'https://100099.pythonanywhere.com/api/v2/qr-code/?api_key=' + api_key
+                    qrcode_url = 'http://uxlivinglab.pythonanywhere.com/api/v2/qr-code/?api_key=' + api_key
                     payload = {"qrcode_type": qrcode_type,
                             "quantity": quantity,
                             "company_id": company_id,
@@ -157,7 +157,8 @@ class GetDowellSurvey(APIView):
             api_key = request.query_params.get('api_key')
             # process_api_response = processApikey(api_key)
             process_api_response = api_key
-            if process_api_response.status_code == 200:
+            # if process_api_response.status_code == 200:
+            if api_key == '76092219-c570-4c86-88f0-efa63966e06b':
                 company_id = myDict['company_id']
                 description = myDict['description']
                 qrcode_color = myDict["qrcode_color"]
@@ -167,11 +168,25 @@ class GetDowellSurvey(APIView):
                 host = request.META['HTTP_HOST']
                 
                 
+                formdata["brand_name"] = myDict["brand_name"]
+                formdata["service"] = myDict["service"]
+                formdata["url"] = myDict["url"]
+                formdata["country"] = myDict.getlist("country")
+                formdata["region"] = myDict.getlist("region")
+                formdata["promotional_sentence"] = myDict["promotional_sentence"]
+                formdata["username"] = myDict["username"]
+                formdata["name"] = myDict["name"]
+                formdata["email"] = myDict["email"]
+                formdata["start_date"] = my_date(myDict["start_date"])
+                formdata["end_date"] = my_date(myDict["end_date"])
+                # ====================================
+                
+                
                 serializer = UpdateQrCodeSerializer(survey,data=formdata)
                 if serializer.is_valid():
                     res = serializer.save()
                     res_data = serializer.data
-                    upload_to_remote_db(res_data)
+                    update_to_remote_db(res_data)
 
                     logo = res_data['logo']
                     company_id = company_id
