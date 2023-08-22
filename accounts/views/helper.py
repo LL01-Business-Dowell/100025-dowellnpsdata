@@ -268,7 +268,7 @@ def is_survey_owner_logged_in(request, survey_id):
     return False
 
 
-def upload_to_remote_db(data):
+def upload_to_remote_db(document_id,data):
     # print('sanity check')
     # print(data)
     # url = "https://100002.pythonanywhere.com/"
@@ -320,9 +320,10 @@ def update_to_remote_db(data):
 
         "function_ID": "ABCDE",
 
-        "command": "insert",
+        "command": "update",
 
         "field": data,
+        "update_data": data,
         "update_field": {
             "order_nos": 21
         },
