@@ -16,7 +16,7 @@
     <style>
       /* css for multiselect */
       .countries__toggler,
-      .regions__toggler, .products__toggler {
+      .regions__toggler {
         display: flex;
         justify-content: space-between;
         font-size: 0.95rem;
@@ -26,11 +26,11 @@
         color: gray;
         cursor: pointer;
       }
-      .countries__toggler span i,.products__toggler span i,
+      .countries__toggler span i,
       .regions__toggler span i {
         color: hsla(102, 63%, 60%, 1);
       }
-      .country__search, .product_search
+      .country__search,
       .region__search {
         width: 100%;
         height: 1rem;
@@ -41,7 +41,7 @@
       .hide {
         display: none;
       }
-      .countries__label, .products_label,
+      .countries__label,
       .regions__label {
         display: flex;
         flex-direction: column;
@@ -50,11 +50,11 @@
         overflow-y: scroll;
       }
       /* tags styling */
-      .country__tags__container, .product__tags__container,
+      .country__tags__container,
       .region__tags__container {
         max-width: 400px;
       }
-      .country__tag, .product__tag,
+      .country__tag,
       .region__tag {
         min-width: 130px;
         padding: 0.3rem;
@@ -68,7 +68,7 @@
         margin: 5px;
       }
 
-      .country__tag span, .product__tag span,
+      .country__tag span,
       .region__tag span {
         cursor: pointer;
         margin-left: 1.5rem;
@@ -271,9 +271,15 @@
       }
       .upload__image__cover img {
         border-radius: 50%;
+<<<<<<< HEAD
+        /*width: 100px;*/
+        max-height: 80px;
+        max-width: 80px;
+=======
         max-width: 100px;
         max-height: 100px;
         cursor: pointer;
+>>>>>>> 650e282dc5399bf368859f94b78590260620c601
       }
       .upload__image__cover input[type="file"] {
         background-color: blueviolet;
@@ -462,37 +468,6 @@
                 />
               </div>
               <div class="form_control">
-                <!-- ========= -->
-                <p class="products__toggler btn">
-                  Select product/service
-                  <span> <i class="fa fa-arrow-circle-down"></i></span>
-                </p>
-                <div class="products__container">
-                  <div class="products__tags__container"></div>
-                  <input
-                    class="product__search"
-                    oninput="searchProduct()"
-                    type="search"
-                    placeholder="product/service..."
-                  />
-                  <div class="products__label"></div>
-                </div>
-                <!-- ================== -->
-
-                <!-- <label for="search">Select Products:</label>
-        <input type="text" id="search" name="search" placeholder="Click to select products">
-        <ul id="productList"></ul> -->
-        <!-- ============ -->
-
-
-        <p id="search" name="search"  class="product__toggler btn">
-          Select products/services
-          <span> <i class="fa fa-arrow-circle-down"></i></span>
-        </p>
-        <div class="product__container">
-          <div class="product__tags__container"></div>
-          <div id="productList" class="product__label"></div>
-        </div>
                 <!-- <input
                   type="text"
                   placeholder="enter your product/service"
@@ -500,6 +475,15 @@
                   name="service"
                   required
                 /> -->
+
+                <p id="search" class="products__toggler btn">
+                  Select your product/service
+                  <span> <i class="fa fa-arrow-circle-down"></i></span>
+                </p>
+                <div class="products__container">
+                  <div class="products__tags__container"></div>
+                  <div id="productList" class="products__label"></div>
+                </div>
               </div>
               <div class="form_control">
                 <input
@@ -778,8 +762,7 @@
         );
         countriesDataContainer.innerHTML = "<p>Loading countries ...</p>";
         const apiCountriesURL =
-          // "https://100074.pythonanywhere.com/countries/{{ user.username }}/{{ session_id }}/100014/";
-          "https://100074.pythonanywhere.com/countries/{{ user.username }}/6x5wqdl75wv2mxkv24qd4otpiubk2b4g/100014/";
+          "https://100074.pythonanywhere.com/countries/{{ user.username }}/{{ session_id }}/100014/";
 
         fetch(apiCountriesURL, {
           method: "GET",
@@ -845,8 +828,7 @@
         let regionsTagContainer = document.querySelector(
           ".region__tags__container"
         );
-        // const regionUrl = `https://100074.pythonanywhere.com/region/name/${country}/{{ user.username }}/{{ session_id }}/100014/`;
-        const regionUrl = `https://100074.pythonanywhere.com/region/name/${country}/{{ user.username }}/6x5wqdl75wv2mxkv24qd4otpiubk2b4g/100014/`;
+        const regionUrl = `https://100074.pythonanywhere.com/region/name/${country}/{{ user.username }}/{{ session_id }}/100014/`;
 
         fetch(regionUrl, {
           method: "GET",
@@ -903,7 +885,6 @@
           })
           .catch((error) => console.error(error));
       }
-
     </script>
     <!-- <script>
       // Fetch Api for countries
@@ -999,132 +980,11 @@
           .catch((error) => console.error(error));
       });
     </script> -->
-    <script>
-      // product/service
-
-      const toggleProduct = document.querySelector(".product__toggler");
-      const productsContainer = document.querySelector(
-        ".products__container"
-      );
-      const productSearchQuery = document.querySelector(".product__search");
-      const productsDataContainer =
-        document.querySelector(".products__label");
-
-      // hide section initially
-      productsContainer.classList.add("hide");
-
-      toggleProduct.addEventListener("click", function () {
-        // toggle section hide and show
-        productsContainer.classList.toggle("hide");
-      });
-      
-
-      // hide container when clicked outside
-
-      window.onclick = (e) => {
-        if (!e.target.matches(".products__toggler")) {
-          if (!productsContainer.classList.contains("hide")) {
-            productsContainer.classList.add("hide");
-          }
-        }
-        
-      };
-      productsContainer.addEventListener("click", (e) => e.stopPropagation());
-      // end hide container when clicked outside
-
-      //   script to search country
-      function searchProduct() {
-        const productsCheckBoxLabel = document.querySelectorAll(
-          ".products__label label"
-        );
-        for (label of productsCheckBoxLabel) {
-          let hideElement = label;
-          hideElement.classList.add("hide");
-          let element = label.childNodes;
-          for (label of element) {
-            if (label.value !== undefined) {
-              if (
-                label.value
-                  .toLowerCase()
-                  .includes(productSearchQuery.value.toLowerCase())
-              ) {
-                hideElement.classList.remove("hide");
-              }
-            }
-          }
-        }
-      }
-
-      //   script for region search
-      
-
-      // delete countries
-      
-      // delete regions
-      
-      (function () {
-        let countryList = [];
-        let countriesTagContainer = document.querySelector(
-          ".country__tags__container"
-        );
-        productsDataContainer.innerHTML = "<p>Loading products ...</p>";
-        const apiProductsURL =
-          "http://100093.pythonanywhere.com/api/getproducts/";
-        fetch(apiProductsURL, {
-          method: "GET",
-        })
-          .then((res) => {
-            const contentType = res.headers.get("Content-Type");
-            if (!contentType || !contentType.includes("application/json")) {
-              throw new TypeError("no data was fetched");
-            }
-            return res.json();
-          })
-          .then((data) => {
-            productsDataContainer.innerHTML = null;
-            data.forEach((product) => {
-              productsDataContainer.innerHTML += `<label for="${product.product_name}"      class="checkbox__container"
-              >${product.product_name}
-              <input
-                type="checkbox"
-                name="products"
-                id="${product._id}"
-                value="${product.product_name}"
-              />
-
-              <span class="checkmark"></span>
-            </label>`;
-            });
-            const productCheckBoxes = document.querySelectorAll(
-              "input[type=checkbox]"
-            );
-            productCheckBoxes.forEach((checkBox) => {
-              // console.log(checkBox.value);
-
-              checkBox.addEventListener("change", function () {
-                if (checkBox.checked) {
-                  productList.push(checkBox.value);
-                  toggleProduct.innerText = `${
-                    productList.length === 1
-                      ? "1 product selected"
-                      : productList.length + " countries selected"
-                  }`;
-                  let productCounter = checkBox.value;
-                  const result = productList.filter(
-                    (product) => product === productCounter
-                  ).length;
-                  console.table("product:", productCounter, "count:", result);
-                  
-                }
-                deleteCountries(checkBox.checked);
-              });
-            });
-          });
-      })();
-    </script>
 
 
-    <!--  -->
+
+    <!-- loading the dowells products/services from the api -->
+
     <script>
       const productList = document.getElementById("productList");
       const searchInput = document.getElementById("search");
@@ -1132,10 +992,9 @@
       let productsTagContainer = document.querySelector(
           ".product__tags__container"
         );
-        countriesDataContainer.innerHTML = "<p>Loading countries ...</p>";
     
       searchInput.addEventListener("click", async () => {
-        console.log('Am clicked!')
+        productList.innerHTML = "<p>Loading products...</p>";
           const response = await fetch("http://100093.pythonanywhere.com/api/getproducts/", {
               method: "POST",
               headers: {
@@ -1153,23 +1012,30 @@
       });
 
       function displayProducts(products) {
-          productList.innerHTML = "";
-          products.forEach(product => {
-              const listItem = document.createElement("li");
-              const checkbox = document.createElement("input");
-              checkbox.type = "checkbox";
-              checkbox.name = "selectedProducts";
-              checkbox.value = product.id;
-              listItem.appendChild(checkbox);
-              listItem.appendChild(document.createTextNode(product.product_name));
-              productList.appendChild(listItem);
-          });
-      }
+    productList.innerHTML = "";
+    products.forEach(product => {
+        const label = document.createElement("label");
+        label.classList.add("checkbox__container"); 
+        
+        const checkbox = document.createElement("input");
+        checkbox.type = "checkbox";
+        checkbox.name = "selectedProducts";
+        checkbox.value = product.id;
+        
+
+        const checkmark = document.createElement("span");
+        checkmark.classList.add("checkmark"); 
+
+
+        label.appendChild(checkbox);
+        label.appendChild(document.createTextNode(product.product_name));
+        label.appendChild(checkmark);
+        
+        productList.appendChild(label);
+    });
+}
+
   </script>
-
-
-
-
 
 
   </body>
