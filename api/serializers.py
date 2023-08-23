@@ -135,7 +135,7 @@ class CreateQrCodeSerializer(serializers.ModelSerializer):
 class UpdateQrCodeSerializer(serializers.ModelSerializer):
     class Meta:
         model = QrCode
-        fields = ['logo']
+        fields = '__all__'
 
     def update(self, instance, validated_data):
         try:

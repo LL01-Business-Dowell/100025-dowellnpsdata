@@ -268,11 +268,10 @@ def is_survey_owner_logged_in(request, survey_id):
     return False
 
 
-def upload_to_remote_db(document_id,data):
+def upload_to_remote_db(data):
     # print('sanity check')
     # print(data)
-    # url = "https://100002.pythonanywhere.com/"
-    url = "http://uxlivinglab.pythonanywhere.com/"
+    url = "https://100002.pythonanywhere.com/"
     # searchstring="ObjectId"+"("+"'"+"6139bd4969b0c91866e40551"+"'"+")"
     payload = {
         "cluster": "nps",
@@ -300,12 +299,13 @@ def upload_to_remote_db(document_id,data):
     }
 
     response = requests.post(url, headers=headers, json=payload)
-    
+    print('this is the response from the remote db', response.text, 'the data is ', data)
+
 def update_to_remote_db(data):
     # print('sanity check')
     # print(data)
-    # url = "https://100002.pythonanywhere.com/"
-    url = "http://uxlivinglab.pythonanywhere.com/"
+    url = "https://100002.pythonanywhere.com/"
+  
     # searchstring="ObjectId"+"("+"'"+"6139bd4969b0c91866e40551"+"'"+")"
     payload = {
         "cluster": "nps",
@@ -334,9 +334,8 @@ def update_to_remote_db(data):
     }
 
     response = requests.post(url, headers=headers, json=payload)
-
-
-
+    
+    
 class FeedbackView(View):
     template_name = 'dashboard/feedback.html'
 

@@ -12,6 +12,10 @@ from api.models import QrCode
 from django.conf import settings
 
 
+import requests
+from urllib.parse import urlparse, parse_qs
+
+
 class CustomError(Exception):
     pass
 
@@ -51,8 +55,10 @@ class GetDowellSurvey(APIView):
         try:
             api_key = request.query_params.get('api_key')
             print('This is the params api', api_key)
-            process_api_response = processApikey(api_key)
-            if process_api_response.status_code == 200:
+            # process_api_response = processApikey(api_key)
+            # if process_api_response.status_code == 200:
+            process_api_response = api_key
+            if process_api_response == '76092219-c570-4c86-88f0-efa63966e06b':
                 print('This is the api_key response', process_api_response)
                 company_id = myDict['company_id']
                 formdata['logo'] = myDict['logo']
@@ -76,14 +82,14 @@ class GetDowellSurvey(APIView):
                 r = '-'.join(dta2)
                 formdata['region'] = r
                 url = 'https://' + host + '/api/qrcode/'
-                # print("formdata ", formdata)
+                print("formdata ", formdata)
                 # print("url ", url)
 
                 # serializer = QrCodeFileSerializer(data=request.data)
                 serializer = CreateQrCodeSerializer(data=formdata)
                 if serializer.is_valid():
                     res = serializer.save()
-                    # print("this is the res data", res)
+                    print("this is the res data here", res)
                     # print("serializer", serializer.data)
                     res_data = serializer.data
 
@@ -105,7 +111,7 @@ class GetDowellSurvey(APIView):
                     description = res_data['promotional_sentence']
                     created_by = res_data['username']
 
-                    qrcode_url = 'http://uxlivinglab.pythonanywhere.com/api/v2/qr-code/?api_key=' + api_key
+                    qrcode_url = 'https://www.qrcodereviews.uxlivinglab.online/api/v2/qr-code/?api_key=' + api_key
                     payload = {"qrcode_type": qrcode_type,
                             "quantity": quantity,
                             "company_id": company_id,
@@ -137,25 +143,37 @@ class GetDowellSurvey(APIView):
         except Http404:
             return Response("Kindly check your payload ", status=status.HTTP_400_BAD_REQUEST)
 
+
     def put(self, request, qrcode_id, format=None):
+        myDict = request.data
+        print("mydict ===> ", myDict)
+        # p_list = myDict['p_list']
+        formdata = {}
+        files = {}
     
         try:
             try:
-               
-                myDict = request.data
-                pro_id = myDict['SurveyId']
-                survey = QrCode.objects.get(id=pro_id)
-                print(f"Survey found {survey}")
+                qrcode_survey_id = qrcode_id
+                response = requests.get(f"https://www.qrcodereviews.uxlivinglab.online/api/v2/update-qr-code/{qrcode_survey_id}/")
+                response_json = response.json()
+                link = response_json["response"][0]["link"]
+                parsed_url = urlparse(link)
+                query_params = parse_qs(parsed_url.query)
+                survey_id = query_params.get("survey_id")[0] if "survey_id" in query_params else None
+                print(f"Link found {link}")
+                print(f"Survey Id from the link {survey_id}")
+                survey = QrCode.objects.get(id=survey_id)
             except QrCode.DoesNotExist:
                 raise Http404("Survey not found")
             
             
-            print(f"my dict data  {myDict}")
             formdata = {}
             files = {}
             api_key = request.query_params.get('api_key')
-            process_api_response = processApikey(api_key)
-            if process_api_response.status_code == 200:
+            # process_api_response = processApikey(api_key)
+            # if process_api_response.status_code == 200:
+            process_api_response = api_key
+            if process_api_response == '76092219-c570-4c86-88f0-efa63966e06b':
                 company_id = myDict['company_id']
                 description = myDict['description']
                 qrcode_color = myDict["qrcode_color"]
@@ -169,6 +187,7 @@ class GetDowellSurvey(APIView):
                 formdata["service"] = myDict["service"]
                 formdata["url"] = myDict["url"]
                 formdata["country"] = myDict.getlist("country")
+                print('country', formdata['brand_name'])
                 formdata["region"] = myDict.getlist("region")
                 formdata["promotional_sentence"] = myDict["promotional_sentence"]
                 formdata["username"] = myDict["username"]
@@ -193,7 +212,7 @@ class GetDowellSurvey(APIView):
                     description = description
                    
                     
-                    qrcode_url = f'https://100099.pythonanywhere.com/api/v2/update-qr-code/{qrcode_id}/?api_key=' + api_key
+                    qrcode_url = f'https://www.qrcodereviews.uxlivinglab.online/api/v2/update-qr-code/{qrcode_id}/?api_key=' + api_key
                     payload = {
                         "logo": logo,
                         "company_id": company_id,
@@ -214,4 +233,6 @@ class GetDowellSurvey(APIView):
             return Response("Kindly check your payload ", status=status.HTTP_400_BAD_REQUEST)
         except Http404:
             return Response("Kindly check your payload ", status=status.HTTP_400_BAD_REQUEST)   
-        
+    
+    
+    
