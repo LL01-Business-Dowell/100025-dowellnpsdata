@@ -5,7 +5,7 @@ from rest_framework import status
 import requests
 import json
 from datetime import datetime, date
-from accounts.views.helper import upload_to_remote_db
+from accounts.views.helper import upload_to_remote_db, update_to_remote_db
 from api.serializers import *
 from api.models import QrCode
 
@@ -55,10 +55,8 @@ class GetDowellSurvey(APIView):
         try:
             api_key = request.query_params.get('api_key')
             print('This is the params api', api_key)
-            # process_api_response = processApikey(api_key)
-            # if process_api_response.status_code == 200:
-            process_api_response = api_key
-            if process_api_response == '76092219-c570-4c86-88f0-efa63966e06b':
+            process_api_response = processApikey(api_key)
+            if process_api_response.status_code == 200:
                 print('This is the api_key response', process_api_response)
                 company_id = myDict['company_id']
                 formdata['logo'] = myDict['logo']
@@ -72,6 +70,7 @@ class GetDowellSurvey(APIView):
                 formdata["name"] = myDict["name"]
                 formdata["email"] = myDict["email"]
                 formdata["start_date"] = my_date(myDict["start_date"])
+                print('Date printier ', formdata["start_date"])
                 formdata["end_date"] = my_date(myDict["end_date"])
                 host = request.META['HTTP_HOST']
                 dta = formdata["country"]
@@ -82,7 +81,7 @@ class GetDowellSurvey(APIView):
                 r = '-'.join(dta2)
                 formdata['region'] = r
                 url = 'https://' + host + '/api/qrcode/'
-                print("formdata ", formdata)
+                print("formdata printier", formdata)
                 # print("url ", url)
 
                 # serializer = QrCodeFileSerializer(data=request.data)
@@ -154,51 +153,67 @@ class GetDowellSurvey(APIView):
         try:
             try:
                 qrcode_survey_id = qrcode_id
-                response = requests.get(f"https://www.qrcodereviews.uxlivinglab.online/api/v2/update-qr-code/{qrcode_survey_id}/")
-                response_json = response.json()
-                link = response_json["response"][0]["link"]
-                parsed_url = urlparse(link)
+                print('qrcode_survey_id is ', qrcode_survey_id)
+                responses = requests.get(f"https://www.qrcodereviews.uxlivinglab.online/api/v2/update-qr-code/{qrcode_survey_id}/")
+                print('The link for upload ', responses.text)
+                response_json = responses.json()
+                links = response_json["response"][0]["link"]
+                parsed_url = urlparse(links)
                 query_params = parse_qs(parsed_url.query)
                 survey_id = query_params.get("survey_id")[0] if "survey_id" in query_params else None
-                print(f"Link found {link}")
+                print(f"Links found {links}")
                 print(f"Survey Id from the link {survey_id}")
                 survey = QrCode.objects.get(id=survey_id)
             except QrCode.DoesNotExist:
                 raise Http404("Survey not found")
             
+           
             
-            formdata = {}
-            files = {}
+            for key, value in myDict.items():
+                if value:  # Check if the value is not empty
+                    formdata[key] = value
+                    
+                    
             api_key = request.query_params.get('api_key')
-            # process_api_response = processApikey(api_key)
-            # if process_api_response.status_code == 200:
-            process_api_response = api_key
-            if process_api_response == '76092219-c570-4c86-88f0-efa63966e06b':
-                company_id = myDict['company_id']
-                description = myDict['description']
-                qrcode_color = myDict["qrcode_color"]
-                formdata['logo'] = myDict['logo']
-                link = myDict["link"]
-                created_by = myDict["created_by"]
+            process_api_response = processApikey(api_key)
+            if process_api_response.status_code == 200:
+                company_id = formdata.get('company_id')
+                description = formdata.get('description')
+                qrcode_color = formdata.get('qrcode_color')
+                logo = formdata.get('logo')
+                link = formdata.get("link")
+                created_by = formdata.get("created_by")
+                
                 host = request.META['HTTP_HOST']
                 
                 
-                formdata["brand_name"] = myDict["brand_name"]
-                formdata["service"] = myDict["service"]
-                formdata["url"] = myDict["url"]
-                formdata["country"] = myDict.getlist("country")
-                print('country', formdata['brand_name'])
-                formdata["region"] = myDict.getlist("region")
-                formdata["promotional_sentence"] = myDict["promotional_sentence"]
-                formdata["username"] = myDict["username"]
-                formdata["name"] = myDict["name"]
-                formdata["email"] = myDict["email"]
+                brand_name = formdata.get("brand_name")
+                service = formdata.get("service")
+                url = formdata.get("url")
+                country = formdata.get("country")
+                # if country:
+                #     c = '-'.join(country)
+                #     formdata["country"] = c
+                if country:
+                    country = country.replace('-', ' ')
+                region = formdata.get("region")
+                if region:
+                    # r = '-'.join(region)
+                    # formdata['region'] = r
+                    
+                    region = region.replace('-', ' ') 
+                promotional_sentence = formdata.get("promotional_sentence")
+                username = formdata.get("username")
+                name = formdata.get("name")
+                email = formdata.get("email")
+                
                 formdata["start_date"] = my_date(myDict["start_date"])
                 formdata["end_date"] = my_date(myDict["end_date"])
-                # ====================================
                 
                 
-                serializer = UpdateQrCodeSerializer(survey,data=formdata)
+                print('form data printier' ,formdata)
+                
+                serializer = UpdateQrCodeSerializer(survey,data=formdata, partial=True)
                 if serializer.is_valid():
                     res = serializer.save()
                     res_data = serializer.data
@@ -235,4 +250,10 @@ class GetDowellSurvey(APIView):
             return Response("Kindly check your payload ", status=status.HTTP_400_BAD_REQUEST)   
     
     
-    
+"""
+The link for upload  {"response":[{"_id":"64e759aade7544e7bad5018d","qrcode_id":"2215571533731009006","logo_size":20,"qrcode_color":"#000000","api_key":"76092219-c570-4c86-88f0-efa63966e06b","company_id":"murilCohv","created_by":"muril_d","description":"Yes","is_active":false,"qrcode_type":"Link","link":"https://100025.pythonanywhere.com/iframe?survey_id=136","qrcode_image_url":"http://dowellfileuploader.uxlivinglab.online/qrCodes/qrcode_1692883282.jpg","logo_url":null}]}
+"""
+
+"""
+The link for upload  {"response":[{"_id":"64e759aade7544e7bad5018d","qrcode_id":"2215571533731009006","logo_size":20,"qrcode_color":"#ff0000","api_key":"76092219-c570-4c86-88f0-efa63966e06b","company_id":"Feliste","created_by":"denno","description":"dfgdg","is_active":true,"qrcode_type":"Link","link":"https://docs.google.com/forms/d/e/1FAIpQLSfHVg1Kr5pRPFp_hqt3s8-BV7IQjU13WEscPY8YkBNdisdomg/viewform","qrcode_image_url":"http://dowellfileuploader.uxlivinglab.online/qrCodes/qrcode_1692886028.jpg","logo_url":null}]}
+"""
