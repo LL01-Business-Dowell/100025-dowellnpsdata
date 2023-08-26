@@ -181,7 +181,7 @@ class GetDowellSurvey(APIView):
                 description = formdata.get('description')
                 qrcode_color = formdata.get('qrcode_color')
                 logo = formdata.get('logo')
-                link = formdata.get("link")
+               
                 created_by = formdata.get("created_by")
                 
                 host = request.META['HTTP_HOST']
@@ -231,7 +231,7 @@ class GetDowellSurvey(APIView):
                     payload = {
                         "logo": logo,
                         "company_id": company_id,
-                        "link": link,
+                        # "link": link,
                         "description": description,
                         "created_by": created_by,
                         "qrcode_color": qrcode_color,
