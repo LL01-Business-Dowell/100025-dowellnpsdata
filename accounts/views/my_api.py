@@ -175,6 +175,7 @@ class GetDowellSurvey(APIView):
                     
                     
             api_key = request.query_params.get('api_key')
+            
             process_api_response = processApikey(api_key)
             if process_api_response.status_code == 200:
                 company_id = formdata.get('company_id')
@@ -221,7 +222,7 @@ class GetDowellSurvey(APIView):
 
                     logo = res_data['logo']
                     company_id = company_id
-                    link = link
+                    # link = link
                     created_by = created_by
                     qrcode_color = qrcode_color
                     description = description
@@ -249,11 +250,4 @@ class GetDowellSurvey(APIView):
         except Http404:
             return Response("Kindly check your payload ", status=status.HTTP_400_BAD_REQUEST)   
     
-    
-"""
-The link for upload  {"response":[{"_id":"64e759aade7544e7bad5018d","qrcode_id":"2215571533731009006","logo_size":20,"qrcode_color":"#000000","api_key":"76092219-c570-4c86-88f0-efa63966e06b","company_id":"murilCohv","created_by":"muril_d","description":"Yes","is_active":false,"qrcode_type":"Link","link":"https://100025.pythonanywhere.com/iframe?survey_id=136","qrcode_image_url":"http://dowellfileuploader.uxlivinglab.online/qrCodes/qrcode_1692883282.jpg","logo_url":null}]}
-"""
-
-"""
-The link for upload  {"response":[{"_id":"64e759aade7544e7bad5018d","qrcode_id":"2215571533731009006","logo_size":20,"qrcode_color":"#ff0000","api_key":"76092219-c570-4c86-88f0-efa63966e06b","company_id":"Feliste","created_by":"denno","description":"dfgdg","is_active":true,"qrcode_type":"Link","link":"https://docs.google.com/forms/d/e/1FAIpQLSfHVg1Kr5pRPFp_hqt3s8-BV7IQjU13WEscPY8YkBNdisdomg/viewform","qrcode_image_url":"http://dowellfileuploader.uxlivinglab.online/qrCodes/qrcode_1692886028.jpg","logo_url":null}]}
-"""
+  
