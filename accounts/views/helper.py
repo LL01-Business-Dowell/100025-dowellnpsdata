@@ -334,7 +334,7 @@ def update_to_remote_db(data):
     }
 
     response = requests.post(url, headers=headers, json=payload)
-    print('The update response from mongo Db is ', response.text, 'and this is the data ', data)
+    # print('The update response from mongo Db is ', response.text, 'and this is the data ', data)
     
     
 class FeedbackView(View):

@@ -175,7 +175,8 @@ class GetDowellSurvey(APIView):
                     
                     
             api_key = request.query_params.get('api_key')
-            
+            # process_api_response = api_key
+            # if process_api_response == '76092219-c570-4c86-88f0-efa63966e06b':
             process_api_response = processApikey(api_key)
             if process_api_response.status_code == 200:
                 company_id = formdata.get('company_id')
@@ -192,15 +193,12 @@ class GetDowellSurvey(APIView):
                 service = formdata.get("service")
                 url = formdata.get("url")
                 country = formdata.get("country")
-                # if country:
-                #     c = '-'.join(country)
-                #     formdata["country"] = c
+               
                 if country:
                     country = country.replace('-', ' ')
                 region = formdata.get("region")
                 if region:
-                    # r = '-'.join(region)
-                    # formdata['region'] = r
+                    
                     
                     region = region.replace('-', ' ') 
                 promotional_sentence = formdata.get("promotional_sentence")
@@ -222,21 +220,21 @@ class GetDowellSurvey(APIView):
 
                     logo = res_data['logo']
                     company_id = company_id
-                    # link = link
                     created_by = created_by
                     qrcode_color = qrcode_color
                     description = description
                    
                     
-                    qrcode_url = f'https://www.qrcodereviews.uxlivinglab.online/api/v2/update-qr-code/{qrcode_id}/?api_key=' + api_key
-                    payload = {
+                    payloads = {
                         "logo": logo,
                         "company_id": company_id,
-                        # "link": link,
                         "description": description,
                         "created_by": created_by,
                         "qrcode_color": qrcode_color,
                     }
+                    payload = {key: value for key, value in payloads.items() if value is not None}
+                    qrcode_url = f'https://www.qrcodereviews.uxlivinglab.online/api/v2/update-qr-code/{qrcode_id}/?api_key=' + api_key
+                    payload
                     headers = {"Content-Type": "multipart/form-data"}
                     res = requests.put(qrcode_url, data=payload)
                     res_obj = json.loads(res.text)

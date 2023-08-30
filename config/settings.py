@@ -108,27 +108,27 @@ WSGI_APPLICATION = 'config.wsgi.application'
 # }
 
 
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.mysql',
-        'NAME': 'dowell',
-        'USER': 'dennis',
-        'PASSWORD': '33016460d',
-        'HOST': 'localhost', 
-        'PORT': '3306',  
-    }
-}
-
 # DATABASES = {
-#         'default': {
-#              'ENGINE': 'django.db.backends.mysql', # mysql database python driver.
-#              'NAME': '100025$qr_code_db',    # mysql database name.
-#              'USER': '100025',   # db login user name.
-#              'PASSWORD': 'dowell@msql#db', # db login user password.
-#              'HOST': '100025.mysql.pythonanywhere-services.com', # db machine ip or domain, if left empty then the value is localhost.
-#             #  'PORT': '3306', # db server listening port number
-#          }
+#     'default': {
+#         'ENGINE': 'django.db.backends.mysql',
+#         'NAME': 'dowell',
+#         'USER': 'dennis',
+#         'PASSWORD': '33016460d',
+#         'HOST': 'localhost', 
+#         'PORT': '3306',  
+#     }
 # }
+
+DATABASES = {
+        'default': {
+             'ENGINE': 'django.db.backends.mysql', # mysql database python driver.
+             'NAME': '100025$qr_code_db',    # mysql database name.
+             'USER': '100025',   # db login user name.
+             'PASSWORD': 'dowell@msql#db', # db login user password.
+             'HOST': '100025.mysql.pythonanywhere-services.com', # db machine ip or domain, if left empty then the value is localhost.
+            #  'PORT': '3306', # db server listening port number
+         }
+}
 
 
 
