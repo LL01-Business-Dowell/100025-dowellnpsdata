@@ -34,8 +34,8 @@ class GetDowellSurvey(APIView):
 
         try:
             # formdata["logo"] = myDict["logo"]
-            # api_key = myDict['api_key']
-            api_key = "bda22d28-9c84-4fcd-a2d3-bd5b9039a8"
+            api_key = myDict['api_key']
+            # api_key = "bda22d28-9c84-4fcd-a2d3-bd5b9039a8"
             company_id = myDict['company_id']
             formdata['logo'] = myDict['logo']
             formdata["brand_name"] = myDict["brand_name"]
