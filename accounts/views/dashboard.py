@@ -105,7 +105,7 @@ class DashboardView(View):
             files = {'logo': request.FILES['logo']}
             formdata['logo'] =request.FILES['logo']
             formdata['brand_name'] = request.POST.get('brand_name')
-            formdata['service'] = request.POST.get('service')
+            formdata['service'] = request.POST.getlist('service')
             formdata['url'] = request.POST.get('url')
             formdata['country'] = request.POST.getlist('country')
             formdata['region'] = request.POST.getlist('regions')

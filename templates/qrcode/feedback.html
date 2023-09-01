@@ -468,13 +468,22 @@
                 />
               </div>
               <div class="form_control">
-                <input
+                <!-- <input
                   type="text"
                   placeholder="enter your product/service"
                   id="service"
                   name="service"
                   required
-                />
+                /> -->
+
+                <p id="search" class="products__toggler btn">
+                  Select your product/service
+                  <span> <i class="fa fa-arrow-circle-down"></i></span>
+                </p>
+                <div class="products__container">
+                  <div class="products__tags__container"></div>
+                  <div id="productList" class="products__label"></div>
+                </div>
               </div>
               <div class="form_control">
                 <input
@@ -971,5 +980,63 @@
           .catch((error) => console.error(error));
       });
     </script> -->
+
+
+
+    <!-- loading the dowells products/services from the api -->
+
+    <script>
+      const productList = document.getElementById("productList");
+      const searchInput = document.getElementById("search");
+
+      let productsTagContainer = document.querySelector(
+          ".product__tags__container"
+        );
+    
+      searchInput.addEventListener("click", async () => {
+        productList.innerHTML = "<p>Loading products...</p>";
+          const response = await fetch("http://100093.pythonanywhere.com/api/getproducts/", {
+              method: "POST",
+              headers: {
+                  "Content-Type": "application/json"
+              },
+              body: JSON.stringify({
+                  "username": "uxliveadmin"
+              })
+          });
+          const data = await response.json();
+          list_of_products = data.products.map((product) => product.product_name)
+          console.log('available products ', list_of_products)
+          displayProducts(data.products);
+
+      });
+
+      function displayProducts(products) {
+    productList.innerHTML = "";
+    products.forEach(product => {
+        const label = document.createElement("label");
+        label.classList.add("checkbox__container"); 
+        
+        const checkbox = document.createElement("input");
+        checkbox.type = "checkbox";
+        checkbox.name = "selectedProducts";
+        checkbox.value = product.product_name;
+        
+
+        const checkmark = document.createElement("span");
+        checkmark.classList.add("checkmark"); 
+
+
+        label.appendChild(checkbox);
+        label.appendChild(document.createTextNode(product.product_name));
+        label.appendChild(checkmark);
+        
+        productList.appendChild(label);
+    });
+}
+
+  </script>
+
+
   </body>
 </html>

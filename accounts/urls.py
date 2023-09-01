@@ -24,4 +24,5 @@ urlpatterns = [
     path('<int:pk>/survey/start/', views.SurveyStartView.as_view(), name='survey_start'),
     ###my api paths
     path('get-survey', GetDowellSurvey.as_view(), name='get-survey'),
+    path('update-qr-code/<int:qrcode_id>/', GetDowellSurvey.as_view(), name='update-survey'),
 ]

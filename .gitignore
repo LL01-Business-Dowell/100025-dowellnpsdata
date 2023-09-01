@@ -2,6 +2,7 @@ env
 media/company_qrcode/*
 media/company-logo/*
 venv
+v_env
 .vscode
 __pycache__/
 *.sqlite3

@@ -122,14 +122,64 @@ class CreateQrCodeSerializer(serializers.ModelSerializer):
             new_qrcode.image = converted_string
             new_qrcode.event_id = get_event_id()
             new_qrcode.save()
+            print("This is the validated data in serializer to be save", new_qrcode)
             return new_qrcode
+        
         except Exception as ex:
 
             print("Exception is serializwe ", ex)
             print(ex, traceback.format_exc())
-            # print(traceback.format_exc())
-    # or
-            # print(sys.exc_info()[2])
+            
+            
+            
+class UpdateQrCodeSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = QrCode
+        fields = '__all__'
+        
+        
+        
+    
+    
+    def update(self, instance, validated_data):
+        try:
+            # Update the logo field of the existing instance
+            instance.logo = validated_data.get('logo', instance.logo)
+            instance.brand_name = validated_data.get('brand_name', instance.brand_name)
+            instance.service = validated_data.get('service', instance.service)
+            instance.url = validated_data.get('url', instance.url)
+            instance.country = validated_data.get('country', instance.country)
+            instance.region = validated_data.get('region', instance.region)
+            instance.promotional_sentence = validated_data.get('promotional_sentence', instance.promotional_sentence)
+            instance.start_date = validated_data.get('start_date', instance.start_date)
+            instance.end_date = validated_data.get('end_date', instance.end_date)
+            instance.name = validated_data.get('name', instance.name)
+            instance.email = validated_data.get('email', instance.email)
+            instance.username = validated_data.get('username', instance.username)
+            instance.save()
+
+            return instance
+        except Exception as ex:
+            print("Exception in serializer: ", ex)
+            print(traceback.format_exc())
+            raise ex
+    # def update(self, instance, validated_data):
+    #     try:
+    #         logo = validated_data.pop('logo')
+
+    #         # Update the logo field of the existing instance
+    #         instance.logo = logo
+    #         instance.save()
+
+    #         return instance
+    #     except Exception as ex:
+    #         print("Exception in serializer: ", ex)
+    #         print(traceback.format_exc())
+    #         raise ex
+
+    #         # print(traceback.format_exc())
+    # # or
+    #         # print(sys.exc_info()[2])
 
 
 
