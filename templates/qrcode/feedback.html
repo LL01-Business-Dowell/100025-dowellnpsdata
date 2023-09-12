@@ -1,512 +1,542 @@
 {% load static %}
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Dashboard</title>
 
-    <link
-      rel="stylesheet"
-      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css"
-    />
-    <link rel="stylesheet" href="{% static 'assets/css/style.css' %}" />
+<head>
+  <meta charset="UTF-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Dashboard</title>
 
-    <style>
-      /* css for multiselect */
-      .countries__toggler,
-      .regions__toggler {
-        display: flex;
-        justify-content: space-between;
-        font-size: 0.95rem;
-        padding: 0.6rem;
-        border: 1px solid #e3e3e3;
-        margin-top: 0.5rem;
-        color: gray;
-        cursor: pointer;
-      }
-      .countries__toggler span i,
-      .regions__toggler span i {
-        color: hsla(102, 63%, 60%, 1);
-      }
-      .country__search,
-      .region__search {
-        width: 100%;
-        height: 1rem;
-        font-size: 1.1rem;
-        padding: 1.3rem 0 1.3rem 0.6rem;
-        border: 1px solid #e3e3e3;
-      }
-      .hide {
-        display: none;
-      }
-      .countries__label,
-      .regions__label {
-        display: flex;
-        flex-direction: column;
-        margin-top: 10px;
-        max-height: 15rem;
-        overflow-y: scroll;
-      }
-      /* tags styling */
-      .country__tags__container,
-      .region__tags__container {
-        max-width: 400px;
-      }
-      .country__tag,
-      .region__tag {
-        min-width: 130px;
-        padding: 0.3rem;
-        border-radius: 1.2rem;
-        border: 1px solid rgb(39, 38, 38);
-        background-color: rgb(255, 255, 255);
-        color: rgb(39, 38, 38);
-        font-size: 0.8rem;
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" />
+  <link rel="stylesheet" href="{% static 'assets/css/style.css' %}" />
 
-        box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;
-        margin: 5px;
-      }
+  <style>
+    /* css for multiselect */
+    .countries__toggler,
+    .regions__toggler,
+    .products__toggler {
+      display: flex;
+      justify-content: space-between;
+      font-size: 0.95rem;
+      padding: 0.6rem;
+      border: 1px solid #e3e3e3;
+      margin-top: 0.5rem;
+      color: gray;
+      cursor: pointer;
+    }
 
-      .country__tag span,
-      .region__tag span {
-        cursor: pointer;
-        margin-left: 1.5rem;
-      }
-      /* End tags styling */
+    .countries__toggler span i,
+    .products__toggler span i,
+    .regions__toggler span i {
+      color: hsla(102, 63%, 60%, 1);
+    }
 
-      .checkbox__container {
-        /* display: block; */
-        position: relative;
-        padding-left: 35px;
-        margin-bottom: 12px;
-        cursor: pointer;
-        font-size: 20px;
-        color: gray;
-        cursor: pointer;
-        -webkit-user-select: none;
-        -moz-user-select: none;
-        -ms-user-select: none;
-        user-select: none;
-      }
-      .checkbox__container input {
-        position: absolute;
-        cursor: pointer;
-        opacity: 0;
-        height: 0;
-        width: 0;
-      }
-      .checkmark {
-        position: absolute;
-        top: 0;
-        left: 0;
-        height: 25px;
-        width: 25px;
-        background-color: #eee;
-        /* border: 1px solid hsla(102, 63%, 60%, 1); */
-      }
-      .checkbox__container:hover input ~ .checkmark {
-        background-color: #ccc;
-      }
-      /* When the checkbox is checked, add a blue background */
-      .checkbox__container input:checked ~ .checkmark {
-        background-color: hsla(102, 63%, 60%, 1);
-      }
+    .country__search,
+    .product__search,
+    .region__search {
+      width: 100%;
+      height: 1rem;
+      font-size: 1.1rem;
+      padding: 1.3rem 0 1.3rem 0.6rem;
+      border: 1px solid #e3e3e3;
+    }
 
-      /* Create the checkmark/indicator (hidden when not checked) */
-      .checkmark:after {
-        content: "";
-        position: absolute;
-        display: none;
-      }
+    .hide {
+      display: none;
+    }
 
-      /* Show the checkmark when checked */
-      .checkbox__container input:checked ~ .checkmark:after {
-        display: block;
-      }
 
-      /* Style the checkmark/indicator */
-      .checkbox__container .checkmark:after {
-        left: 9px;
-        top: 5px;
-        width: 5px;
-        height: 10px;
-        border: solid white;
-        border-width: 0 3px 3px 0;
-        -webkit-transform: rotate(45deg);
-        -ms-transform: rotate(45deg);
-        transform: rotate(45deg);
-      }
-      /* end css for multiselect */
-      .form-control .multiselect-search {
-        padding-top: 60px !important;
-      }
+    .countries__label,
+    .products__label,
+    .regions__label {
+      display: flex;
+      flex-direction: column;
+      margin-top: 10px;
+      max-height: 15rem;
+      overflow-y: scroll;
+    }
+
+    /* tags styling */
+    .country__tags__container,
+    .product__tags__container,
+    .region__tags__container {
+      max-width: 400px;
+    }
+
+    .country__tag,
+    .product__tag,
+    .region__tag {
+      min-width: 130px;
+      padding: 0.3rem;
+      border-radius: 1.2rem;
+      border: 1px solid rgb(39, 38, 38);
+      background-color: rgb(255, 255, 255);
+      color: rgb(39, 38, 38);
+      font-size: 0.8rem;
+
+      box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;
+      margin: 5px;
+    }
+
+    .country__tag span,
+    .product__tag span,
+    .region__tag span {
+      cursor: pointer;
+      margin-left: 1.5rem;
+    }
+
+    /* End tags styling */
+
+    .checkbox__container {
+      /* display: block; */
+      position: relative;
+      padding-left: 35px;
+      margin-bottom: 12px;
+      cursor: pointer;
+      font-size: 20px;
+      color: gray;
+      cursor: pointer;
+      -webkit-user-select: none;
+      -moz-user-select: none;
+      -ms-user-select: none;
+      user-select: none;
+    }
+
+    .checkbox__container input {
+      position: absolute;
+      cursor: pointer;
+      opacity: 0;
+      height: 0;
+      width: 0;
+    }
+
+    .checkmark {
+      position: absolute;
+      top: 0;
+      left: 0;
+      height: 25px;
+      width: 25px;
+      background-color: #eee;
+      /* border: 1px solid hsla(102, 63%, 60%, 1); */
+    }
+
+    .checkbox__container:hover input~.checkmark {
+      background-color: #ccc;
+    }
+
+    /* When the checkbox is checked, add a blue background */
+    .checkbox__container input:checked~.checkmark {
+      background-color: hsla(102, 63%, 60%, 1);
+    }
+
+    /* Create the checkmark/indicator (hidden when not checked) */
+    .checkmark:after {
+      content: "";
+      position: absolute;
+      display: none;
+    }
+
+    /* Show the checkmark when checked */
+    .checkbox__container input:checked~.checkmark:after {
+      display: block;
+    }
+
+    /* Style the checkmark/indicator */
+    .checkbox__container .checkmark:after {
+      left: 9px;
+      top: 5px;
+      width: 5px;
+      height: 10px;
+      border: solid white;
+      border-width: 0 3px 3px 0;
+      -webkit-transform: rotate(45deg);
+      -ms-transform: rotate(45deg);
+      transform: rotate(45deg);
+    }
+
+    /* end css for multiselect */
+    .form-control .multiselect-search {
+      padding-top: 60px !important;
+    }
+
+    .feedback__text {
+      background-color: var(--green-bg);
+      padding: 5px 0px 5px 0px;
+      text-align: center;
+      color: var(--white-color);
+      margin-top: 5px;
+    }
+
+    .feedback__qst {
+      text-align: center;
+      border-top: 1px solid var(--red-color);
+      border-bottom: 1px solid var(--red-color);
+      margin-top: 10px;
+    }
+
+    .feedback__qst h2 {
+      color: var(--red-color);
+    }
+
+    .feedback__qst p {
+      padding-top: 0.5rem;
+    }
+
+    .access__report__container {
+      text-align: center;
+    }
+
+    .access__report__container h2 {
+      margin-bottom: 0.5rem;
+    }
+
+    .access__report__keys__container {
+      width: 50%;
+    }
+
+    .access__report__graph {
+      width: 50%;
+    }
+
+    .access__report__keys {
+      background-color: var(--gray-bg);
+      margin-top: 5px;
+      padding: 0.3rem;
+      justify-content: flex-start;
+    }
+
+    .access__report__keys small {
+      padding-left: 0.3rem;
+    }
+
+    .access__report__keys .red,
+    .access__report__keys .yellow,
+    .access__report__keys .green {
+      width: 20px;
+      height: 20px;
+    }
+
+    .access__report__keys .red {
+      background-color: var(--red-color);
+    }
+
+    .access__report__keys .yellow {
+      background-color: var(--yellow-color);
+    }
+
+    .access__report__keys .green {
+      background-color: var(--green-bg);
+    }
+
+    .feedback__buttons {
+      justify-content: space-between;
+      transform: translateY(-20px);
+    }
+
+    .feedback__buttons #prev {
+      background-color: var(--deep-gray-bg);
+      padding: 0.8rem;
+      min-width: 150px;
+      color: var(--white-color);
+    }
+
+    .feedback__buttons #create {
+      background-color: var(--green-bg);
+      padding: 0.8rem;
+      min-width: 120px;
+      color: var(--white-color);
+    }
+
+    /* style for pop up */
+    .close_container {
+      justify-content: space-between;
+      padding: 0.5rem 0rem 0.5rem 0rem;
+    }
+
+    .close_container #close {
+      margin-right: 2.2rem;
+      margin-top: 0.5rem;
+      color: gray;
+    }
+
+    .disclaimer {
+      justify-content: space-around;
+      padding: 0.5rem 0rem 0.5rem 0rem;
+    }
+
+    .create_survey {
+      height: 100%;
+      overflow-y: scroll;
+      display: flex;
+      flex-direction: column;
+      transform: translate(-50%, -50%) scale(0.1);
+      top: 10%;
+      left: 50%;
+      background-color: var(--white-color);
+      width: 375px;
+      /* z-index: 999; */
+      position: absolute;
+      visibility: hidden;
+      transition: 0.5s ease-in-out;
+    }
+
+    .show_create_btn {
+      visibility: visible;
+      transform: translate(-50%, -50%) scale(1);
+      top: 50%;
+    }
+
+    #qmark {
+      color: var(--red-color);
+      margin-left: 1rem;
+      margin-top: 0.5rem;
+    }
+
+    .form_control_image input[type="image"] {
+      border-radius: 50%;
+      background-color: var(--gray-bg);
+      height: 100px;
+      width: 100px;
+      outline: none;
+      border: none;
+    }
+
+    .upload__image__cover {
+      position: relative;
+    }
+
+    .upload__image__cover button {
+      border-radius: 50%;
+      max-height: 80px;
+      max-width: 80px;
+      position: relative;
+    }
+
+    .upload__image__cover img {
+      border-radius: 50%;
+      max-width: 100px;
+      max-height: 100px;
+      cursor: pointer;
+    }
+
+    .upload__image__cover input[type="file"] {
+      background-color: blueviolet;
+      max-height: 80px;
+      max-width: 80px;
+      border-radius: 50%;
+      position: absolute;
+      right: 3%;
+      opacity: 0;
+      cursor: pointer;
+    }
+
+    .form_control_image {
+      position: relative;
+    }
+
+    .form_control_image span {
+      position: absolute;
+      flex-direction: column;
+      bottom: 15px;
+      left: 10px;
+      padding: 0.3rem;
+      font-size: 13px;
+    }
+
+    .form_control_image span i {
+      font-weight: 300;
+    }
+
+    .form_control_image span i {
+      font-size: 0.9rem;
+      padding-bottom: 0.4rem;
+      color: gray;
+    }
+
+    .form_control_image small {
+      color: gray;
+    }
+
+    .form_control input[type="text"],
+    input[type="email"],
+    input[type="url"],
+    textarea,
+    select {
+      /* background-color: var(--gray-bg); */
+      padding: 1rem;
+      width: 100%;
+      border-radius: 0.5rem;
+      margin-top: 0.9rem;
+      outline: none;
+      color: #000;
+      border: 1px solid var(--gray-bg);
+    }
+
+    .form_control option {
+      max-width: 50%;
+    }
+
+    .form_control button {
+      width: 100%;
+      background-color: var(--green-bg);
+      color: var(--white-color);
+      padding: 1rem;
+      cursor: pointer;
+    }
+
+    /* nav menu items */
+    .navlinks {
+      width: 100%;
+      height: 100vh;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      /* transform: translate(-50%, -50%) scale(1); */
+      top: 0;
+      left: 0;
+      position: absolute;
+      background-color: var(--green-bg);
+      visibility: hidden;
+    }
+
+    .navlinks ul li a {
+      color: var(--white-color);
+    }
+
+    .show_navlinks {
+      visibility: visible;
+      top: 0;
+    }
+
+    @media (max-width: 768px) {
       .feedback__text {
-        background-color: var(--green-bg);
-        padding: 5px 0px 5px 0px;
-        text-align: center;
-        color: var(--white-color);
-        margin-top: 5px;
+        padding: 35px 0px 35px 0px;
       }
+
       .feedback__qst {
-        text-align: center;
-        border-top: 1px solid var(--red-color);
-        border-bottom: 1px solid var(--red-color);
-        margin-top: 10px;
+        padding: 40px 0px 40px 0px;
       }
-      .feedback__qst h2 {
-        color: var(--red-color);
-      }
-      .feedback__qst p {
-        padding-top: 0.5rem;
-      }
+
       .access__report__container {
         text-align: center;
+        padding: 1.9rem 1.5rem;
       }
-      .access__report__container h2 {
-        margin-bottom: 0.5rem;
-      }
-      .access__report__keys__container {
-        width: 50%;
-      }
-      .access__report__graph {
-        width: 50%;
-      }
-      .access__report__keys {
-        background-color: var(--gray-bg);
-        margin-top: 5px;
-        padding: 0.3rem;
-        justify-content: flex-start;
-      }
-      .access__report__keys small {
-        padding-left: 0.3rem;
-      }
-      .access__report__keys .red,
-      .access__report__keys .yellow,
-      .access__report__keys .green {
-        width: 20px;
-        height: 20px;
-      }
-      .access__report__keys .red {
-        background-color: var(--red-color);
-      }
-      .access__report__keys .yellow {
-        background-color: var(--yellow-color);
-      }
-      .access__report__keys .green {
-        background-color: var(--green-bg);
-      }
+
       .feedback__buttons {
-        justify-content: space-between;
-        transform: translateY(-20px);
+        transform: translateY(-10px);
       }
-      .feedback__buttons #prev {
-        background-color: var(--deep-gray-bg);
-        padding: 0.8rem;
-        min-width: 150px;
-        color: var(--white-color);
-      }
-      .feedback__buttons #create {
-        background-color: var(--green-bg);
-        padding: 0.8rem;
-        min-width: 120px;
-        color: var(--white-color);
-      }
+    }
+  </style>
+</head>
 
-      /* style for pop up */
-      .close_container {
-        justify-content: space-between;
-        padding: 0.5rem 0rem 0.5rem 0rem;
-      }
-      .close_container #close {
-        margin-right: 2.2rem;
-        margin-top: 0.5rem;
-        color: gray;
-      }
-      .disclaimer {
-        justify-content: space-around;
-        padding: 0.5rem 0rem 0.5rem 0rem;
-      }
-      .create_survey {
-        height: 100%;
-        overflow-y: scroll;
-        display: flex;
-        flex-direction: column;
-        transform: translate(-50%, -50%) scale(0.1);
-        top: 10%;
-        left: 50%;
-        background-color: var(--white-color);
-        width: 375px;
-        /* z-index: 999; */
-        position: absolute;
-        visibility: hidden;
-        transition: 0.5s ease-in-out;
-      }
-      .show_create_btn {
-        visibility: visible;
-        transform: translate(-50%, -50%) scale(1);
-        top: 50%;
-      }
-      #qmark {
-        color: var(--red-color);
-        margin-left: 1rem;
-        margin-top: 0.5rem;
-      }
-      .form_control_image input[type="image"] {
-        border-radius: 50%;
-        background-color: var(--gray-bg);
-        height: 100px;
-        width: 100px;
-        outline: none;
-        border: none;
-      }
-      .upload__image__cover {
-        position: relative;
-      }
-      .upload__image__cover button {
-        border-radius: 50%;
-        max-height: 80px;
-        max-width: 80px;
-        position: relative;
-      }
-      .upload__image__cover img {
-        border-radius: 50%;
-<<<<<<< HEAD
-        /*width: 100px;*/
-        max-height: 80px;
-        max-width: 80px;
-=======
-        max-width: 100px;
-        max-height: 100px;
-        cursor: pointer;
->>>>>>> 650e282dc5399bf368859f94b78590260620c601
-      }
-      .upload__image__cover input[type="file"] {
-        background-color: blueviolet;
-        max-height: 80px;
-        max-width: 80px;
-        border-radius: 50%;
-        position: absolute;
-        right: 3%;
-        opacity: 0;
-        cursor: pointer;
-      }
-      .form_control_image {
-        position: relative;
-      }
-      .form_control_image span {
-        position: absolute;
-        flex-direction: column;
-        bottom: 15px;
-        left: 10px;
-        padding: 0.3rem;
-        font-size: 13px;
-      }
-      .form_control_image span i {
-        font-weight: 300;
-      }
-      .form_control_image span i {
-        font-size: 0.9rem;
-        padding-bottom: 0.4rem;
-        color: gray;
-      }
-      .form_control_image small {
-        color: gray;
-      }
-      .form_control input[type="text"],
-      input[type="email"],
-      input[type="url"],
-      textarea,
-      select {
-        /* background-color: var(--gray-bg); */
-        padding: 1rem;
-        width: 100%;
-        border-radius: 0.5rem;
-        margin-top: 0.9rem;
-        outline: none;
-        color: #000;
-        border: 1px solid var(--gray-bg);
-      }
-      .form_control option {
-        max-width: 50%;
-      }
-      .form_control button {
-        width: 100%;
-        background-color: var(--green-bg);
-        color: var(--white-color);
-        padding: 1rem;
-        cursor: pointer;
-      }
+<body>
+  <main>
+    <div class="container">
+      <!-- main section starts -->
+      <header class="">
+        <nav id="navbar">
+          <span class="padding_center navbar__menu"><i class="fa fa-bars"></i></span>
+        </nav>
+      </header>
+      <section class="feedback__text flex">
+        <h2>
+          get your feedback from your <br />
+          desired locations
+        </h2>
+      </section>
 
-      /* nav menu items */
-      .navlinks {
-        width: 100%;
-        height: 100vh;
-        display: flex;
-        flex-direction: column;
-        justify-content: center;
-        align-items: center;
-        /* transform: translate(-50%, -50%) scale(1); */
-        top: 0;
-        left: 0;
-        position: absolute;
-        background-color: var(--green-bg);
-        visibility: hidden;
-      }
-      .navlinks ul li a {
-        color: var(--white-color);
-      }
-      .show_navlinks {
-        visibility: visible;
-        top: 0;
-      }
-      @media (max-width: 768px) {
-        .feedback__text {
-          padding: 35px 0px 35px 0px;
-        }
-        .feedback__qst {
-          padding: 40px 0px 40px 0px;
-        }
-        .access__report__container {
-          text-align: center;
-          padding: 1.9rem 1.5rem;
-        }
-        .feedback__buttons {
-          transform: translateY(-10px);
-        }
-      }
-    </style>
-  </head>
-  <body>
-    <main>
-      <div class="container">
-        <!-- main section starts -->
-        <header class="">
-          <nav id="navbar">
-            <span class="padding_center navbar__menu"
-              ><i class="fa fa-bars"></i
-            ></span>
-          </nav>
-        </header>
-        <section class="feedback__text flex">
-          <h2>
-            get your feedback from your <br />
-            desired locations
-          </h2>
-        </section>
-
-        <section class="feedback__qst">
-          <h2>Questionaire</h2>
-          <p>
-            Link your own using Google forms, <br />
-            HTML or any other link
-          </p>
-        </section>
-        <section class="access__report__container padding_center">
-          <h2>Access Report</h2>
-          <div class="access__report flex">
-            <div class="access__report__keys__container">
-              <div class="access__report__keys flex">
-                <div class="key__value red"></div>
-                <small class="key__text">Link clicks/scans</small>
-              </div>
-              <div class="flex">
-                <div class="key__vaccess__report__keysalue yellow"></div>
-                <small class="key__text">Locations</small>
-              </div>
-              <div class="access__report__keys flex">
-                <div class="key__value green"></div>
-                <small class="key__text">Gadgets</small>
-              </div>
+      <section class="feedback__qst">
+        <h2>Questionaire</h2>
+        <p>
+          Link your own using Google forms, <br />
+          HTML or any other link
+        </p>
+      </section>
+      <section class="access__report__container padding_center">
+        <h2>Access Report</h2>
+        <div class="access__report flex">
+          <div class="access__report__keys__container">
+            <div class="access__report__keys flex">
+              <div class="key__value red"></div>
+              <small class="key__text">Link clicks/scans</small>
             </div>
-            <div class="access__report__graph">
-              <canvas id="myChart"></canvas>
+            <div class="flex">
+              <div class="key__vaccess__report__keysalue yellow"></div>
+              <small class="key__text">Locations</small>
+            </div>
+            <div class="access__report__keys flex">
+              <div class="key__value green"></div>
+              <small class="key__text">Gadgets</small>
             </div>
           </div>
-        </section>
-        <section class="feedback__buttons padding_center flex">
-          <button id="prev">Preview</button>
-          <button id="create">Create survey</button>
-        </section>
+          <div class="access__report__graph">
+            <canvas id="myChart"></canvas>
+          </div>
+        </div>
+      </section>
+      <section class="feedback__buttons padding_center flex">
+        <button id="prev">Preview</button>
+        <button id="create">Create survey</button>
+      </section>
 
-        <!-- main section ends -->
-        <!-- pop up section starts -->
-        <section class="create_survey">
-          <div class="form_survey_container padding_center">
-            <form action="" method="post" enctype="multipart/form-data">
-              {% csrf_token %}
-              <div class="form_control close_container flex">
-                <span id="qmark"> ? </span>
-                <span id="close"><i class="fa fa-close"></i></span>
+      <!-- main section ends -->
+      <!-- pop up section starts -->
+      <section class="create_survey">
+        <div class="form_survey_container padding_center">
+          <form action="" method="post" enctype="multipart/form-data">
+            {% csrf_token %}
+            <div class="form_control close_container flex">
+              <span id="qmark"> ? </span>
+              <span id="close"><i class="fa fa-close"></i></span>
+            </div>
+            <div class="form_control_image flex">
+              <div class="upload__image__cover">
+                <button type="button" class="btn-warning">
+                  <img src="" alt="" id="logo" />
+                  <span id="upload__icon" class="flex"><i class="fa fa-plus"></i>
+                    <small>upload file</small></span>
+                  <span></span>
+                </button>
+                <input type="file" id="uploaded__image" name="logo" id="logo" required />
               </div>
-              <div class="form_control_image flex">
-                <div class="upload__image__cover">
-                  <button type="button" class="btn-warning">
-                    <img src="" alt="" id="logo" />
-                    <span id="upload__icon" class="flex"
-                      ><i class="fa fa-plus"></i>
-                      <small>upload file</small></span
-                    >
-                    <span></span>
-                  </button>
-                  <input
-                    type="file"
-                    id="uploaded__image"
-                    name="logo"
-                    id="logo"
-                    required
-                  />
-                </div>
+            </div>
+            <div class="form_control">
+              <input type="text" placeholder="enter your name" id="brand_name" name="brand_name" required />
+            </div>
+            <div class="form_control">
+              <!-- ========= -->
+              <p id="search" class="products__toggler btn">
+                Select products/services
+                <span> <i class="fa fa-arrow-circle-down"></i></span>
+              </p>
+              <div class="products__container">
+                <div class="product__tags__container"></div>
+                <input class="product__search" oninput="searchProduct()" type="search"
+                  placeholder="search product..." />
+                <div id="productList" class="products__label"></div>
               </div>
-              <div class="form_control">
-                <input
-                  type="text"
-                  placeholder="enter your name"
-                  id="brand_name"
-                  name="brand_name"
-                  required
-                />
-              </div>
-              <div class="form_control">
-                <!-- <input
-                  type="text"
-                  placeholder="enter your product/service"
-                  id="service"
-                  name="service"
-                  required
-                /> -->
+              <!-- ================== -->
 
-                <p id="search" class="products__toggler btn">
-                  Select your product/service
-                  <span> <i class="fa fa-arrow-circle-down"></i></span>
-                </p>
-                <div class="products__container">
-                  <div class="products__tags__container"></div>
-                  <div id="productList" class="products__label"></div>
-                </div>
-              </div>
-              <div class="form_control">
-                <input
-                  type="url"
-                  placeholder="https//:yourlink.com"
-                  id="url"
-                  name="url"
-                  required
-                />
-              </div>
-              <!-- <div class="form_control">
+
+            </div>
+            <div class="form_control">
+              <input type="url" placeholder="https//:yourlink.com" id="url" name="url" required />
+            </div>
+            <!-- <div class="form_control">
                 <select name="location" id="location" required>
                   <option value="">--select the survey form--</option>
                   <option value="1">one</option>
                   <option value="2">two</option>
                 </select>
               </div> -->
-              <!--
+            <!--
                 start country api selector
                -->
 
-              <!-- end country api selector -->
-              <!-- <div class="form_control">
+            <!-- end country api selector -->
+            <!-- <div class="form_control">
                 <select name="countries" id="countries" required>
                   <option value="">--select your country--</option>
                 </select>
@@ -516,268 +546,248 @@
                   <option value="">--select your city--</option>
                 </select>
               </div> -->
-              <p class="countries__toggler btn">
-                Select country/countries
-                <span> <i class="fa fa-arrow-circle-down"></i></span>
-              </p>
-              <div class="countries__container">
-                <div class="country__tags__container"></div>
-                <input
-                  class="country__search"
-                  oninput="searchCountry()"
-                  type="search"
-                  placeholder="search country..."
-                />
-                <div class="countries__label"></div>
-              </div>
-              <p class="regions__toggler">
-                Select region/regions
-                <span> <i class="fa fa-arrow-circle-down"></i></span>
-              </p>
-              <div class="regions__container">
-                <div class="region__tags__container"></div>
-                <input
-                  class="region__search"
-                  oninput="searchRegion()"
-                  type="search"
-                  placeholder="search region..."
-                />
-                <div class="regions__label"></div>
-              </div>
-              <div class="form_control">
-                <textarea
-                  name="promotional_sentence"
-                  id="promotional_sentence"
-                  cols="30"
-                  rows="3"
-                  placeholder="Enter a promotional sentence to attract participants in (15 words)"
-                  required
-                ></textarea>
-              </div>
-              <div class="form_control disclaimer flex">
-                <span> disclaimer </span>
-                <input
-                  type="checkbox"
-                  id="disclaimer"
-                  name="disclaimer"
-                  required
-                />
-              </div>
-              <div class="form_control">
-                <button type="submit">Create Survey Campaign</button>
-              </div>
-            </form>
-          </div>
-        </section>
-        <!-- pop up section ends -->
-      </div>
-    </main>
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.0/jquery.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-3-typeahead/4.0.2/bootstrap3-typeahead.min.js"></script>
+            <p class="countries__toggler btn">
+              Select country/countries
+              <span> <i class="fa fa-arrow-circle-down"></i></span>
+            </p>
+            <div class="countries__container">
+              <div class="country__tags__container"></div>
+              <input class="country__search" oninput="searchCountry()" type="search" placeholder="search country..." />
+              <div class="countries__label"></div>
+            </div>
+            <p class="regions__toggler">
+              Select region/regions
+              <span> <i class="fa fa-arrow-circle-down"></i></span>
+            </p>
+            <div class="regions__container">
+              <div class="region__tags__container"></div>
+              <input class="region__search" oninput="searchRegion()" type="search" placeholder="search region..." />
+              <div class="regions__label"></div>
+            </div>
+            <div class="form_control">
+              <textarea name="promotional_sentence" id="promotional_sentence" cols="30" rows="3"
+                placeholder="Enter a promotional sentence to attract participants in (15 words)" required></textarea>
+            </div>
+            <div class="form_control disclaimer flex">
+              <span> disclaimer </span>
+              <input type="checkbox" id="disclaimer" name="disclaimer" required />
+            </div>
+            <div class="form_control">
+              <button type="submit">Create Survey Campaign</button>
+            </div>
+          </form>
+        </div>
+      </section>
+      <!-- pop up section ends -->
+    </div>
+  </main>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.0/jquery.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-3-typeahead/4.0.2/bootstrap3-typeahead.min.js"></script>
 
-    <script>
-      "use strict";
+  <script>
+    "use strict";
 
-      // script for chart
-      const ctx = document.getElementById("myChart").getContext("2d");
-      const labels = ["Jan", "Feb", "Mar"];
+    // script for chart
+    const ctx = document.getElementById("myChart").getContext("2d");
+    const labels = ["Jan", "Feb", "Mar"];
 
-      const data = {
-        labels: labels,
-        datasets: [
-          {
-            label: "My First dataset",
-            backgroundColor: [
-              "rgba(255, 0, 0, 1)",
-              "rgba(255, 232, 30, 1)",
-              "rgba(83, 202, 95, 1)",
-            ],
-            data: [70, 50, 30],
-          },
-        ],
-      };
-
-      const config = {
-        type: "bar",
-        data: data,
-        options: {
-          responsive: true,
+    const data = {
+      labels: labels,
+      datasets: [
+        {
+          label: "My First dataset",
+          backgroundColor: [
+            "rgba(255, 0, 0, 1)",
+            "rgba(255, 232, 30, 1)",
+            "rgba(83, 202, 95, 1)",
+          ],
+          data: [70, 50, 30],
         },
-      };
-      const myChart = new Chart(document.getElementById("myChart"), config);
+      ],
+    };
 
-      //pop up
-      // craete script for survey form
-      const createBtn = document.querySelector("#create");
-      const closeBtn = document.querySelector("#close");
-      const createSurvey = document.querySelector(".create_survey");
+    const config = {
+      type: "bar",
+      data: data,
+      options: {
+        responsive: true,
+      },
+    };
+    const myChart = new Chart(document.getElementById("myChart"), config);
 
-      createBtn.addEventListener("click", function () {
-        createSurvey.classList.add("show_create_btn");
-      });
-      closeBtn.addEventListener("click", function () {
-        createSurvey.classList.remove("show_create_btn");
-      });
+    //pop up
+    // craete script for survey form
+    const createBtn = document.querySelector("#create");
+    const closeBtn = document.querySelector("#close");
+    const createSurvey = document.querySelector(".create_survey");
+
+    createBtn.addEventListener("click", function () {
+      createSurvey.classList.add("show_create_btn");
+    });
+    closeBtn.addEventListener("click", function () {
+      createSurvey.classList.remove("show_create_btn");
+    });
 
 
-      // upload image script
-      const uploadIcon = document.querySelector("#upload__icon");
-      const image = document.querySelector("#logo");
-      const uploaded = document.querySelector("#uploaded__image");
-      uploaded.addEventListener("change", function () {
-        const file = this.files[0];
-        if (file) {
-          const reader = new FileReader();
-          image.style.display = "block";
-          reader.addEventListener("load", function () {
-            image.setAttribute("src", this.result);
-            console.log("this.result");
-            console.log(this.result);
-            uploadIcon.style.display = "none";
-          });
-          reader.readAsDataURL(file);
+    // upload image script
+    const uploadIcon = document.querySelector("#upload__icon");
+    const image = document.querySelector("#logo");
+    const uploaded = document.querySelector("#uploaded__image");
+    uploaded.addEventListener("change", function () {
+      const file = this.files[0];
+      if (file) {
+        const reader = new FileReader();
+        image.style.display = "block";
+        reader.addEventListener("load", function () {
+          image.setAttribute("src", this.result);
+          console.log("this.result");
+          console.log(this.result);
+          uploadIcon.style.display = "none";
+        });
+        reader.readAsDataURL(file);
+      }
+    });
+  </script>
+  <script>
+    // countries
+
+    const toggleCountry = document.querySelector(".countries__toggler");
+    const toggleRegion = document.querySelector(".regions__toggler");
+    const countriesContainer = document.querySelector(
+      ".countries__container"
+    );
+    const regionsContainer = document.querySelector(".regions__container");
+    const countrySearchQuery = document.querySelector(".country__search");
+    const regionSearchQuery = document.querySelector(".region__search");
+    const countriesDataContainer =
+      document.querySelector(".countries__label");
+
+    // hide section initially
+    countriesContainer.classList.add("hide");
+    regionsContainer.classList.add("hide");
+
+    toggleCountry.addEventListener("click", function () {
+      // toggle section hide and show
+      countriesContainer.classList.toggle("hide");
+    });
+    toggleRegion.addEventListener("click", function () {
+      // toggle section hide and show
+      regionsContainer.classList.toggle("hide");
+    });
+
+    // hide container when clicked outside
+
+    window.onclick = (e) => {
+      if (!e.target.matches(".countries__toggler")) {
+        if (!countriesContainer.classList.contains("hide")) {
+          countriesContainer.classList.add("hide");
         }
-      });
-    </script>
-    <script>
-      // countries
+      }
+      if (!e.target.matches(".regions__toggler")) {
+        if (!regionsContainer.classList.contains("hide")) {
+          regionsContainer.classList.add("hide");
+        }
+      }
+    };
+    countriesContainer.addEventListener("click", (e) => e.stopPropagation());
+    regionsContainer.addEventListener("click", (e) => e.stopPropagation());
+    // end hide container when clicked outside
 
-      const toggleCountry = document.querySelector(".countries__toggler");
-      const toggleRegion = document.querySelector(".regions__toggler");
-      const countriesContainer = document.querySelector(
-        ".countries__container"
+    //   script to search country
+    function searchCountry() {
+      const countriesCheckBoxLabel = document.querySelectorAll(
+        ".countries__label label"
       );
-      const regionsContainer = document.querySelector(".regions__container");
-      const countrySearchQuery = document.querySelector(".country__search");
-      const regionSearchQuery = document.querySelector(".region__search");
-      const countriesDataContainer =
-        document.querySelector(".countries__label");
-
-      // hide section initially
-      countriesContainer.classList.add("hide");
-      regionsContainer.classList.add("hide");
-
-      toggleCountry.addEventListener("click", function () {
-        // toggle section hide and show
-        countriesContainer.classList.toggle("hide");
-      });
-      toggleRegion.addEventListener("click", function () {
-        // toggle section hide and show
-        regionsContainer.classList.toggle("hide");
-      });
-
-      // hide container when clicked outside
-
-      window.onclick = (e) => {
-        if (!e.target.matches(".countries__toggler")) {
-          if (!countriesContainer.classList.contains("hide")) {
-            countriesContainer.classList.add("hide");
-          }
-        }
-        if (!e.target.matches(".regions__toggler")) {
-          if (!regionsContainer.classList.contains("hide")) {
-            regionsContainer.classList.add("hide");
-          }
-        }
-      };
-      countriesContainer.addEventListener("click", (e) => e.stopPropagation());
-      regionsContainer.addEventListener("click", (e) => e.stopPropagation());
-      // end hide container when clicked outside
-
-      //   script to search country
-      function searchCountry() {
-        const countriesCheckBoxLabel = document.querySelectorAll(
-          ".countries__label label"
-        );
-        for (label of countriesCheckBoxLabel) {
-          let hideElement = label;
-          hideElement.classList.add("hide");
-          let element = label.childNodes;
-          for (label of element) {
-            if (label.value !== undefined) {
-              if (
-                label.value
-                  .toLowerCase()
-                  .includes(countrySearchQuery.value.toLowerCase())
-              ) {
-                hideElement.classList.remove("hide");
-              }
+      for (label of countriesCheckBoxLabel) {
+        let hideElement = label;
+        hideElement.classList.add("hide");
+        let element = label.childNodes;
+        for (label of element) {
+          if (label.value !== undefined) {
+            if (
+              label.value
+                .toLowerCase()
+                .includes(countrySearchQuery.value.toLowerCase())
+            ) {
+              hideElement.classList.remove("hide");
             }
           }
         }
       }
+    }
 
-      //   script for region search
-      function searchRegion() {
-        const regionsCheckBoxLabel = document.querySelectorAll(
-          ".regions__label label"
-        );
-        for (label of regionsCheckBoxLabel) {
-          let hideElement = label;
-          hideElement.classList.add("hide");
-          let element = label.childNodes;
-          for (label of element) {
-            if (label.value !== undefined) {
-              if (
-                label.value
-                  .toLowerCase()
-                  .includes(regionSearchQuery.value.toLowerCase())
-              ) {
-                hideElement.classList.remove("hide");
-              }
+    //   script for region search
+    function searchRegion() {
+      const regionsCheckBoxLabel = document.querySelectorAll(
+        ".regions__label label"
+      );
+      for (label of regionsCheckBoxLabel) {
+        let hideElement = label;
+        hideElement.classList.add("hide");
+        let element = label.childNodes;
+        for (label of element) {
+          if (label.value !== undefined) {
+            if (
+              label.value
+                .toLowerCase()
+                .includes(regionSearchQuery.value.toLowerCase())
+            ) {
+              hideElement.classList.remove("hide");
             }
           }
         }
       }
+    }
 
-      // delete countries
-      function deleteCountries(removeCheck) {
-        const countryRemover = document.querySelectorAll(".country__remover");
-        for (let i = 0; i < countryRemover.length; i++) {
-          countryRemover[i].addEventListener("click", function () {
-            console.log(countryRemover[i], i);
-            countryRemover[i].parentElement.remove();
-            removeCheck = false;
-            console.log(removeCheck, "******");
-          });
-        }
+    // delete countries
+    function deleteCountries(removeCheck) {
+      const countryRemover = document.querySelectorAll(".country__remover");
+      for (let i = 0; i < countryRemover.length; i++) {
+        countryRemover[i].addEventListener("click", function () {
+          console.log(countryRemover[i], i);
+          countryRemover[i].parentElement.remove();
+          removeCheck = false;
+          console.log(removeCheck, "******");
+        });
       }
-      // delete regions
-      function deleteRegions(removeCheck) {
-        const regionRemover = document.querySelectorAll(".region__remover");
-        for (let i = 0; i < regionRemover.length; i++) {
-          regionRemover[i].addEventListener("click", function () {
-            console.log(regionRemover[i], i);
-            regionRemover[i].parentElement.remove();
-            removeCheck = false;
-            console.log(removeCheck, "******");
-          });
-        }
+    }
+    // delete regions
+    function deleteRegions(removeCheck) {
+      const regionRemover = document.querySelectorAll(".region__remover");
+      for (let i = 0; i < regionRemover.length; i++) {
+        regionRemover[i].addEventListener("click", function () {
+          console.log(regionRemover[i], i);
+          regionRemover[i].parentElement.remove();
+          removeCheck = false;
+          console.log(removeCheck, "******");
+        });
       }
-      (function () {
-        let countryList = [];
-        let countriesTagContainer = document.querySelector(
-          ".country__tags__container"
-        );
-        countriesDataContainer.innerHTML = "<p>Loading countries ...</p>";
-        const apiCountriesURL =
-          "https://100074.pythonanywhere.com/countries/{{ user.username }}/{{ session_id }}/100014/";
+    }
+    (function () {
+      let countryList = [];
+      let countriesTagContainer = document.querySelector(
+        ".country__tags__container"
+      );
+      countriesDataContainer.innerHTML = "<p>Loading countries ...</p>";
+      const apiCountriesURL =
+        // "https://100074.pythonanywhere.com/countries/{{ user.username }}/{{ session_id }}/100014/";
+        "https://100074.pythonanywhere.com/countries/{{ user.username }}/6x5wqdl75wv2mxkv24qd4otpiubk2b4g/100014/";
 
-        fetch(apiCountriesURL, {
-          method: "GET",
+      fetch(apiCountriesURL, {
+        method: "GET",
+      })
+        .then((res) => {
+          const contentType = res.headers.get("Content-Type");
+          if (!contentType || !contentType.includes("application/json")) {
+            throw new TypeError("no data was fetched");
+          }
+          return res.json();
         })
-          .then((res) => {
-            const contentType = res.headers.get("Content-Type");
-            if (!contentType || !contentType.includes("application/json")) {
-              throw new TypeError("no data was fetched");
-            }
-            return res.json();
-          })
-          .then((data) => {
-            countriesDataContainer.innerHTML = null;
-            data.forEach((country) => {
-              countriesDataContainer.innerHTML += `<label for="${country.name}"      class="checkbox__container"
+        .then((data) => {
+          countriesDataContainer.innerHTML = null;
+          data.forEach((country) => {
+            countriesDataContainer.innerHTML += `<label for="${country.name}"      class="checkbox__container"
               >${country.name}
               <input
                 type="checkbox"
@@ -788,62 +798,62 @@
 
               <span class="checkmark"></span>
             </label>`;
-            });
-            const countryCheckBoxes = document.querySelectorAll(
-              "input[type=checkbox]"
-            );
-            countryCheckBoxes.forEach((checkBox) => {
-              // console.log(checkBox.value);
+          });
+          const countryCheckBoxes = document.querySelectorAll(
+            "input[type=checkbox]"
+          );
+          countryCheckBoxes.forEach((checkBox) => {
+            // console.log(checkBox.value);
 
-              checkBox.addEventListener("change", function () {
-                if (checkBox.checked) {
-                  countryList.push(checkBox.value);
-                  toggleCountry.innerText = `${
-                    countryList.length === 1
-                      ? "1 country selected"
-                      : countryList.length + " countries selected"
+            checkBox.addEventListener("change", function () {
+              if (checkBox.checked) {
+                countryList.push(checkBox.value);
+                toggleCountry.innerText = `${countryList.length === 1
+                    ? "1 country selected"
+                    : countryList.length + " countries selected"
                   }`;
-                  let countryCounter = checkBox.value;
-                  const result = countryList.filter(
-                    (country) => country === countryCounter
-                  ).length;
-                  console.table("country:", countryCounter, "count:", result);
-                  if (result === 1) {
-                    loadRegion(checkBox.value);
-                    countriesTagContainer.innerHTML += `<button class="country__tag">
+                let countryCounter = checkBox.value;
+                const result = countryList.filter(
+                  (country) => country === countryCounter
+                ).length;
+                console.table("country:", countryCounter, "count:", result);
+                if (result === 1) {
+                  loadRegion(checkBox.value);
+                  countriesTagContainer.innerHTML += `<button class="country__tag">
                         ${checkBox.value} <span class="country__remover">x</span>
                       </button>`;
-                  }
                 }
-                deleteCountries(checkBox.checked);
-              });
+              }
+              deleteCountries(checkBox.checked);
             });
           });
-      })();
-    </script>
-    <script>
-      function loadRegion(country) {
-        let regionList = [];
-        const regionsDataContainer = document.querySelector(".regions__label");
-        let regionsTagContainer = document.querySelector(
-          ".region__tags__container"
-        );
-        const regionUrl = `https://100074.pythonanywhere.com/region/name/${country}/{{ user.username }}/{{ session_id }}/100014/`;
+        });
+    })();
+  </script>
+  <script>
+    function loadRegion(country) {
+      let regionList = [];
+      const regionsDataContainer = document.querySelector(".regions__label");
+      let regionsTagContainer = document.querySelector(
+        ".region__tags__container"
+      );
+      // const regionUrl = `https://100074.pythonanywhere.com/region/name/${country}/{{ user.username }}/{{ session_id }}/100014/`;
+      const regionUrl = `https://100074.pythonanywhere.com/region/name/${country}/{{ user.username }}/6x5wqdl75wv2mxkv24qd4otpiubk2b4g/100014/`;
 
-        fetch(regionUrl, {
-          method: "GET",
+      fetch(regionUrl, {
+        method: "GET",
+      })
+        .then((response) => {
+          const contentType = response.headers.get("content-type");
+          if (!contentType || !contentType.includes("application/json")) {
+            throw new TypeError("Oops, we haven't got JSON!");
+          }
+          return response.json();
         })
-          .then((response) => {
-            const contentType = response.headers.get("content-type");
-            if (!contentType || !contentType.includes("application/json")) {
-              throw new TypeError("Oops, we haven't got JSON!");
-            }
-            return response.json();
-          })
-          .then((data) => {
-            /* process your data further */
-            data.forEach((region) => {
-              regionsDataContainer.innerHTML += `<label for="${region.name}"      class="checkbox__container"
+        .then((data) => {
+          /* process your data further */
+          data.forEach((region) => {
+            regionsDataContainer.innerHTML += `<label for="${region.name}"      class="checkbox__container"
               >${region.name}
               <input
                 type="checkbox"
@@ -855,38 +865,38 @@
 
               <span class="checkmark"></span>
             </label>`;
-            });
+          });
 
-            const regionCheckBoxes =
-              document.querySelectorAll(".region__inputs");
+          const regionCheckBoxes =
+            document.querySelectorAll(".region__inputs");
 
-            regionCheckBoxes.forEach((checkBox) => {
-              checkBox.addEventListener("change", function () {
-                if (checkBox.checked) {
-                  regionList.push(checkBox.value);
-                  toggleRegion.innerText = `${
-                    regionList.length === 1
-                      ? "1 region selected"
-                      : regionList.length + " regions selected"
+          regionCheckBoxes.forEach((checkBox) => {
+            checkBox.addEventListener("change", function () {
+              if (checkBox.checked) {
+                regionList.push(checkBox.value);
+                toggleRegion.innerText = `${regionList.length === 1
+                    ? "1 region selected"
+                    : regionList.length + " regions selected"
                   }`;
-                  let regionCounter = checkBox.value;
-                  const result = regionList.filter(
-                    (region) => region === regionCounter
-                  ).length;
-                  if (result === 1) {
-                    regionsTagContainer.innerHTML += `<button class="region__tag">
+                let regionCounter = checkBox.value;
+                const result = regionList.filter(
+                  (region) => region === regionCounter
+                ).length;
+                if (result === 1) {
+                  regionsTagContainer.innerHTML += `<button class="region__tag">
                         ${checkBox.value} <span class="region__remover">x</span>
                       </button>`;
-                  }
                 }
-                deleteRegions(checkBox.checked);
-              });
+              }
+              deleteRegions(checkBox.checked);
             });
-          })
-          .catch((error) => console.error(error));
-      }
-    </script>
-    <!-- <script>
+          });
+        })
+        .catch((error) => console.error(error));
+    }
+
+  </script>
+  <!-- <script>
       // Fetch Api for countries
 
       /*
@@ -983,60 +993,252 @@
 
 
 
-    <!-- loading the dowells products/services from the api -->
+  <!--  -->
+  <!-- <script>
+    const toggleProduct = document.querySelector(".products__toggler");
+    const productsContainer = document.querySelector(
+      ".products__container"
+    );
+    const productsSearchQuery = document.querySelector(".products__search");
+    const prodictsDataContainer =
+      document.querySelector(".products__label");
 
-    <script>
-      const productList = document.getElementById("productList");
-      const searchInput = document.getElementById("search");
+    // hide section initially
+    productsContainer.classList.add("hide");
 
-      let productsTagContainer = document.querySelector(
-          ".product__tags__container"
-        );
-    
-      searchInput.addEventListener("click", async () => {
-        productList.innerHTML = "<p>Loading products...</p>";
-          const response = await fetch("http://100093.pythonanywhere.com/api/getproducts/", {
-              method: "POST",
-              headers: {
-                  "Content-Type": "application/json"
-              },
-              body: JSON.stringify({
-                  "username": "uxliveadmin"
-              })
-          });
-          const data = await response.json();
-          list_of_products = data.products.map((product) => product.product_name)
-          console.log('available products ', list_of_products)
-          displayProducts(data.products);
 
+    toggleProduct.addEventListener("click", function () {
+      // toggle section hide and show
+      productsContainer.classList.toggle("hide");
+    });
+
+
+    // hide container when clicked outside
+
+    window.onclick = (e) => {
+      if (!e.target.matches(".products__toggler")) {
+        if (!productsContainer.classList.contains("hide")) {
+          productsContainer.classList.add("hide");
+        }
+      }
+
+    };
+    productsContainer.addEventListener("click", (e) => e.stopPropagation());
+
+
+    const productList = document.getElementById("productList");
+    const searchInput = document.getElementById("search");
+
+    let productsTagContainer = document.querySelector(
+      ".product__tags__container"
+    );
+
+    searchInput.addEventListener("click", async () => {
+      productList.innerHTML = "<p>Loading products...</p>";
+      const response = await fetch("http://100093.pythonanywhere.com/api/getproducts/", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify({
+          "username": "uxliveadmin"
+        })
       });
+      const data = await response.json();
+      list_of_products = data.products.map((product) => product.product_name)
+      console.log('available products ', list_of_products)
+      displayProducts(data.products);
 
-      function displayProducts(products) {
-    productList.innerHTML = "";
-    products.forEach(product => {
+    });
+
+    function displayProducts(products) {
+      productList.innerHTML = "";
+      products.forEach(product => {
         const label = document.createElement("label");
-        label.classList.add("checkbox__container"); 
-        
+        label.classList.add("checkbox__container");
+
         const checkbox = document.createElement("input");
         checkbox.type = "checkbox";
-        checkbox.name = "selectedProducts";
+        checkbox.name = "service";
         checkbox.value = product.product_name;
-        
+
 
         const checkmark = document.createElement("span");
-        checkmark.classList.add("checkmark"); 
+        checkmark.classList.add("checkmark");
 
 
         label.appendChild(checkbox);
         label.appendChild(document.createTextNode(product.product_name));
         label.appendChild(checkmark);
-        
+
         productList.appendChild(label);
+      });
+    }
+
+
+    function searchProduct() {
+      const productsCheckBoxLabel = document.querySelectorAll(
+        ".products__label label"
+      );
+      for (label of productsCheckBoxLabel) {
+        let hideElement = label;
+        hideElement.classList.add("hide");
+        let element = label.childNodes;
+        for (label of element) {
+          if (label.value !== undefined) {
+            if (
+              label.value
+                .toLowerCase()
+                .includes(productsSearchQuery.value.toLowerCase())
+            ) {
+              hideElement.classList.remove("hide");
+            }
+          }
+        }
+      }
+    }
+  </script> -->
+<script>
+  const toggleProduct = document.querySelector(".products__toggler");
+const productsContainer = document.querySelector(".products__container");
+const productsSearchQuery = document.querySelector(".product__search");
+const productList = document.getElementById("productList");
+
+// hide section initially
+productsContainer.classList.add("hide");
+
+toggleProduct.addEventListener("click", function () {
+  // toggle section hide and show
+  productsContainer.classList.toggle("hide");
+});
+
+// hide container when clicked outside
+window.onclick = (e) => {
+  if (!e.target.matches(".products__toggler")) {
+    if (!productsContainer.classList.contains("hide")) {
+      productsContainer.classList.add("hide");
+    }
+  }
+};
+productsContainer.addEventListener("click", (e) => e.stopPropagation());
+
+const username = "uxliveadmin";
+fetchProducts(username);
+
+function fetchProducts(username) {
+  productList.innerHTML = "<p>Loading products...</p>";
+  fetch("http://100093.pythonanywhere.com/api/getproducts/", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({ username }),
+  })
+    .then((response) => response.json())
+    .then((data) => {
+      displayProducts(data.products);
     });
 }
 
-  </script>
+function displayProducts(products) {
+  productList.innerHTML = "";
+  products.forEach((product) => {
+    const label = document.createElement("label");
+    label.classList.add("checkbox__container");
+
+    const checkbox = document.createElement("input");
+    checkbox.type = "checkbox";
+    checkbox.name = "service";
+    checkbox.value = product.product_name;
+
+    const checkmark = document.createElement("span");
+    checkmark.classList.add("checkmark");
+
+    label.appendChild(checkbox);
+    label.appendChild(document.createTextNode(product.product_name));
+    label.appendChild(checkmark);
+
+    productList.appendChild(label);
+  });
+}
+
+function searchProduct() {
+  const searchValue = productsSearchQuery.value.toLowerCase();
+  const productsCheckBoxLabel = document.querySelectorAll(".checkbox__container");
+
+  productsCheckBoxLabel.forEach((label) => {
+    const product_name = label.querySelector("input[type=checkbox]").value.toLowerCase();
+    if (product_name.includes(searchValue)) {
+      label.classList.remove("hide");
+    } else {
+      label.classList.add("hide");
+    }
+  });
+}
 
 
-  </body>
+function addSelectedProductButton(productName) {
+  const selectedProductsContainer = document.querySelector(".product__tags__container");
+
+  const productButton = document.createElement("button");
+  productButton.classList.add("product__tag");
+
+  const closeButton = document.createElement("span");
+  closeButton.classList.add("product__remover");
+  closeButton.innerHTML = "x";
+
+  closeButton.addEventListener("click", () => {
+    // Handle deselection here
+    deselectProduct(productName);
+    productButton.remove(); // Remove the button when deselected
+  });
+
+  productButton.appendChild(document.createTextNode(productName));
+  productButton.appendChild(closeButton);
+
+  selectedProductsContainer.appendChild(productButton);
+}
+
+function handleProductSelection(productName) {
+  // Check if the product is not already selected
+  if (!productList.includes(productName)) {
+    // Add the product to the list of selected products
+    productList.push(productName);
+
+    // Add a button for the selected product
+    addSelectedProductButton(productName);
+  }
+}
+
+function deselectProduct(productName) {
+  // Handle deselection logic here (e.g., remove from selected list)
+  // You can modify the productList array or any other data structure you're using
+  // For example, if productList is an array of selected products, you can do:
+  const index = productList.indexOf(productName);
+  if (index !== -1) {
+    productList.splice(index, 1); // Remove the product from the selected list
+  }
+}
+
+function handleProductSelection(productName) {
+  // Check if the product is not already selected
+  if (!productList.includes(productName)) {
+    // Add the product to the list of selected products
+    productList.push(productName);
+
+    // Add a button for the selected product
+    addSelectedProductButton(productName);
+  }
+}
+
+
+</script>
+
+
+
+
+
+  <!-- ====================================================================== -->
+</body>
+
 </html>
