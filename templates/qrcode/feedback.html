@@ -992,7 +992,7 @@
       let productsTagContainer = document.querySelector(
           ".product__tags__container"
         );
-    
+
       searchInput.addEventListener("click", async () => {
         productList.innerHTML = "<p>Loading products...</p>";
           const response = await fetch("http://100093.pythonanywhere.com/api/getproducts/", {
@@ -1015,22 +1015,22 @@
     productList.innerHTML = "";
     products.forEach(product => {
         const label = document.createElement("label");
-        label.classList.add("checkbox__container"); 
-        
+        label.classList.add("checkbox__container");
+
         const checkbox = document.createElement("input");
         checkbox.type = "checkbox";
         checkbox.name = "selectedProducts";
         checkbox.value = product.product_name;
-        
+
 
         const checkmark = document.createElement("span");
-        checkmark.classList.add("checkmark"); 
+        checkmark.classList.add("checkmark");
 
 
         label.appendChild(checkbox);
         label.appendChild(document.createTextNode(product.product_name));
         label.appendChild(checkmark);
-        
+
         productList.appendChild(label);
     });
 }
