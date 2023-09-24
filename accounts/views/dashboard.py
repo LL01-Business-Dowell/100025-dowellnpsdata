@@ -93,6 +93,7 @@ class DashboardView(View):
         if request.method == 'POST' and request.FILES:
             # check if user is logged in first
             if 'username' not in request.session:
+                print('Username not found!')
                 return redirect("https://100014.pythonanywhere.com/")
 
             # headers = {
@@ -123,6 +124,12 @@ class DashboardView(View):
             dta2 = formdata['region']
             r = '-'.join(dta2)
             formdata['region'] = r
+            
+            
+            dta3 = formdata['service']
+            s = '-'.join(dta3)
+            formdata['service'] = s
+            
             print("Serializer files type", type(files['logo']))
             print("Serializer files ", files)
             serializer = CreateQrCodeSerializer(data=formdata)

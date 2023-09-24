@@ -4,7 +4,7 @@ import requests
 import json
 import traceback
 import sys
-from .models import QrCode
+from .models import QrCode, QrCodeV2
 from PIL import Image
 import qrcode
 from django.conf import settings
@@ -163,23 +163,117 @@ class UpdateQrCodeSerializer(serializers.ModelSerializer):
             print("Exception in serializer: ", ex)
             print(traceback.format_exc())
             raise ex
-    # def update(self, instance, validated_data):
-    #     try:
-    #         logo = validated_data.pop('logo')
+  
 
-    #         # Update the logo field of the existing instance
-    #         instance.logo = logo
-    #         instance.save()
 
-    #         return instance
-    #     except Exception as ex:
-    #         print("Exception in serializer: ", ex)
-    #         print(traceback.format_exc())
-    #         raise ex
+class CreateQrCodeSerializerV2(serializers.ModelSerializer):
+    class Meta:
+        model = QrCodeV2
+        # exclude = ['qr_code',]
+        fields = '__all__'
 
-    #         # print(traceback.format_exc())
-    # # or
-    #         # print(sys.exc_info()[2])
+    def create(self, validated_data):
+        try:
+            new_qrcode = QrCodeV2.objects.create(**validated_data)
+            # Logo_link = validated_data.pop('logo')
+            # filename = Logo_link.name
+
+            # logo = Image.open(Logo_link)
+            # basewidth = 100
+
+            # wpercent = (basewidth/float(logo.size[0]))
+            # hsize = int((float(logo.size[1])*float(wpercent)))
+            # logo = logo.resize((basewidth, hsize), Image.ANTIALIAS)
+
+
+            # QRcode = qrcode.QRCode(
+            #     error_correction=qrcode.constants.ERROR_CORRECT_H
+            # )
+            # host = settings.HOSTNAME
+
+            # # url = validated_data.pop('url')
+            # survey_url = validated_data['url']
+
+            # url = 'https://' + host + '/iframe?survey_id='+ str(new_qrcode.id)
+            # print("url----------------------------->"+url)
+
+
+            # QRcode.add_data(url)
+
+
+            # QRcode.make()
+
+
+            # QRcolor = 'Black'
+
+            # # adding color to QR code
+            # QRimg = QRcode.make_image(
+            #     fill_color=QRcolor, back_color="white").convert('RGB')
+
+            # # set size of QR code
+            # pos = ((QRimg.size[0] - logo.size[0]) // 2,
+            #     (QRimg.size[1] - logo.size[1]) // 2)
+
+            # # box = Image.open('background.png')
+            # # QRimg.paste(box, pos)
+            # QRimg.paste(logo,pos)
+
+            # # QRimg.show()
+
+            # # save the QR code generated
+            # QRimg.save(settings.MEDIA_ROOT+'/company_qrcode/'+filename)
+            # filepath = 'company_qrcode/'+filename
+            # new_qrcode.qr_code = filepath
+            # with open(settings.MEDIA_ROOT+'/company_qrcode/'+filename, "rb") as image2string:
+            #     converted_string = base64.b64encode(image2string.read())
+
+
+
+            # new_qrcode.image = converted_string
+            # new_qrcode.event_id = get_event_id()
+            new_qrcode.save()
+            print("This is the validated data in serializer to be save", new_qrcode)
+            return new_qrcode
+        
+        except Exception as ex:
+
+            print("Exception is serializwe ", ex)
+            print(ex, traceback.format_exc())
+            
+            
+            
+class UpdateQrCodeSerializerV2(serializers.ModelSerializer):
+    class Meta:
+        model = QrCode
+        fields = '__all__'
+        
+        
+        
+    
+    
+    def update(self, instance, validated_data):
+        try:
+            # Update the logo field of the existing instance
+            instance.logo = validated_data.get('logo', instance.logo)
+            instance.brand_name = validated_data.get('brand_name', instance.brand_name)
+            instance.service = validated_data.get('service', instance.service)
+            instance.url = validated_data.get('url', instance.url)
+            instance.country = validated_data.get('country', instance.country)
+            instance.region = validated_data.get('region', instance.region)
+            instance.promotional_sentence = validated_data.get('promotional_sentence', instance.promotional_sentence)
+            instance.start_date = validated_data.get('start_date', instance.start_date)
+            instance.end_date = validated_data.get('end_date', instance.end_date)
+            instance.name = validated_data.get('name', instance.name)
+            instance.email = validated_data.get('email', instance.email)
+            instance.username = validated_data.get('username', instance.username)
+            instance.save()
+
+            return instance
+        except Exception as ex:
+            print("Exception in serializer: ", ex)
+            print(traceback.format_exc())
+            raise ex
+  
 
 
 
