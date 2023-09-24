@@ -7,7 +7,7 @@ import json
 from datetime import datetime, date
 from accounts.views.helper import upload_to_remote_db, update_to_remote_db
 from api.serializers import *
-from api.models import QrCode
+from api.models import QrCode, QrCodeV2
 
 
 from django.conf import settings
@@ -56,10 +56,10 @@ class GetDowellSurvey(APIView):
         try:
             api_key = request.query_params.get('api_key')
             print('This is the params api', api_key)
-            process_api_response = api_key
-            if process_api_response == '76092219-c570-4c86-88f0-efa63966e06b':
-            # process_api_response = processApikey(api_key)
-            # if process_api_response.status_code == 200:
+            # process_api_response = api_key
+            # if process_api_response == '76092219-c570-4c86-88f0-efa63966e06b':
+            process_api_response = processApikey(api_key)
+            if process_api_response.status_code == 200:
                 print('This is the api_key response', process_api_response)
                 company_id = myDict['company_id']
                 formdata['logo'] = myDict['logo']
@@ -151,10 +151,14 @@ class GetDowellSurvey(APIView):
         except Http404:
             return Response("Kindly check your payload ", status=status.HTTP_400_BAD_REQUEST)
 
+
     def put(self, request, qrcode_id, format=None):
         myDict = request.data
         print("mydict ===> ", myDict)
         # p_list = myDict['p_list']
+        
+        
+  
         formdata = {}
         files = {}
 
@@ -173,8 +177,8 @@ class GetDowellSurvey(APIView):
                     0] if "survey_id" in query_params else None
                 print(f"Links found {links}")
                 print(f"Survey Id from the link {survey_id}")
-                survey = QrCode.objects.get(id=survey_id)
-            except QrCode.DoesNotExist:
+                survey = QrCodeV2.objects.get(id=survey_id)
+            except QrCodeV2.DoesNotExist:
                 raise Http404("Survey not found")
 
             for key, value in myDict.items():
@@ -196,27 +200,37 @@ class GetDowellSurvey(APIView):
                 host = request.META['HTTP_HOST']
 
                 brand_name = formdata.get("brand_name")
-                service = formdata.get("service")
+                service = formdata.getlist("service")
                 url = formdata.get("url")
                 country = formdata.get("country")
-
+                
+                
+                
+                
                 if country:
                     country = country.replace('-', ' ')
                 region = formdata.get("region")
+                
+                
+                if service:
+                    service = service.replace('-', ' ')
+                service = formdata.get("service")
+                
                 if region:
-
                     region = region.replace('-', ' ')
                 promotional_sentence = formdata.get("promotional_sentence")
                 username = formdata.get("username")
                 name = formdata.get("name")
                 email = formdata.get("email")
+                link = formdata.get('link')
+                participantsLimit = formdata("participantsLimit")
 
                 formdata["start_date"] = my_date(myDict["start_date"])
                 formdata["end_date"] = my_date(myDict["end_date"])
 
                 print('form data printier', formdata)
 
-                serializer = UpdateQrCodeSerializer(
+                serializer = UpdateQrCodeSerializerV2(
                     survey, data=formdata, partial=True)
                 if serializer.is_valid():
                     res = serializer.save()
