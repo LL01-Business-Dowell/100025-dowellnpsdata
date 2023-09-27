@@ -72,7 +72,8 @@ class GetDowellSurvey(APIView):
                 formdata["username"] = myDict["username"]
                 formdata["name"] = myDict["name"]
                 formdata["email"] = myDict["email"]
-                formdata["participantsLimit"] = myDict["participantsLimit"]
+                # formdata["participantsLimit"] = myDict["participantsLimit"]
+                formdata["participantsLimit"] = myDict.get("participantsLimit", {})
                 formdata["link"] = myDict["link"]
                 formdata["start_date"] = my_date(myDict["start_date"])
                 print('Date printier ', formdata["start_date"])
@@ -92,9 +93,7 @@ class GetDowellSurvey(APIView):
 
                 url = 'https://' + host + '/api/qrcode/'
                 print("formdata printier", formdata)
-                # print("url ", url)
-
-                # serializer = QrCodeFileSerializer(data=request.data)
+                
                 print('Serialize this ', formdata)
                 serializer = CreateQrCodeSerializerV2(data=formdata)
                 if serializer.is_valid():
@@ -105,38 +104,6 @@ class GetDowellSurvey(APIView):
 
                     upload_to_remote_db(res_data)
 
-                    # context = {
-                    #     'qrcode': res_data['qr_code'],
-                    #     'link': 'https://'+settings.HOSTNAME+'/iframe?survey_id=' + str(res_data['id'])
-
-                    # }
-
-                    # qrcode_type = "Link"
-                    # quantity = 1
-                    # company_id = company_id
-                    # link = 'https://'+settings.HOSTNAME + \
-                    #     '/iframe?survey_id=' + str(res_data['id'])
-                    # description = res_data['promotional_sentence']
-                    # created_by = res_data['username']
-
-                    # qrcode_url = 'https://www.qrcodereviews.uxlivinglab.online/api/v2/qr-code/?api_key=' + api_key
-                    # payload = {"qrcode_type": qrcode_type,
-                    #         "quantity": quantity,
-                    #         "company_id": company_id,
-                    #         # "logo":logo,
-                    #         "link": link,
-                    #         "description": description,
-                    #         "created_by": created_by}
-                    # headers = {"Content-Type": "multipart/form-data"}
-
-                    # print("files === ", files)
-                    # res = requests.post(qrcode_url, data=payload)
-                    # # res = {"qr_code_generator_response": res}
-                    # print("res === ", res)
-                    # print("res.text === ", res.text)
-                    # print("type res.text === ", type(res.text))
-                    # res_obj = json.loads(res.text)
-                    # print("res_obj === ", res_obj)
 
                     return Response(res_data, status=status.HTTP_200_OK)
                 else:
@@ -187,7 +154,7 @@ class GetDowellSurvey(APIView):
 
             api_key = request.query_params.get('api_key')
             # process_api_response = api_key
-            # if process_api_response == '76092219-c570-4c86-88f0-efa63966e06b':
+            # if process_api_response == '504a51bf-c483-4ac5-b2dd-4f209eabcbf8':
             process_api_response = processApikey(api_key)
             if process_api_response.status_code == 200:
                 company_id = formdata.get('company_id')

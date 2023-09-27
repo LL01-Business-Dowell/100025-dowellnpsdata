@@ -52,6 +52,14 @@ class QrCodeV2(models.Model):
     reason = models.CharField(max_length=500, blank=True, null=True)
     link = models.CharField(max_length=500, blank=True, null=True)
     participantsLimit = models.TextField(null=True, blank=True)
+    
+    
+    def save(self, *args, **kwargs):
+        if self.pk is None:
+            super(QrCodeV2, self).save(*args, **kwargs)  
+            self.link = f"{self.url}/{self.pk}"
+        else:
+            super(QrCodeV2, self).save(*args, **kwargs)
 
     def __str__(self):
         return str(self.brand_name)
