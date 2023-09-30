@@ -8,8 +8,8 @@ from datetime import datetime, date
 from accounts.views.helper import upload_to_remote_db, update_to_remote_db
 from api.serializers import *
 from api.models import QrCode, QrCodeV2
-
-
+from django.shortcuts import get_object_or_404
+import ast
 from django.conf import settings
 
 
@@ -56,10 +56,10 @@ class GetDowellSurvey(APIView):
         try:
             api_key = request.query_params.get('api_key')
             print('This is the params api', api_key)
-            # process_api_response = api_key
-            # if process_api_response == '76092219-c570-4c86-88f0-efa63966e06b':
-            process_api_response = processApikey(api_key)
-            if process_api_response.status_code == 200:
+            process_api_response = api_key
+            if process_api_response == '76092219-c570-4c86-88f0-efa63966e06b':
+            # process_api_response = processApikey(api_key)
+            # if process_api_response.status_code == 200:
                 print('This is the api_key response', process_api_response)
                 company_id = myDict['company_id']
                 formdata['logo'] = myDict['logo']
@@ -73,7 +73,14 @@ class GetDowellSurvey(APIView):
                 formdata["name"] = myDict["name"]
                 formdata["email"] = myDict["email"]
                 # formdata["participantsLimit"] = myDict["participantsLimit"]
-                formdata["participantsLimit"] = myDict.get("participantsLimit", {})
+                formdata["participantsLimit"] = myDict.get("participantsLimit", "{}")
+                
+                # participants_limit_str = myDict.get("participantsLimit", "{}")
+                # participants_limit_dict = json.loads(participants_limit_str)
+                # formdata["participantsLimit"] = json.dumps(participants_limit_dict)  # Save it as a JSON string
+            
+                
+                
                 formdata["link"] = myDict["link"]
                 formdata["start_date"] = my_date(myDict["start_date"])
                 print('Date printier ', formdata["start_date"])
@@ -117,7 +124,10 @@ class GetDowellSurvey(APIView):
             return Response("Kindly check your payload ", status=status.HTTP_400_BAD_REQUEST)
         except Http404:
             return Response("Kindly check your payload ", status=status.HTTP_400_BAD_REQUEST)
-
+        
+        
+        
+        
 
     def put(self, request, qrcode_id, format=None):
         myDict = request.data
@@ -233,3 +243,140 @@ class GetDowellSurvey(APIView):
             return Response("Kindly check your payload ", status=status.HTTP_400_BAD_REQUEST)
         except Http404:
             return Response("Kindly check your payload ", status=status.HTTP_400_BAD_REQUEST)
+        
+        
+        
+        
+class ExtractAndFetchSurvey(APIView):
+    def post(self, request, format=None):
+        print('Am called')
+        link = request.data.get("link")
+        region = request.data.get("region")
+        # region = request.data.get("region")
+        print('This is the region ', region)
+        print('This is the link ', link)
+        parts = link.split("/")
+        extractedID = parts[-1]
+        print('table id is', extractedID)
+        if not link:
+            return Response({"message": "Link is required"}, status=status.HTTP_400_BAD_REQUEST)
+
+        # Extract the last number (ID) from the link
+        last_number = self.extract_table_id(link)
+
+        if extractedID is not None:
+            # Fetch the survey based on the extracted ID
+            survey = get_object_or_404(QrCodeV2, pk=extractedID)
+            # participants_limit = survey.participantsLimit.get(region)
+            # print('This is it ', participants_limit)
+            participants_limit_str = survey.participantsLimit
+            participants_limit_dict = ast.literal_eval(participants_limit_str)
+            print('partsLimit ', participants_limit_dict)
+            
+            if region in participants_limit_dict and participants_limit_dict[region] >= 1:
+                nairobi_value = participants_limit_dict[region]
+                if participants_limit_dict[region] >= 1:
+                    print('You can proceed!')
+                else:
+                    print('You cant proceed')
+                print(f"{region} exists with a value of {nairobi_value}")
+                response_data = {
+                "message": "Survey can be conducted",
+                "survey_data": {
+                    "region for survey": region,
+                    "participantsLimit": survey.participantsLimit,
+                }}
+                return Response(response_data, status=status.HTTP_200_OK)
+            else:
+                response_data = {
+                "message": "Survey cant be conducted",
+                "survey_data": {
+                    "region for survey": region,
+                    "participantsLimit": survey.participantsLimit,
+                }}
+                return Response(response_data, status=status.HTTP_400_BAD_REQUEST)
+                print(f"{region} does not exist in the dictionary")
+            response_data = {
+                "message": "Survey fetched successfully",
+                "survey_data": {
+                    "region for survey ": survey.brand_name,
+                    "participantsLimit": survey.participantsLimit,
+                }
+            }
+
+            return Response(response_data, status=status.HTTP_200_OK)
+
+        return Response({"message": "Invalid link ID"}, status=status.HTTP_400_BAD_REQUEST)
+
+
+    def extract_table_id(self, link_id):
+        try:
+            # Assuming the ID is passed in the URL
+            return int(link_id)
+        except ValueError:
+            return None
+        
+        
+
+class SurveyCounter(APIView):
+    def post(self, request, format=None):
+        print('Am called here')
+        link = request.data.get("link")
+        region = request.data.get("region")
+        # region = request.data.get("region")
+        print('This is the region ', region)
+        print('This is the link ', link)
+        parts = link.split("/")
+        extractedID = parts[-1]
+        print('table id is', extractedID)
+        if not link:
+            return Response({"message": "Link is required"}, status=status.HTTP_400_BAD_REQUEST)
+
+        # Extract the last number (ID) from the link
+        last_number = self.extract_table_id(link)
+
+        if extractedID is not None:
+            # Fetch the survey based on the extracted ID
+            survey = get_object_or_404(QrCodeV2, pk=extractedID)
+            # participants_limit = survey.participantsLimit.get(region)
+            # print('This is it ', participants_limit)
+            participants_limit = survey.participantsLimit
+            print('This are the participants limit ', participants_limit)
+            print("This is the type of participants ", type(participants_limit))
+            participants_limit_dict = ast.literal_eval(participants_limit)
+            # participants_limit_dict = ast.literal_eval("{" + participants_limit + "}")
+            print('This is type of ', participants_limit_dict)
+            print('partsLimit ', participants_limit)
+            # limit = participants_limit.stripe("")
+            
+            if region in participants_limit_dict:
+                # print('This is the values of region ', participants_limit_dict[region] )
+                region_value = int(participants_limit_dict[region])
+                print(f"{region} exists with a value of {region_value}")
+                
+                
+                participants_limit_dict[region] -= 1
+                survey.participantsLimit = str(participants_limit_dict)
+                survey.save()
+                print('Decremented survey ', str(participants_limit_dict))
+            else:
+                print(f"{region} does not exist in the dictionary")
+            response_data = {
+                "message": "Survey fetched successfully",
+                "survey_data": {
+                    "brand_name": survey.brand_name,
+                    "participantsLimit": survey.participantsLimit,
+                }
+            }
+
+            return Response(response_data, status=status.HTTP_200_OK)
+
+        return Response({"message": "Invalid link ID"}, status=status.HTTP_400_BAD_REQUEST)
+    
+    
+    def extract_table_id(self, link_id):
+        try:
+            # Assuming the ID is passed in the URL
+            return int(link_id)
+        except ValueError:
+            return None

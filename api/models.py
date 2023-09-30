@@ -51,7 +51,8 @@ class QrCodeV2(models.Model):
     is_paused = models.BooleanField(default=False)
     reason = models.CharField(max_length=500, blank=True, null=True)
     link = models.CharField(max_length=500, blank=True, null=True)
-    participantsLimit = models.TextField(null=True, blank=True)
+    # participantsLimit = models.TextField(null=True, blank=True)
+    participantsLimit = models.JSONField(null=True, blank=True, default=dict)
     
     
     def save(self, *args, **kwargs):
@@ -69,4 +70,4 @@ class QrCodeV2(models.Model):
 
 class SurveyCoordinator(models.Model):
     survey = models.ForeignKey(QrCodeV2, on_delete=models.CASCADE)
-    participants = models.TextField()
+    participants = models.TextField(null=True, blank=True)
