@@ -12,7 +12,6 @@ from django.shortcuts import get_object_or_404
 import ast
 from django.conf import settings
 
-
 import requests
 from urllib.parse import urlparse, parse_qs
 
@@ -46,7 +45,8 @@ class GetDowellSurvey(APIView):
         return JsonResponse({"data": "Kindly use a POST request instead of GET"})
 
     def post(self, request, format=None):
-
+        current_date = datetime.datetime.now()
+        dates = current_date.date()
         myDict = request.data
         print("mydict ===> ", myDict)
         # p_list = myDict['p_list']
@@ -249,6 +249,9 @@ class GetDowellSurvey(APIView):
         
 class ExtractAndFetchSurvey(APIView):
     def post(self, request, format=None):
+        # current_date = datetime.datetime.now()
+        current_date = datetime.now()
+        dates = current_date.date()
         print('Am called')
         link = request.data.get("link")
         region = request.data.get("region")
@@ -269,43 +272,54 @@ class ExtractAndFetchSurvey(APIView):
             survey = get_object_or_404(QrCodeV2, pk=extractedID)
             # participants_limit = survey.participantsLimit.get(region)
             # print('This is it ', participants_limit)
-            participants_limit_str = survey.participantsLimit
-            participants_limit_dict = ast.literal_eval(participants_limit_str)
-            print('partsLimit ', participants_limit_dict)
             
-            if region in participants_limit_dict and participants_limit_dict[region] >= 1:
-                nairobi_value = participants_limit_dict[region]
-                if participants_limit_dict[region] >= 1:
-                    print('You can proceed!')
+            if survey.start_date <= dates <= survey.end_date:
+                participants_limit_str = survey.participantsLimit
+                participants_limit_dict = ast.literal_eval(participants_limit_str)
+                print('partsLimit ', participants_limit_dict)
+                
+                
+                if region in participants_limit_dict and participants_limit_dict[region] >= 1:
+                    nairobi_value = participants_limit_dict[region]
+                    if participants_limit_dict[region] >= 1:
+                        print('You can proceed!')
+                    else:
+                        print('You cant proceed')
+                    print(f"{region} exists with a value of {nairobi_value}")
+                    response_data = {
+                    "message": "Survey can be conducted",
+                    "survey_data": {
+                        "region for survey": region,
+                        "participantsLimit": survey.participantsLimit,
+                    }}
+                    return Response(response_data, status=status.HTTP_200_OK)
                 else:
-                    print('You cant proceed')
-                print(f"{region} exists with a value of {nairobi_value}")
+                    response_data = {
+                    "message": "Survey cannot be conducted",
+                    "survey_data": {
+                        "region for survey": region,
+                        "participantsLimit": survey.participantsLimit,
+                    }}
+                    return Response(response_data, status=status.HTTP_400_BAD_REQUEST)
+                    print(f"{region} does not exist in the dictionary")
                 response_data = {
-                "message": "Survey can be conducted",
-                "survey_data": {
-                    "region for survey": region,
-                    "participantsLimit": survey.participantsLimit,
-                }}
+                    "message": "Survey fetched successfully",
+                    "survey_data": {
+                        "region for survey ": survey.brand_name,
+                        "participantsLimit": survey.participantsLimit,
+                    }
+                }
+
                 return Response(response_data, status=status.HTTP_200_OK)
             else:
                 response_data = {
-                "message": "Survey cant be conducted",
-                "survey_data": {
-                    "region for survey": region,
-                    "participantsLimit": survey.participantsLimit,
-                }}
-                return Response(response_data, status=status.HTTP_400_BAD_REQUEST)
-                print(f"{region} does not exist in the dictionary")
-            response_data = {
-                "message": "Survey fetched successfully",
-                "survey_data": {
-                    "region for survey ": survey.brand_name,
-                    "participantsLimit": survey.participantsLimit,
+                    "message": "Survey cannot be conducted at this time",
+                    "survey_data": {
+                        "region for survey": region,
+                        "participantsLimit": survey.participantsLimit,
+                    }
                 }
-            }
-
-            return Response(response_data, status=status.HTTP_200_OK)
-
+                return Response(response_data, status=status.HTTP_400_BAD_REQUEST)
         return Response({"message": "Invalid link ID"}, status=status.HTTP_400_BAD_REQUEST)
 
 
@@ -320,6 +334,7 @@ class ExtractAndFetchSurvey(APIView):
 
 class SurveyCounter(APIView):
     def post(self, request, format=None):
+        
         print('Am called here')
         link = request.data.get("link")
         region = request.data.get("region")
