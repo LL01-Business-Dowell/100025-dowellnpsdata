@@ -277,7 +277,18 @@ class ExtractAndFetchSurvey(APIView):
             print('This is the cordinator ', coordinator)
             
             
-            if survey.start_date > dates:
+            # if survey.start_date > dates:
+            #     response_data = {
+            #         "isSuccess": False,
+            #         "message": "Survey has not yet started",
+            #         "survey_data": {
+            #             "region for survey": region,
+            #             "participantsLimit": survey.participantsLimit,
+            #         }
+            #     }
+            #     return Response(response_data, status=status.HTTP_200_OK)
+            
+            if dates < survey.start_date:
                 response_data = {
                     "isSuccess": False,
                     "message": "Survey has not yet started",
@@ -287,63 +298,19 @@ class ExtractAndFetchSurvey(APIView):
                     }
                 }
                 return Response(response_data, status=status.HTTP_200_OK)
-            
-            
-            
-            
-            # elif survey.start_date <= dates:
-            #     participants_limit_str =  coordinator.survey.participantsLimit
-            #     coordinator_participants = coordinator.participants
-            #     print('This is the cordinator participants ', coordinator_participants)
-            #     participants_limit_dict = ast.literal_eval(participants_limit_str)
-            #     print('partsLimit ', participants_limit_dict)
-                
-                
-            #     if region in participants_limit_dict and participants_limit_dict[region] >= 1:
-            #         region_value = participants_limit_dict[region]
-            #         region_values = participants_limit_dict
-            #         print('This is the regions ', region_values)
-            #         if participants_limit_dict[region] >= 1:
-            #             print('You can proceed!')
-            #         else:
-            #             print('You cant proceed')
-            #         print(f"{region} exists with a value of {region_value}")
-            #         response_data = {
-            #         "message": "Survey can be conducted",
-            #         "survey_data": {
-            #             "region for survey": region,
-            #             "participantsLimit": survey.participantsLimit,
-            #         }}
-            #         return Response(response_data, status=status.HTTP_200_OK)
-            #     else:
-            #         response_data = {
-            #         "message": "Survey cannot be conducted",
-            #         "survey_data": {
-            #             "region for survey": region,
-            #             "participantsLimit": survey.participantsLimit,
-            #         }}
-            #         return Response(response_data, status=status.HTTP_400_BAD_REQUEST)
-            #         print(f"{region} does not exist in the dictionary")
-            #     response_data = {
-            #         "message": "Survey fetched successfully",
-            #         "survey_data": {
-            #             "region for survey ": survey.brand_name,
-            #             "participantsLimit": survey.participantsLimit,
-            #         }
-            #     }
 
-            #     return Response(response_data, status=status.HTTP_200_OK)
-            
-            # elif survey.end_date >= dates:
-            #     response_data = {
-            #         "message": "Survey has ended",
-            #         "survey_data": {
-            #             "region for survey": region,
-            #             "participantsLimit": survey.participantsLimit,
-            #         }
-            #     }
-            #     return Response(response_data, status=status.HTTP_400_BAD_REQUEST)
-            
+            if dates > survey.end_date:
+                response_data = {
+                    "isSuccess": False,
+                    "message": "Survey has already ended",
+                    "survey_data": {
+                        "region for survey": region,
+                        "participantsLimit": survey.participantsLimit,
+                    }
+                }
+                return Response(response_data, status=status.HTTP_200_OK)
+
+         
             
             if survey.start_date <= dates <= survey.end_date:
                 participants_limit_str =  coordinator.survey.participantsLimit
