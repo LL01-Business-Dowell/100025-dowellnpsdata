@@ -279,7 +279,7 @@ class ExtractAndFetchSurvey(APIView):
             
             if survey.start_date > dates:
                 response_data = {
-                    "isSuccess": false,
+                    "isSuccess": False,
                     "message": "Survey has not yet started",
                     "survey_data": {
                         "region for survey": region,
@@ -363,7 +363,7 @@ class ExtractAndFetchSurvey(APIView):
                         print('You cant proceed')
                     print(f"{region} exists with a value of {region_value}")
                     response_data = {
-                        "isSuccess": true,
+                    "isSuccess": True,
                     "message": "Survey can be conducted",
                     "survey_data": {
                         "region for survey": region,
@@ -372,12 +372,13 @@ class ExtractAndFetchSurvey(APIView):
                     return Response(response_data, status=status.HTTP_200_OK)
                 else:
                     response_data = {
+                        "isSuccess": False,
                     "message": "Survey cannot be conducted",
                     "survey_data": {
                         "region for survey": region,
                         "participantsLimit": survey.participantsLimit,
                     }}
-                    return Response(response_data, status=status.HTTP_400_BAD_REQUEST)
+                    return Response(response_data, status=status.HTTP_200_OK)
                     print(f"{region} does not exist in the dictionary")
                 response_data = {
                     "message": "Survey fetched successfully",
@@ -390,13 +391,14 @@ class ExtractAndFetchSurvey(APIView):
                 return Response(response_data, status=status.HTTP_200_OK)
             else:
                 response_data = {
+                    "isSuccess": False,
                     "message": "Survey cannot be conducted at this time",
                     "survey_data": {
                         "region for survey": region,
                         "participantsLimit": survey.participantsLimit,
                     }
                 }
-                return Response(response_data, status=status.HTTP_400_BAD_REQUEST)
+                return Response(response_data, status=status.HTTP_200_OK)
         return Response({"message": "Invalid link ID"}, status=status.HTTP_400_BAD_REQUEST)
 
 
@@ -450,6 +452,7 @@ class SurveyCounter(APIView):
             else:
                 print(f"{region} does not exist in the dictionary")
             response_data = {
+                "isSuccess": True,
                 "message": "Survey fetched successfully",
                 "survey_data": {
                     "brand_name": survey.brand_name,
