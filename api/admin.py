@@ -1,7 +1,7 @@
 from django.contrib import admin
 
 
-from api.models import QrCode, QrCodeV2
+from api.models import QrCode, QrCodeV2, SurveyCoordinator
 
 
 @admin.register(QrCode)
@@ -18,3 +18,5 @@ class QrCodeAdmin(admin.ModelAdmin):
         'id', 'brand_name', 'service', 'participantsLimit', 'start_date', 'end_date',
         'privacy_policy_check', 'name', 'email', 'is_end', 'reason'
     ]
+
+admin.site.register(SurveyCoordinator)

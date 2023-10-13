@@ -7,7 +7,7 @@ import json
 from datetime import datetime, date
 from accounts.views.helper import upload_to_remote_db, update_to_remote_db
 from api.serializers import *
-from api.models import QrCode, QrCodeV2
+from api.models import QrCode, QrCodeV2, SurveyCoordinator
 from django.shortcuts import get_object_or_404
 import ast
 from django.conf import settings
@@ -45,7 +45,7 @@ class GetDowellSurvey(APIView):
         return JsonResponse({"data": "Kindly use a POST request instead of GET"})
 
     def post(self, request, format=None):
-        current_date = datetime.datetime.now()
+        current_date = datetime.now()
         dates = current_date.date()
         myDict = request.data
         print("mydict ===> ", myDict)
@@ -272,21 +272,98 @@ class ExtractAndFetchSurvey(APIView):
             survey = get_object_or_404(QrCodeV2, pk=extractedID)
             # participants_limit = survey.participantsLimit.get(region)
             # print('This is it ', participants_limit)
+            qr_code_v2 = get_object_or_404(QrCodeV2, pk=extractedID)
+            coordinator = SurveyCoordinator.objects.filter(survey=qr_code_v2).first()
+            print('This is the cordinator ', coordinator)
+            
+            
+            if survey.start_date > dates:
+                response_data = {
+                    "isSuccess": false,
+                    "message": "Survey has not yet started",
+                    "survey_data": {
+                        "region for survey": region,
+                        "participantsLimit": survey.participantsLimit,
+                    }
+                }
+                return Response(response_data, status=status.HTTP_200_OK)
+            
+            
+            
+            
+            # elif survey.start_date <= dates:
+            #     participants_limit_str =  coordinator.survey.participantsLimit
+            #     coordinator_participants = coordinator.participants
+            #     print('This is the cordinator participants ', coordinator_participants)
+            #     participants_limit_dict = ast.literal_eval(participants_limit_str)
+            #     print('partsLimit ', participants_limit_dict)
+                
+                
+            #     if region in participants_limit_dict and participants_limit_dict[region] >= 1:
+            #         region_value = participants_limit_dict[region]
+            #         region_values = participants_limit_dict
+            #         print('This is the regions ', region_values)
+            #         if participants_limit_dict[region] >= 1:
+            #             print('You can proceed!')
+            #         else:
+            #             print('You cant proceed')
+            #         print(f"{region} exists with a value of {region_value}")
+            #         response_data = {
+            #         "message": "Survey can be conducted",
+            #         "survey_data": {
+            #             "region for survey": region,
+            #             "participantsLimit": survey.participantsLimit,
+            #         }}
+            #         return Response(response_data, status=status.HTTP_200_OK)
+            #     else:
+            #         response_data = {
+            #         "message": "Survey cannot be conducted",
+            #         "survey_data": {
+            #             "region for survey": region,
+            #             "participantsLimit": survey.participantsLimit,
+            #         }}
+            #         return Response(response_data, status=status.HTTP_400_BAD_REQUEST)
+            #         print(f"{region} does not exist in the dictionary")
+            #     response_data = {
+            #         "message": "Survey fetched successfully",
+            #         "survey_data": {
+            #             "region for survey ": survey.brand_name,
+            #             "participantsLimit": survey.participantsLimit,
+            #         }
+            #     }
+
+            #     return Response(response_data, status=status.HTTP_200_OK)
+            
+            # elif survey.end_date >= dates:
+            #     response_data = {
+            #         "message": "Survey has ended",
+            #         "survey_data": {
+            #             "region for survey": region,
+            #             "participantsLimit": survey.participantsLimit,
+            #         }
+            #     }
+            #     return Response(response_data, status=status.HTTP_400_BAD_REQUEST)
+            
             
             if survey.start_date <= dates <= survey.end_date:
-                participants_limit_str = survey.participantsLimit
+                participants_limit_str =  coordinator.survey.participantsLimit
+                coordinator_participants = coordinator.participants
+                print('This is the cordinator participants ', coordinator_participants)
                 participants_limit_dict = ast.literal_eval(participants_limit_str)
                 print('partsLimit ', participants_limit_dict)
                 
                 
                 if region in participants_limit_dict and participants_limit_dict[region] >= 1:
-                    nairobi_value = participants_limit_dict[region]
+                    region_value = participants_limit_dict[region]
+                    region_values = participants_limit_dict
+                    print('This is the regions ', region_values)
                     if participants_limit_dict[region] >= 1:
                         print('You can proceed!')
                     else:
                         print('You cant proceed')
-                    print(f"{region} exists with a value of {nairobi_value}")
+                    print(f"{region} exists with a value of {region_value}")
                     response_data = {
+                        "isSuccess": true,
                     "message": "Survey can be conducted",
                     "survey_data": {
                         "region for survey": region,
@@ -338,7 +415,6 @@ class SurveyCounter(APIView):
         print('Am called here')
         link = request.data.get("link")
         region = request.data.get("region")
-        # region = request.data.get("region")
         print('This is the region ', region)
         print('This is the link ', link)
         parts = link.split("/")
@@ -347,25 +423,22 @@ class SurveyCounter(APIView):
         if not link:
             return Response({"message": "Link is required"}, status=status.HTTP_400_BAD_REQUEST)
 
-        # Extract the last number (ID) from the link
         last_number = self.extract_table_id(link)
 
         if extractedID is not None:
-            # Fetch the survey based on the extracted ID
             survey = get_object_or_404(QrCodeV2, pk=extractedID)
-            # participants_limit = survey.participantsLimit.get(region)
-            # print('This is it ', participants_limit)
+            
+            qr_code_v2 = get_object_or_404(QrCodeV2, pk=extractedID)
+            coordinator = SurveyCoordinator.objects.filter(survey=qr_code_v2).first()
+            
             participants_limit = survey.participantsLimit
             print('This are the participants limit ', participants_limit)
             print("This is the type of participants ", type(participants_limit))
             participants_limit_dict = ast.literal_eval(participants_limit)
-            # participants_limit_dict = ast.literal_eval("{" + participants_limit + "}")
             print('This is type of ', participants_limit_dict)
             print('partsLimit ', participants_limit)
-            # limit = participants_limit.stripe("")
             
             if region in participants_limit_dict:
-                # print('This is the values of region ', participants_limit_dict[region] )
                 region_value = int(participants_limit_dict[region])
                 print(f"{region} exists with a value of {region_value}")
                 
@@ -391,7 +464,6 @@ class SurveyCounter(APIView):
     
     def extract_table_id(self, link_id):
         try:
-            # Assuming the ID is passed in the URL
             return int(link_id)
         except ValueError:
             return None
