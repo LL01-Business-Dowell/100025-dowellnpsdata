@@ -1129,7 +1129,7 @@ fetchProducts(username);
 
 function fetchProducts(username) {
   productList.innerHTML = "<p>Loading products...</p>";
-  fetch("http://100093.pythonanywhere.com/api/getproducts/", {
+  fetch("https://100093.pythonanywhere.com/api/getproducts/", {
     method: "POST",
     headers: {
       "Content-Type": "application/json",

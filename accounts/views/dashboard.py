@@ -12,7 +12,7 @@ from accounts.views.helper import upload_to_remote_db
 from django.views.decorators.clickjacking import xframe_options_exempt
 from django.views.decorators.csrf import csrf_exempt
 
-# from .serializers import ListQrCodeSerializer, CreateQrCodeSerializer
+# from api.serializers import ListQrCodeSerializer, CreateQrCodeSerializer
 def get_key():
     username = "dowellFeedback"
     password = "DOWELL@qrcode2022"
@@ -30,7 +30,7 @@ def get_user_profile(session):
     headers = {"Content-Type": "application/json"}
     url = "https://100014.pythonanywhere.com/api/profile/"
     response = requests.post(url, data, headers)
-    print(response)
+    print("get_user_profile --> ",response.json())
     return response.json()
 
 
@@ -92,8 +92,16 @@ class DashboardView(View):
     def post(self, request, *args, **kwargs):
         if request.method == 'POST' and request.FILES:
             # check if user is logged in first
-            if 'username' not in request.session:
+            print("request.session --> ",request.session['username'])
+            for key, value in request.session.items():
+                print(f"Key: {key}, Value: {value}")
+            for key in request.session.keys():
+                print(f"Key: {key}")
+            if 'username' not in request.session.keys():
+                print("username not in request.session.keys()",request.session.keys())
                 return redirect("https://100014.pythonanywhere.com/")
+            else:
+                print("username IN request.session.keys()",request.session.keys())
 
             # headers = {
             #     "cache-control": "no-cache",
@@ -113,7 +121,7 @@ class DashboardView(View):
             formdata['username'] = request.session['username']
             host = request.META['HTTP_HOST']
 
-            url = 'http://' + host + '/api/qrcode/'
+            url = 'https://' + host + '/api/qrcode/'
 
             dta = formdata["country"]
             c = '-'.join(dta)
@@ -123,6 +131,9 @@ class DashboardView(View):
             dta2 = formdata['region']
             r = '-'.join(dta2)
             formdata['region'] = r
+            dta3 = formdata['service']
+            s = '-'.join(dta3)
+            formdata['service'] = s
             print("Serializer files type", type(files['logo']))
             print("Serializer files ", files)
             serializer = CreateQrCodeSerializer(data=formdata)
@@ -148,6 +159,10 @@ class DashboardView(View):
 
                 request.session['form_link'] = res_data['url']
                 return render(request, 'qrcode/create_qr_code.html', context)
+            else:
+                print("SERIALIZER WAS NOT VALID")
+                errors = serializer.errors
+                print("errors are --> ",errors)
             # res = requests.post(url, data=formdata, files=files)
 
 
