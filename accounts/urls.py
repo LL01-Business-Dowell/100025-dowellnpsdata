@@ -2,6 +2,8 @@ from django.shortcuts import render
 from django.urls import path, include
 from accounts.views.helper import render_form, render_qrcode, render_iframe, get_event_id
 from accounts.views.my_api import GetDowellSurvey
+from accounts.views.my_apiV2 import GetDowellSurvey as GetDowellSurveyV2
+from accounts.views.my_apiV2 import ExtractAndFetchSurvey, SurveyCounter
 from accounts import views
 
 urlpatterns = [
@@ -25,4 +27,9 @@ urlpatterns = [
     ###my api paths
     path('get-survey', GetDowellSurvey.as_view(), name='get-survey'),
     path('update-qr-code/<int:qrcode_id>/', GetDowellSurvey.as_view(), name='update-survey'),
+    ###my api v2 paths
+    path('get-surveyv2', GetDowellSurveyV2.as_view(), name='get-surveyv2'),
+    path('update-qr-codev2/<int:qrcode_id>/', GetDowellSurveyV2.as_view(), name='update-surveyv2'),
+    path('get-dowell-survey-status/', ExtractAndFetchSurvey.as_view(), name='get_dowell_survey'),
+    path('survey-count/', SurveyCounter.as_view(), name='survey-counter'),
 ]

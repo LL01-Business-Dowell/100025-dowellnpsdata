@@ -61,7 +61,7 @@ class GetDowellSurvey(APIView):
                 company_id = myDict['company_id']
                 formdata['logo'] = myDict['logo']
                 formdata["brand_name"] = myDict["brand_name"]
-                formdata["service"] = myDict["service"]
+                formdata["service"] = myDict.getlist("service")
                 formdata["url"] = myDict["url"]
                 formdata["country"] = myDict.getlist("country")
                 formdata["region"] = myDict.getlist("region")
@@ -80,6 +80,13 @@ class GetDowellSurvey(APIView):
                 dta2 = formdata['region']
                 r = '-'.join(dta2)
                 formdata['region'] = r
+                
+                
+                dta3 = formdata['service']
+                k = '-'.join(dta3)
+                formdata['service'] = k
+                
+                
                 url = 'https://' + host + '/api/qrcode/'
                 print("formdata printier", formdata)
                 # print("url ", url)
@@ -190,6 +197,7 @@ class GetDowellSurvey(APIView):
                 
                 
                 brand_name = formdata.get("brand_name")
+                service = formdata.get("service")
                 service = formdata.get("service")
                 url = formdata.get("url")
                 country = formdata.get("country")
