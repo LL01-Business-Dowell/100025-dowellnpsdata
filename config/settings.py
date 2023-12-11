@@ -100,6 +100,7 @@ WSGI_APPLICATION = 'config.wsgi.application'
 #         'NAME': 'dowell_qrcode',
 #     }
 # }
+
 # DATABASES = {
 #     'default': {
 #         'ENGINE': 'django.db.backends.sqlite3',
