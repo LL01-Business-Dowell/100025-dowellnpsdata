@@ -45,4 +45,4 @@ The `POST` method is used to create a new Dowell Survey, and the `PUT` method is
 
 ## Postman Documentation
 
-For detailed examples and testing the API endpoints, you can find the Postman documentation [here](https://www.postman.com/telecoms-meteorologist-97889107/workspace/dowell-survey/collection/24456149-02c47934-aaf7-456d-bb8b-90b75fc9b2ff?action=share&creator=24456149).
+For detailed examples and testing the API endpoints, you can find the Postman documentation [here](https://documenter.getpostman.com/view/25619963/2s9YBxZbzG).
