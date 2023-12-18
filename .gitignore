@@ -8,5 +8,5 @@ __pycache__/
 *.sqlite3
 # Ignore the default SQLite database.
 /db/*.sqlite3
-api/migrations/*
-accounts/migrations/*
+api/migrations
+accounts/migrations
