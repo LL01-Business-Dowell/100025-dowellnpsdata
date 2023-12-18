@@ -1,4 +1,5 @@
 env
+.env
 media/company_qrcode/*
 media/company-logo/*
 venv

@@ -8,10 +8,10 @@ from datetime import datetime, date
 from accounts.views.helper import upload_to_remote_db, update_to_remote_db
 from api.serializers import *
 from api.models import QrCode
-
+from decouple import config
 from django.conf import settings
 
-
+internal_key = config("INTERNAL_KEY")
 import requests
 from urllib.parse import urlparse, parse_qs
 
@@ -57,7 +57,7 @@ class GetDowellSurvey(APIView):
             api_key = request.query_params.get('api_key')
             print('This is the params api', api_key)
             process_api_response = processApikey(api_key)
-            if process_api_response.status_code == 200 or api_key == "EhdQUTM2K0hNLCBOYWlyb2JpLCBLZW55YSImOiQKCg2PPDr":
+            if process_api_response.status_code == 200 or api_key == internal_key:
                 print('This is the api_key response', process_api_response)
                 company_id = myDict['company_id']
                 formdata['logo'] = myDict['logo']
@@ -81,13 +81,13 @@ class GetDowellSurvey(APIView):
                 dta2 = formdata['region']
                 r = '-'.join(dta2)
                 formdata['region'] = r
-                
-                
+
+
                 dta3 = formdata['service']
                 k = '-'.join(dta3)
                 formdata['service'] = k
-                
-                
+
+
                 url = 'https://' + host + '/api/qrcode/'
                 print("formdata printier", formdata)
                 # print("url ", url)
@@ -186,7 +186,7 @@ class GetDowellSurvey(APIView):
             # process_api_response = api_key
             # if process_api_response == '76092219-c570-4c86-88f0-efa63966e06b':
             process_api_response = processApikey(api_key)
-            if process_api_response.status_code == 200 or api_key == "EhdQUTM2K0hNLCBOYWlyb2JpLCBLZW55YSImOiQKCg2PPDr":
+            if process_api_response.status_code == 200 or api_key == internal_key:
                 company_id = formdata.get('company_id')
                 description = formdata.get('description')
                 qrcode_color = formdata.get('qrcode_color')
