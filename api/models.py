@@ -52,29 +52,37 @@ class QrCodeV2(models.Model):
     link = models.CharField(max_length=500, blank=True, null=True)
     participantsLimit = models.JSONField(null=True, blank=True, default=dict)
     
-    
     def save(self, *args, **kwargs):
-        if self.pk is None:
-            super(QrCodeV2, self).save(*args, **kwargs)  
-            self.link = f"{self.url}/{self.pk}"
-        else:
+       if self.pk is None:
+            # Convert the participantsLimit string to a dictionary
+            
+            # participants_limit_values = self.participantsLimit[0].split(', ')  
+            participants_limit_values = int(self.participantsLimit)
+            print('participants ', participants_limit_values)
+            # regions_values = self.region.split(', ')
+            regions_values = self.region
+            print('db regions ', regions_values)
+            
+            participants_limit_dict = {regions_values: participants_limit_values}
+            print('its here ', participants_limit_dict)
+
+            # Save the dictionary to the model
+            # self.participantsLimit = participants_limit_dict
+            
+            # Create SurveyCoordinator when a new QrCodeV2 is saved
             super(QrCodeV2, self).save(*args, **kwargs)
+            self.link = f"{self.url}/{self.pk}"
+
+            survey_coordinator = SurveyCoordinator.objects.create(survey=self)
+            survey_coordinator.participants = participants_limit_dict
+            survey_coordinator.save()
+       else:
+           super(QrCodeV2, self).save(*args, **kwargs)
 
     def __str__(self):
         return str(self.brand_name)
     
     
-    def save(self, *args, **kwargs):
-        if self.pk is None:
-            super(QrCodeV2, self).save(*args, **kwargs)
-
-            survey_coordinator = SurveyCoordinator.objects.create(survey=self)
-            participants_limit_dict = ast.literal_eval(self.participantsLimit)
-            survey_coordinator.participants = {region: 0 for region in participants_limit_dict.keys()}
-            survey_coordinator.save()
-
-        else:
-            super(QrCodeV2, self).save(*args, **kwargs)
     
     
 

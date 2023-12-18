@@ -1,7 +1,7 @@
 from django.contrib import admin
 
 
-from api.models import QrCode, QrCodeV2, SurveyCoordinator
+from .models import QrCode, QrCodeV2, SurveyCoordinator
 
 
 @admin.register(QrCode)
@@ -20,3 +20,4 @@ class QrCodeAdmin(admin.ModelAdmin):
     ]
 
 admin.site.register(SurveyCoordinator)
+# admin.site.register(QrCodeV2)

@@ -25,10 +25,10 @@ urlpatterns = [
     path('<int:pk>/survey/end/', views.EndSurveyView.as_view(), name='survey_end'),
     path('<int:pk>/survey/start/', views.SurveyStartView.as_view(), name='survey_start'),
     ###my api paths
-    path('get-survey', GetDowellSurvey.as_view(), name='get-survey'),
+    path('get-survey/', GetDowellSurvey.as_view(), name='get-survey'),
     path('update-qr-code/<int:qrcode_id>/', GetDowellSurvey.as_view(), name='update-survey'),
     ###my api v2 paths
-    path('get-surveyv2', GetDowellSurveyV2.as_view(), name='get-surveyv2'),
+    path('create-surveyv2', GetDowellSurveyV2.as_view(), name='get-surveyv2'),
     path('update-qr-codev2/<int:qrcode_id>/', GetDowellSurveyV2.as_view(), name='update-surveyv2'),
     path('get-dowell-survey-status/', ExtractAndFetchSurvey.as_view(), name='get_dowell_survey'),
     path('survey-count/', SurveyCounter.as_view(), name='survey-counter'),

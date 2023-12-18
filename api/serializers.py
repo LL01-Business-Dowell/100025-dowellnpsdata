@@ -173,67 +173,76 @@ class CreateQrCodeSerializerV2(serializers.ModelSerializer):
         fields = '__all__'
 
     def create(self, validated_data):
+        print('Over here bro!')
         try:
+            # new_qrcode = QrCode.objects.create(**validated_data)
             new_qrcode = QrCodeV2.objects.create(**validated_data)
-            # Logo_link = validated_data.pop('logo')
-            # filename = Logo_link.name
+            Logo_link = validated_data.pop('logo')
+            filename = Logo_link.name
 
-            # logo = Image.open(Logo_link)
-            # basewidth = 100
+            logo = Image.open(Logo_link)
+            basewidth = 100
 
-            # wpercent = (basewidth/float(logo.size[0]))
-            # hsize = int((float(logo.size[1])*float(wpercent)))
-            # logo = logo.resize((basewidth, hsize), Image.ANTIALIAS)
-
-
-            # QRcode = qrcode.QRCode(
-            #     error_correction=qrcode.constants.ERROR_CORRECT_H
-            # )
-            # host = settings.HOSTNAME
-
-            # # url = validated_data.pop('url')
-            # survey_url = validated_data['url']
-
-            # url = 'https://' + host + '/iframe?survey_id='+ str(new_qrcode.id)
-            # print("url----------------------------->"+url)
+            wpercent = (basewidth/float(logo.size[0]))
+            hsize = int((float(logo.size[1])*float(wpercent)))
+            logo = logo.resize((basewidth, hsize), Image.ANTIALIAS)
 
 
-            # QRcode.add_data(url)
+            QRcode = qrcode.QRCode(
+                error_correction=qrcode.constants.ERROR_CORRECT_H
+            )
+            host = settings.HOSTNAME
+
+            # url = validated_data.pop('url')
+            survey_url = validated_data['url']
+
+            url = 'https://' + host + '/iframe?survey_id='+ str(new_qrcode.id)
+            print("url----------------------------->"+url)
 
 
-            # QRcode.make()
+            QRcode.add_data(url)
 
 
-            # QRcolor = 'Black'
-
-            # # adding color to QR code
-            # QRimg = QRcode.make_image(
-            #     fill_color=QRcolor, back_color="white").convert('RGB')
-
-            # # set size of QR code
-            # pos = ((QRimg.size[0] - logo.size[0]) // 2,
-            #     (QRimg.size[1] - logo.size[1]) // 2)
-
-            # # box = Image.open('background.png')
-            # # QRimg.paste(box, pos)
-            # QRimg.paste(logo,pos)
-
-            # # QRimg.show()
-
-            # # save the QR code generated
-            # QRimg.save(settings.MEDIA_ROOT+'/company_qrcode/'+filename)
-            # filepath = 'company_qrcode/'+filename
-            # new_qrcode.qr_code = filepath
-            # with open(settings.MEDIA_ROOT+'/company_qrcode/'+filename, "rb") as image2string:
-            #     converted_string = base64.b64encode(image2string.read())
+            QRcode.make()
 
 
+            QRcolor = 'Black'
 
-            # new_qrcode.image = converted_string
-            # new_qrcode.event_id = get_event_id()
+            # adding color to QR code
+            QRimg = QRcode.make_image(
+                fill_color=QRcolor, back_color="white").convert('RGB')
+
+            # set size of QR code
+            pos = ((QRimg.size[0] - logo.size[0]) // 2,
+                (QRimg.size[1] - logo.size[1]) // 2)
+
+            # box = Image.open('background.png')
+            # QRimg.paste(box, pos)
+            QRimg.paste(logo,pos)
+
+            # QRimg.show()
+
+            # save the QR code generated
+            QRimg.save(settings.MEDIA_ROOT+'/company_qrcode/'+filename)
+            filepath = 'company_qrcode/'+filename
+            new_qrcode.qr_code = filepath
+            with open(settings.MEDIA_ROOT+'/company_qrcode/'+filename, "rb") as image2string:
+                converted_string = base64.b64encode(image2string.read())
+
+
+
+            new_qrcode.image = converted_string
+            new_qrcode.event_id = get_event_id()
+            new_qrcode.save()
             new_qrcode.save()
             print("This is the validated data in serializer to be save", new_qrcode)
             return new_qrcode
+        # try:
+        #     new_qrcode = QrCodeV2.objects.create(**validated_data)
+        #     print('You got')
+        #     new_qrcode.save()
+        #     print("This is the validated data in serializer to be save", new_qrcode)
+        #     return new_qrcode
         
         except Exception as ex:
 
@@ -244,7 +253,7 @@ class CreateQrCodeSerializerV2(serializers.ModelSerializer):
             
 class UpdateQrCodeSerializerV2(serializers.ModelSerializer):
     class Meta:
-        model = QrCode
+        model = QrCodeV2
         fields = '__all__'
         
         
@@ -279,5 +288,5 @@ class UpdateQrCodeSerializerV2(serializers.ModelSerializer):
 
 class ListQrCodeSerializer(serializers.ModelSerializer):
     class Meta:
-        model = QrCode
+        model = QrCodeV2
         fields = '__all__'
