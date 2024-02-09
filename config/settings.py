@@ -68,10 +68,17 @@ MIDDLEWARE = [
 ROOT_URLCONF = 'config.urls'
 
 # CORS_ORIGIN_ALLOW_ALL = True
-CORS_ORIGIN_ALLOW_ALL = True
+# CORS_ORIGIN_ALLOW_ALL = True
 # CORS_ORIGIN_WHITELIST = (
 #   'http://localhost:8000',
 # )
+
+CORS_ALLOWED_ORIGINS = [
+    "http://localhost:5173",
+    "http://localhost:5174",
+    "http://localhost:5175",
+]
+
 DATA_UPLOAD_MAX_NUMBER_FIELDS = None
 TEMPLATES = [
     {

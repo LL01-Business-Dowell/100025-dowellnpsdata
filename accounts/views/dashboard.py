@@ -138,6 +138,7 @@ class DashboardView(View):
                 # print("res", res)
                 print("serializer", serializer.data)
                 res_data = serializer.data
+            
 
                 upload_to_remote_db(res_data)
                 # file_url = request.build_absolute_uri(settings.MEDIA_URL + file_path)
@@ -149,9 +150,7 @@ class DashboardView(View):
                 'promotional_sentence': res_data['promotional_sentence'],
                 'pk': res_data['id'],
                 'link': 'https://'+settings.HOSTNAME+'/iframe?survey_id='+str(res_data['id'])
-
             }
-                print(context, 'returning data')
 
                 request.session['form_link'] = res_data['url']
                 return render(request, 'qrcode/create_qr_code.html', context)
