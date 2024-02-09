@@ -5,6 +5,7 @@ from accounts.views.my_api import GetDowellSurvey
 from accounts.views.my_apiV2 import GetDowellSurvey as GetDowellSurveyV2
 from accounts.views.my_apiV2 import ExtractAndFetchSurvey, SurveyCounter
 from accounts import views
+from accounts.views import health_check_views
 
 urlpatterns = [
     path('login/', views.LoInFunc.as_view(), name='login'),
@@ -32,4 +33,6 @@ urlpatterns = [
     path('update-qr-codev2/<int:qrcode_id>/', GetDowellSurveyV2.as_view(), name='update-surveyv2'),
     path('get-dowell-survey-status/', ExtractAndFetchSurvey.as_view(), name='get_dowell_survey'),
     path('survey-count/', SurveyCounter.as_view(), name='survey-counter'),
+    ##health_check
+    path('health-check/', health_check_views.HealthCheck.as_view(), name='health-check'),
 ]

@@ -123,7 +123,7 @@ WSGI_APPLICATION = 'config.wsgi.application'
 DATABASES = {
         'default': {
              'ENGINE': 'django.db.backends.mysql', # mysql database python driver.
-             'NAME': '100025$qr_code_db',    # mysql database name.
+             'NAME': '100025$qr_code_db_2',    # mysql database name.
              'USER': '100025',   # db login user name.
              'PASSWORD': 'dowell@msql#db', # db login user password.
              'HOST': '100025.mysql.pythonanywhere-services.com', # db machine ip or domain, if left empty then the value is localhost.

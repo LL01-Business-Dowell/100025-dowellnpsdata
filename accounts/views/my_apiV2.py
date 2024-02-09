@@ -46,11 +46,11 @@ class GetDowellSurvey(APIView):
         return JsonResponse({"data": "Kindly use a POST request instead of GET"})
 
     def post(self, request, format=None):
-        
+
         current_date = datetime.now()
         dates = current_date.date()
         myDict = request.data
-        print("mydict ===> ", myDict)
+        # print("mydict ===> ", myDict)
         # p_list = myDict['p_list']
         formdata = {}
         files = {}
@@ -81,16 +81,16 @@ class GetDowellSurvey(APIView):
                 # participants_limit_list = formdata["participantsLimit"]
                 # print('regon type ', type(formdata["region"] ))
                 # regions_list = formdata["region"]
-                
+
                 # participants_limit_values = participants_limit_list[0].split(', ')
                 # regions_values = regions_list[0].split(', ')
 
                 # # Create the dictionary
                 # participants_limit_dict = {region.strip(): int(limit) for region, limit in zip(regions_values, participants_limit_values)}
                 # print('this is the dict', participants_limit_dict)
-            
-                
-                
+
+
+
                 formdata["link"] = myDict["link"]
                 formdata["start_date"] = my_date(myDict["start_date"])
                 print('Date printier ', formdata["start_date"])
@@ -110,7 +110,7 @@ class GetDowellSurvey(APIView):
 
                 url = 'https://' + host + '/api/qrcode/'
                 print("formdata printier", formdata)
-                
+
                 print('Serialize this ', formdata)
                 serializer = CreateQrCodeSerializerV2(data=formdata)
                 print('Over here!')
@@ -121,17 +121,17 @@ class GetDowellSurvey(APIView):
                     res_data = serializer.data
 
                     upload_to_remote_db(res_data)
-                    
-                    
+
+
                     '''================================='''
-                    
-                    
+
+
                     context = {
                         'qrcode': res_data['qr_code'],
                         'link': 'https://'+settings.HOSTNAME+'/iframe?survey_id=' + str(res_data['id'])
 
                     }
-                    
+
                     qrcode_type = "Link"
                     quantity = 1
                     company_id = company_id
@@ -158,8 +158,8 @@ class GetDowellSurvey(APIView):
                     print("type res.text === ", type(res.text))
                     res_obj = json.loads(res.text)
                     print("res_obj === ", res_obj)
-                    
-                    
+
+
                     '''================================='''
 
                     return Response(res_obj, status=status.HTTP_200_OK)
@@ -174,18 +174,18 @@ class GetDowellSurvey(APIView):
             return Response("Kindly check your payload ", status=status.HTTP_400_BAD_REQUEST)
         except Http404:
             return Response("Kindly check your payload ", status=status.HTTP_400_BAD_REQUEST)
-        
-        
-        
-        
+
+
+
+
 
     def put(self, request, qrcode_id, format=None):
         myDict = request.data
         print("mydict ===> ", myDict)
         # p_list = myDict['p_list']
-        
-        
-  
+
+
+
         formdata = {}
         files = {}
 
@@ -230,19 +230,19 @@ class GetDowellSurvey(APIView):
                 service = formdata.get("service")
                 url = formdata.get("url")
                 country = formdata.get("country")
-                
-                
-                
-                
+
+
+
+
                 if country:
                     country = country.replace('-', ' ')
                 region = formdata.get("region")
-                
-                
+
+
                 if service:
                     service = service.replace('-', ' ')
                 service = formdata.get("service")
-                
+
                 if region:
                     region = region.replace('-', ' ')
                 promotional_sentence = formdata.get("promotional_sentence")
@@ -254,12 +254,12 @@ class GetDowellSurvey(APIView):
 
                 # formdata["start_date"] = my_date(myDict["start_date"])
                 # formdata["end_date"] = my_date(myDict["end_date"])
-                
-                
+
+
                 start_date = formdata.get("start_date")
                 if start_date:
                     formdata["start_date"] = my_date(start_date)
-                    
+
                 end_date = formdata.get("end_date")
                 if end_date:
                     formdata["end_date"] = my_date(end_date)
@@ -303,16 +303,16 @@ class GetDowellSurvey(APIView):
             return Response("Kindly check your payload ", status=status.HTTP_400_BAD_REQUEST)
         except Http404:
             return Response("Kindly check your payload ", status=status.HTTP_400_BAD_REQUEST)
-        
-        
-        
-        
+
+
+
+
 class ExtractAndFetchSurvey(APIView):
     def post(self, request, format=None):
         # current_date = datetime.datetime.now()
         current_date = datetime.now()
         dates = current_date.date()
-        
+
         link = request.data.get("link")
         parsed_url = urlparse(link)
 
@@ -322,7 +322,7 @@ class ExtractAndFetchSurvey(APIView):
 
         print("Survey ID:", survey_id)
         print('Am called')
-        
+
         region = request.data.get("region")
         # region = request.data.get("region")
         print('This is the region ', region)
@@ -338,15 +338,15 @@ class ExtractAndFetchSurvey(APIView):
 
         if extractedID is not None:
             # Fetch the survey based on the extracted ID
-            
+
             survey = get_object_or_404(QrCodeV2, pk=extractedID)
             # participants_limit = survey.participantsLimit.get(region)
             print('This is it ', survey)
             qr_code_v2 = get_object_or_404(QrCodeV2, pk=extractedID)
             coordinator = SurveyCoordinator.objects.filter(survey=qr_code_v2).first()
             print('This is the cordinator ', coordinator)
-            
-            
+
+
             # if survey.start_date > dates:
             #     response_data = {
             #         "isSuccess": False,
@@ -357,7 +357,7 @@ class ExtractAndFetchSurvey(APIView):
             #         }
             #     }
             #     return Response(response_data, status=status.HTTP_200_OK)
-            
+
             if dates < survey.start_date:
                 response_data = {
                     "isSuccess": False,
@@ -380,8 +380,8 @@ class ExtractAndFetchSurvey(APIView):
                 }
                 return Response(response_data, status=status.HTTP_200_OK)
 
-         
-            
+
+
             if survey.start_date <= dates <= survey.end_date:
                 participants_limit_str =  coordinator.survey.participantsLimit
                 print('Participant ', participants_limit_str)
@@ -389,11 +389,11 @@ class ExtractAndFetchSurvey(APIView):
                 print('This is the cordinator participants ', type( coordinator_participants))
                 # participants_limit_dict = ast.literal_eval(participants_limit_str)
                 # print('partsLimit ', participants_limit_dict)
-                
-                
+
+
                 # if region in participants_limit_dict and participants_limit_dict[region] >= 1:
                 if coordinator_participants.get(region, 0) >= 1:
-                    
+
                     # region_value = coordinator_participants.get(region, 0)
                     # region_values = participants_limit_dict
                     # print('This is the regions ', region_values)
@@ -448,12 +448,12 @@ class ExtractAndFetchSurvey(APIView):
             return int(link_id)
         except ValueError:
             return None
-        
-        
+
+
 
 class SurveyCounter(APIView):
     def post(self, request, format=None):
-        
+
         print('Am called here')
         link = request.data.get("link")
         # link = request.data.get("link")
@@ -480,18 +480,18 @@ class SurveyCounter(APIView):
             qr_code_v2 = get_object_or_404(QrCodeV2, pk=extractedID)
             coordinator = SurveyCoordinator.objects.filter(survey=qr_code_v2).first()
             print('This cordinator data ', coordinator )
-            
+
             participants_limit = coordinator.participants
             print('This are the participants limit ', participants_limit)
             print("This is the type of participants ", type(participants_limit))
             # participants_limit_dict = ast.literal_eval(participants_limit)
             # print('This is type of ', participants_limit_dict)
             # print('partsLimit ', participants_limit)
-            
+
             if region in participants_limit:
                 region_value = int(participants_limit.get(region, 0))
                 print(f"{region} exists with a value of {region_value}")
-                
+
                 if region_value >= 1:
                     # survey_value = participants_limit.get(region, 0)
                     # survey_value -= 1
@@ -518,8 +518,8 @@ class SurveyCounter(APIView):
             return Response(response_data, status=status.HTTP_200_OK)
 
         return Response({"message": "Invalid link ID"}, status=status.HTTP_400_BAD_REQUEST)
-    
-    
+
+
     def extract_table_id(self, link_id):
         try:
             return int(link_id)
