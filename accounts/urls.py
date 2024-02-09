@@ -3,7 +3,7 @@ from django.urls import path, include
 from accounts.views.helper import render_form, render_qrcode, render_iframe, get_event_id
 from accounts.views.my_api import GetDowellSurvey
 from accounts.views.my_apiV2 import GetDowellSurvey as GetDowellSurveyV2
-from accounts.views.my_apiV2 import ExtractAndFetchSurvey, SurveyCounter
+from accounts.views.my_apiV2 import ExtractAndFetchSurvey, SurveyCounter, MySurveyFetch
 from accounts import views
 from accounts.views import health_check_views
 
@@ -35,4 +35,5 @@ urlpatterns = [
     path('survey-count/', SurveyCounter.as_view(), name='survey-counter'),
     ##health_check
     path('health-check/', health_check_views.HealthCheck.as_view(), name='health-check'),
+    path('my-survey/', MySurveyFetch.as_view()),
 ]
