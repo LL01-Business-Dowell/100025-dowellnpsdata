@@ -85,7 +85,7 @@ class CreateQrCodeSerializer(serializers.ModelSerializer):
             survey_url = validated_data['url']
 
             url = 'https://' + host + '/iframe?survey_id='+ str(new_qrcode.id)
-            print("url----------------------------->"+url)
+            # print("url----------------------------->"+url)
 
 
             QRcode.add_data(url)
@@ -122,12 +122,12 @@ class CreateQrCodeSerializer(serializers.ModelSerializer):
             new_qrcode.image = converted_string
             new_qrcode.event_id = get_event_id()
             new_qrcode.save()
-            print("This is the validated data in serializer to be save", new_qrcode)
+            # print("This is the validated data in serializer to be save", new_qrcode)
             return new_qrcode
         
         except Exception as ex:
 
-            print("Exception is serializwe ", ex)
+            # print("Exception is serializwe ", ex)
             print(ex, traceback.format_exc())
             
             
@@ -160,8 +160,8 @@ class UpdateQrCodeSerializer(serializers.ModelSerializer):
 
             return instance
         except Exception as ex:
-            print("Exception in serializer: ", ex)
-            print(traceback.format_exc())
+            # print("Exception in serializer: ", ex)
+            # print(traceback.format_exc())
             raise ex
   
 
@@ -197,7 +197,7 @@ class CreateQrCodeSerializerV2(serializers.ModelSerializer):
             survey_url = validated_data['url']
 
             url = 'https://' + host + '/iframe?survey_id='+ str(new_qrcode.id)
-            print("url----------------------------->"+url)
+            # print("url----------------------------->"+url)
 
 
             QRcode.add_data(url)
@@ -216,8 +216,7 @@ class CreateQrCodeSerializerV2(serializers.ModelSerializer):
             pos = ((QRimg.size[0] - logo.size[0]) // 2,
                 (QRimg.size[1] - logo.size[1]) // 2)
 
-            # box = Image.open('background.png')
-            # QRimg.paste(box, pos)
+            
             QRimg.paste(logo,pos)
 
             # QRimg.show()
@@ -235,18 +234,13 @@ class CreateQrCodeSerializerV2(serializers.ModelSerializer):
             new_qrcode.event_id = get_event_id()
             new_qrcode.save()
             new_qrcode.save()
-            print("This is the validated data in serializer to be save", new_qrcode)
+            # print("This is the validated data in serializer to be save", new_qrcode)
             return new_qrcode
-        # try:
-        #     new_qrcode = QrCodeV2.objects.create(**validated_data)
-        #     print('You got')
-        #     new_qrcode.save()
-        #     print("This is the validated data in serializer to be save", new_qrcode)
-        #     return new_qrcode
+       
         
         except Exception as ex:
 
-            print("Exception is serializwe ", ex)
+            # print("Exception is serializwe ", ex)
             print(ex, traceback.format_exc())
             
             
@@ -279,8 +273,8 @@ class UpdateQrCodeSerializerV2(serializers.ModelSerializer):
 
             return instance
         except Exception as ex:
-            print("Exception in serializer: ", ex)
-            print(traceback.format_exc())
+            # print("Exception in serializer: ", ex)
+            # print(traceback.format_exc())
             raise ex
   
 
@@ -290,3 +284,4 @@ class ListQrCodeSerializer(serializers.ModelSerializer):
     class Meta:
         model = QrCodeV2
         fields = '__all__'
+        
