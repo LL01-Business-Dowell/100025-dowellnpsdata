@@ -52,7 +52,7 @@ class GetDowellSurvey(APIView):
         myDict = request.data
         # print("mydict ===> ", myDict)
         # p_list = myDict['p_list']
-        print('This is data request ', myDict)
+        # print('This is data request ', myDict)
         formdata = {}
         files = {}
 
@@ -74,10 +74,13 @@ class GetDowellSurvey(APIView):
                 company_id = myDict['company_id']
                 formdata['logo'] = myDict['logo']
                 formdata["brand_name"] = myDict["brand_name"]
-                formdata["service"] = myDict.getlist("service")
+                # formdata["service"] = myDict.getlist("service")
+                formdata["service"] = myDict["service"]
                 formdata["url"] = myDict["url"]
-                formdata["country"] = myDict.getlist("country")
-                formdata["region"] = myDict.getlist("region")
+                # formdata["country"] = myDict.getlist("country")
+                # formdata["region"] = myDict.getlist("region")
+                formdata["country"] = myDict["country"]
+                formdata["region"] = myDict["region"]
                 formdata["promotional_sentence"] = myDict["promotional_sentence"]
                 formdata["username"] = myDict["username"]
                 formdata["name"] = myDict["name"]
@@ -446,8 +449,30 @@ class SurveyCounter(APIView):
 class MySurveyFetch(APIView):
     def get(self, request, format=None):
         data = request.data
-        username = data['username']
+        print("data-->", data)
+        data2 =request.query_params.get("username")
+        print("data2-->", data)
+        username = request.query_params.get("username")
+        username2 = request.data.get("username")
         print('Username ', username)
+        print('Username2 ', username2)
+
+        survey = QrCodeV2.objects.filter(username=username)
+        # print('This is survey data ', survey)
+        serialize = ListQrCodeSerializer(survey, many = True)
+
+        return Response(serialize.data)
+    def post(self, request, format=None):
+        data = request.data
+        # print("POSTTSSTTT")
+        # print("Post data-->", data)
+        # data2 =request.query_params.get("username")
+        # print("data2-->", data)
+        # username = request.query_params.get("username")
+        # username = request.data.get("username")
+        username = data['username']
+        # print('Username ', username)
+        # print('Username2 ', username2)
 
         survey = QrCodeV2.objects.filter(username=username)
         # print('This is survey data ', survey)
