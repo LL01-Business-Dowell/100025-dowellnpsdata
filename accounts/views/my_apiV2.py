@@ -108,7 +108,7 @@ class GetDowellSurvey(APIView):
                     res = serializer.save()
                     res_data = serializer.data
                     # print('This is the res data ', res_data)
-                    upload_to_remote_db(res_data)
+                    # upload_to_remote_db(res_data)
 
 
                     '''================================='''
@@ -117,7 +117,7 @@ class GetDowellSurvey(APIView):
                     context = {
                         'qrcode': res_data['qr_code'],
                         # 'link': 'https://'+settings.HOSTNAME+'/iframe?survey_id=' + str(res_data['id']),
-                        'link': myDict["url"]
+                        'link':myDict["link"]+"?survey_id=" + str(res_data['id'])
 
                     }
 
@@ -126,7 +126,7 @@ class GetDowellSurvey(APIView):
                     company_id = company_id
                     # link = 'https://'+settings.HOSTNAME + \
                     #     '/iframe?survey_id=' + str(res_data['id'])
-                    link= myDict["url"]
+                    link= myDict["link"]+"?survey_id=" + str(res_data['id'])
                     description = res_data['promotional_sentence']
                     created_by = res_data['username']
                     logo = res_data['logo']
@@ -472,11 +472,18 @@ class MySurveyFetch(APIView):
         # print("data2-->", data)
         # username = request.query_params.get("username")
         # username = request.data.get("username")
-        username = data['username']
-        # print('Username ', username)
-        # print('Username2 ', username2)
+        if 'username' in data:
+            username = data['username']
+            # print('Username ', username)
+            # print('Username2 ', username2)
 
-        survey = QrCodeV2.objects.filter(username=username)
+            survey = QrCodeV2.objects.filter(username=username)
+        if 'survey_id' in data:
+            survey_id = data['survey_id']
+            # print('Username ', username)
+            # print('Username2 ', username2)
+
+            survey = QrCodeV2.objects.filter(id=survey_id)
         # print('This is survey data ', survey)
         serialize = ListQrCodeSerializer(survey, many = True)
 
