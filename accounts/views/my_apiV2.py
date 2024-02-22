@@ -116,15 +116,17 @@ class GetDowellSurvey(APIView):
 
                     context = {
                         'qrcode': res_data['qr_code'],
-                        'link': 'https://'+settings.HOSTNAME+'/iframe?survey_id=' + str(res_data['id'])
+                        # 'link': 'https://'+settings.HOSTNAME+'/iframe?survey_id=' + str(res_data['id']),
+                        'link': myDict["url"]
 
                     }
 
                     qrcode_type = "Link"
                     quantity = 1
                     company_id = company_id
-                    link = 'https://'+settings.HOSTNAME + \
-                        '/iframe?survey_id=' + str(res_data['id'])
+                    # link = 'https://'+settings.HOSTNAME + \
+                    #     '/iframe?survey_id=' + str(res_data['id'])
+                    link= myDict["url"]
                     description = res_data['promotional_sentence']
                     created_by = res_data['username']
                     logo = res_data['logo']
