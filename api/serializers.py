@@ -283,5 +283,5 @@ class UpdateQrCodeSerializerV2(serializers.ModelSerializer):
 class ListQrCodeSerializer(serializers.ModelSerializer):
     class Meta:
         model = QrCodeV2
-        fields = '__all__'
+        exclude = ['image']
         

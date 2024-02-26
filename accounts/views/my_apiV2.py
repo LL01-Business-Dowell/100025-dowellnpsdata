@@ -448,6 +448,7 @@ class SurveyCounter(APIView):
 
 
 
+
 class MySurveyFetch(APIView):
     def get(self, request, format=None):
         data = request.data
@@ -466,25 +467,30 @@ class MySurveyFetch(APIView):
         return Response(serialize.data)
     def post(self, request, format=None):
         data = request.data
-        # print("POSTTSSTTT")
-        # print("Post data-->", data)
-        # data2 =request.query_params.get("username")
-        # print("data2-->", data)
-        # username = request.query_params.get("username")
-        # username = request.data.get("username")
+       
         if 'username' in data:
             username = data['username']
-            # print('Username ', username)
-            # print('Username2 ', username2)
-
+          
+            
+            
             survey = QrCodeV2.objects.filter(username=username)
+            
+           
         if 'survey_id' in data:
             survey_id = data['survey_id']
-            # print('Username ', username)
-            # print('Username2 ', username2)
+          
 
             survey = QrCodeV2.objects.filter(id=survey_id)
-        # print('This is survey data ', survey)
-        serialize = ListQrCodeSerializer(survey, many = True)
+            
+        serialize = ListQrCodeSerializer(survey, many = True).data
+        total_survey = survey.count()
+        
+        end_true_count = sum(1 for item in serialize if item.get('is_end', False))
+        end_false_count = sum(1 for item in serialize if not item.get('is_end', False))
 
-        return Response(serialize.data)
+        
+
+        
+        
+        serialize_with_count = serialize + [{'total_survey': total_survey, "active_survey": end_true_count, "closed_survey":end_false_count }]
+        return Response(serialize_with_count)
