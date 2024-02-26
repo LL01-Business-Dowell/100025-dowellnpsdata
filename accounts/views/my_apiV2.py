@@ -92,15 +92,17 @@ class GetDowellSurvey(APIView):
                 host = request.META['HTTP_HOST']
                 dta = formdata["country"]
                 c = '-'.join(dta)
-                formdata["country"] = c
+                formdata["country"] = dta
+                print("country ===>", formdata['country'])
 
                 dta2 = formdata['region']
                 r = '-'.join(dta2)
-                formdata['region'] = r
+                formdata['region'] = dta2
+                print("region ===>", formdata['region'])
 
                 dta3 = formdata['service']
                 k = '-'.join(dta3)
-                formdata['service'] = k
+                formdata['service'] = dta3
 
                 url = 'https://' + host + '/api/qrcode/'
                 serializer = CreateQrCodeSerializerV2(data=formdata)
@@ -146,6 +148,7 @@ class GetDowellSurvey(APIView):
 
                     res_obj = json.loads(res.text)
                     keys_to_add = ['country', 'region', 'start_date', 'end_date', 'name','email', 'username', 'promotional_sentence' ,'participantsLimit']
+                    print("res obj --->>", res_obj)
                     for qrcode in res_obj['qrcodes']:
                         # qrcode.update(res_data)
                         qrcode.update({key: res_data[key] for key in keys_to_add if key in res_data})
@@ -305,6 +308,7 @@ class ExtractAndFetchSurvey(APIView):
         query_params = parse_qs(parsed_url.query)
         survey_id = query_params.get('survey_id', [None])[0]
         region = request.data.get("region")
+        print("region before check ==> ", region)
 
         parts = link.split("/")
         extractedID = survey_id
@@ -466,6 +470,7 @@ class MySurveyFetch(APIView):
         return Response(serialize.data)
     def post(self, request, format=None):
         data = request.data
+        print("data Myfetch Posr==> ", data)
         # print("POSTTSSTTT")
         # print("Post data-->", data)
         # data2 =request.query_params.get("username")
