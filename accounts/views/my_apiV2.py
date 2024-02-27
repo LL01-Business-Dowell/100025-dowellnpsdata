@@ -497,10 +497,6 @@ class MySurveyFetch(APIView):
 
         end_true_count = sum(1 for item in serialize if item.get('is_end', False))
         end_false_count = sum(1 for item in serialize if not item.get('is_end', False))
+        serialize_with_count =  [{'total_survey': total_survey, "active_survey": end_true_count, "closed_survey":end_false_count }] + serialize
 
-
-
-
-
-        serialize_with_count = serialize + [{'total_survey': total_survey, "active_survey": end_true_count, "closed_survey":end_false_count }]
         return Response(serialize_with_count)
