@@ -89,6 +89,8 @@ class GetDowellSurvey(APIView):
                 formdata["link"] = myDict["link"]
                 formdata["start_date"] = my_date(myDict["start_date"])
                 formdata["end_date"] = my_date(myDict["end_date"])
+                formdata["longitude"] = myDict["longitude"]
+                formdata["latitude"] = myDict["latitude"]
                 host = request.META['HTTP_HOST']
                 dta = formdata["country"]
                 c = '-'.join(dta)
@@ -120,7 +122,6 @@ class GetDowellSurvey(APIView):
                         'link':myDict["link"]+"?survey_id=" + str(res_data['id'])
 
                     }
-
                     qrcode_type = "Link"
                     quantity = 1
                     company_id = company_id
@@ -145,7 +146,7 @@ class GetDowellSurvey(APIView):
                     # res = {"qr_code_generator_response": res}
 
                     res_obj = json.loads(res.text)
-                    keys_to_add = ['country', 'region', 'start_date', 'end_date', 'name','email', 'username', 'promotional_sentence' ,'participantsLimit']
+                    keys_to_add = ['id','country', 'region', 'start_date', 'end_date', 'name','email', 'username', 'promotional_sentence' ,'participantsLimit', 'category', 'latitude', 'longitude']
                     for qrcode in res_obj['qrcodes']:
                         # qrcode.update(res_data)
                         qrcode.update({key: res_data[key] for key in keys_to_add if key in res_data})
