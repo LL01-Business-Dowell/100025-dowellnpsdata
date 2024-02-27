@@ -492,5 +492,5 @@ class MySurveyFetch(APIView):
 
         
         
-        serialize_with_count = serialize + [{'total_survey': total_survey, "active_survey": end_true_count, "closed_survey":end_false_count }]
+        serialize_with_count =  [{'total_survey': total_survey, "active_survey": end_true_count, "closed_survey":end_false_count }] + serialize
         return Response(serialize_with_count)
