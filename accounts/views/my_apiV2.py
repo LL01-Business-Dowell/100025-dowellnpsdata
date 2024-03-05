@@ -78,9 +78,9 @@ class GetDowellSurvey(APIView):
                 formdata["service"] = myDict["service"]
                 formdata["url"] = myDict["url"]
                 # formdata["country"] = myDict.getlist("country")
-                # formdata["region"] = myDict.getlist("region")
+                formdata["region"] = myDict.getlist("region")
                 formdata["country"] = myDict["country"]
-                formdata["region"] = myDict["region"]
+                # formdata["region"] = myDict["region"]
                 formdata["promotional_sentence"] = myDict["promotional_sentence"]
                 formdata["username"] = myDict["username"]
                 formdata["name"] = myDict["name"]
@@ -91,6 +91,7 @@ class GetDowellSurvey(APIView):
                 formdata["end_date"] = my_date(myDict["end_date"])
                 formdata["longitude"] = myDict["longitude"]
                 formdata["latitude"] = myDict["latitude"]
+                formdata['category'] = myDict["category"]
                 host = request.META['HTTP_HOST']
                 dta = formdata["country"]
                 c = '-'.join(dta)
@@ -107,6 +108,7 @@ class GetDowellSurvey(APIView):
                 url = 'https://' + host + '/api/qrcode/'
                 serializer = CreateQrCodeSerializerV2(data=formdata)
                 if serializer.is_valid():
+                    print('True')
                     res = serializer.save()
                     res_data = serializer.data
                     # print('This is the res data ', res_data)
@@ -114,6 +116,7 @@ class GetDowellSurvey(APIView):
 
 
                     '''================================='''
+# 070271185547
 
 
                     context = {
