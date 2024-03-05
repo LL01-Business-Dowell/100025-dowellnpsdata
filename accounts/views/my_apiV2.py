@@ -71,24 +71,26 @@ class GetDowellSurvey(APIView):
             # if process_api_response == '76092219-c570-4c86-88f0-efa63966e06b':
             process_api_response = processApikey(api_key)
             if process_api_response.status_code == 200:
-                company_id = myDict['company_id']
-                formdata['logo'] = myDict['logo']
-                formdata["brand_name"] = myDict["brand_name"]
+                company_id =   request.data.get("company_id")
+                formdata['logo'] =   request.data.get("logo")
+                formdata["brand_name"] =   request.data.get("brand_name")
                 # formdata["service"] = myDict.getlist("service")
-                formdata["service"] = myDict["service"]
-                formdata["url"] = myDict["url"]
+                formdata["service"] =   request.data.get("service")
+                formdata["url"] =   request.data.get("url")
                 # formdata["country"] = myDict.getlist("country")
                 # formdata["region"] = myDict.getlist("region")
-                formdata["country"] = myDict["country"]
-                formdata["region"] = myDict["region"]
-                formdata["promotional_sentence"] = myDict["promotional_sentence"]
-                formdata["username"] = myDict["username"]
-                formdata["name"] = myDict["name"]
-                formdata["email"] = myDict["email"]
-                formdata["participantsLimit"] = myDict["participantsLimit"]
-                formdata["link"] = myDict["link"]
-                formdata["start_date"] = my_date(myDict["start_date"])
-                formdata["end_date"] = my_date(myDict["end_date"])
+                formdata["country"] =   request.data.get("country")
+                formdata["region"] =   request.data.get("region")
+                formdata["promotional_sentence"] =   request.data.get("promotional_sentence")
+                formdata["username"] =   request.data.get("username")
+                formdata["name"] =   request.data.get("name")
+                formdata["email"] =   request.data.get("email")
+                formdata["participantsLimit"] =   request.data.get("participantsLimit")
+                formdata["link"] =   request.data.get("link")
+                formdata["start_date"] = my_date(  request.data.get("start_date"))
+                formdata["end_date"] = my_date(  request.data.get("end_date"))
+                formdata["longitude"] =   request.data.get("longitude")
+                formdata["latitude"] =   request.data.get("latitude")
                 host = request.META['HTTP_HOST']
                 dta = formdata["country"]
                 c = '-'.join(dta)
@@ -122,7 +124,6 @@ class GetDowellSurvey(APIView):
                         'link':myDict["link"]+"?survey_id=" + str(res_data['id'])
 
                     }
-
                     qrcode_type = "Link"
                     quantity = 1
                     company_id = company_id
@@ -149,6 +150,9 @@ class GetDowellSurvey(APIView):
                     res_obj = json.loads(res.text)
                     keys_to_add = ['country', 'region', 'start_date', 'end_date', 'name','email', 'username', 'promotional_sentence' ,'participantsLimit']
                     print("res obj --->>", res_obj)
+
+                    keys_to_add = ['id','country', 'region', 'start_date', 'end_date', 'name','email', 'username', 'promotional_sentence' ,'participantsLimit', 'category', 'latitude', 'longitude']
+
                     for qrcode in res_obj['qrcodes']:
                         # qrcode.update(res_data)
                         qrcode.update({key: res_data[key] for key in keys_to_add if key in res_data})

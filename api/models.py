@@ -51,6 +51,9 @@ class QrCodeV2(models.Model):
     reason = models.CharField(max_length=500, blank=True, null=True)
     link = models.CharField(max_length=500, blank=True, null=True)
     participantsLimit = models.JSONField(null=True, blank=True, default=dict)
+    category = models.CharField(max_length=500, null=True, blank=True)
+    latitude = models.CharField(max_length=500, blank=True, null=True)
+    longitude = models.CharField(max_length=500, blank=True, null=True)
     
     def save(self, *args, **kwargs):
        if self.pk is None:
@@ -71,7 +74,8 @@ class QrCodeV2(models.Model):
             
             # Create SurveyCoordinator when a new QrCodeV2 is saved
             super(QrCodeV2, self).save(*args, **kwargs)
-            self.link = f"{self.url}/{self.pk}"
+            # self.link = f"{self.url}/{self.pk}"
+            self.link = f'{self.link}?survey_id={self.pk}'
 
             survey_coordinator = SurveyCoordinator.objects.create(survey=self)
             survey_coordinator.participants = participants_limit_dict

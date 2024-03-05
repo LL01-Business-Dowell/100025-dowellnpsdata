@@ -12,7 +12,8 @@ https://docs.djangoproject.com/en/4.0/ref/settings/
 
 from pathlib import Path
 import os
-# import django_heroku
+from decouple import config
+
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -67,12 +68,8 @@ MIDDLEWARE = [
 
 ROOT_URLCONF = 'config.urls'
 
-# CORS_ORIGIN_ALLOW_ALL = True
-# CORS_ORIGIN_ALLOW_ALL = True
-# CORS_ORIGIN_WHITELIST = (
-#   'http://localhost:8000',
-# )
 
+CORS_ALLOW_ALL_ORIGINS = True
 CORS_ALLOWED_ORIGINS = [
     "http://localhost:5173",
     "http://localhost:5174",
@@ -80,7 +77,6 @@ CORS_ALLOWED_ORIGINS = [
     "https://dowelllabs.github.io/",
     "http://localhost:3000/"
 ]
-
 DATA_UPLOAD_MAX_NUMBER_FIELDS = None
 TEMPLATES = [
     {
@@ -117,25 +113,13 @@ WSGI_APPLICATION = 'config.wsgi.application'
 #     }
 # }
 
-
-# DATABASES = {
-#     'default': {
-#         'ENGINE': 'django.db.backends.mysql',
-#         'NAME': 'dowell',
-#         'USER': 'dennis',
-#         'PASSWORD': '33016460d',
-#         'HOST': 'localhost',
-#         'PORT': '3306',
-#     }
-# }
-
 DATABASES = {
         'default': {
              'ENGINE': 'django.db.backends.mysql', # mysql database python driver.
-             'NAME': '100025$qr_code_db_2',    # mysql database name.
-             'USER': '100025',   # db login user name.
-             'PASSWORD': 'dowell@msql#db', # db login user password.
-             'HOST': '100025.mysql.pythonanywhere-services.com', # db machine ip or domain, if left empty then the value is localhost.
+             'NAME': config("DB_NAME"),    # mysql database name.
+             'USER': config("DB_USER"),   # db login user name.
+             'PASSWORD': config("DB_PASS"), # db login user password.
+             'HOST': config("DB_HOST"), # db machine ip or domain, if left empty then the value is localhost.
             #  'PORT': '3306', # db server listening port number
          }
 }
@@ -190,14 +174,14 @@ MEDIA_URL = '/media/'
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 # HOSTNAME = 'localhost:8000'
-HOSTNAME = '100025.pythonanywhere.com'
+HOSTNAME = config("HOSTNAME")
 
-EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_BACKEND = config("EMAIL_BACKEND")
 EMAIL_HOST = 'smtp.gmail.com' # gmail
-EMAIL_PORT = 587
+EMAIL_PORT = config("EMAIL_PORT")
 EMAIL_USE_TLS = True
-EMAIL_HOST_USER = 'docs@dowellresearch.sg'
-EMAIL_HOST_PASSWORD = 'jpcjzsnzarucochh'
+EMAIL_HOST_USER = config("EMAIL_HOST_USER")
+EMAIL_HOST_PASSWORD = config("EMAIL_HOST_PASSWORD")
 
 # Activate Django-Heroku.
 # django_heroku.settings(locals())

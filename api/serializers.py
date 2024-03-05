@@ -192,11 +192,13 @@ class CreateQrCodeSerializerV2(serializers.ModelSerializer):
                 error_correction=qrcode.constants.ERROR_CORRECT_H
             )
             host = settings.HOSTNAME
-
+            
+            link = validated_data['link']
             # url = validated_data.pop('url')
             survey_url = validated_data['url']
 
-            url = 'https://' + host + '/iframe?survey_id='+ str(new_qrcode.id)
+            # url = 'https://' + host + '/iframe?survey_id='+ str(new_qrcode.id)
+            url = f"{link}?survey_id={new_qrcode.id}"
             # print("url----------------------------->"+url)
 
 
