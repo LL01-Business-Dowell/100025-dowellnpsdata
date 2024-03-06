@@ -57,10 +57,15 @@ class GetDowellSurvey(APIView):
         files = {}
 
         required_fields = ['qrcode_type', 'quantity' ,'company_id', 'logo', 'brand_name', 'service', 'url',
-                           'country', 'region', 'promotional_sentence', 'username',
+                           'country', 'region[]', 'promotional_sentence', 'username',
                            'name', 'email', 'participantsLimit', 'link', 'start_date', 'end_date', 'description', 'created_by']
 
         missing_fields = [field for field in required_fields if field not in myDict]
+        keysList = list(myDict.keys())
+        print("keys======= ",keysList)
+        print("my dicti =======",myDict)
+        print("missing_fields",missing_fields)
+
         if missing_fields:
             missing_fields_str = ', '.join(missing_fields)
             return Response({"error": f"The following fields are missing in the request data: {missing_fields_str}"}, status=status.HTTP_400_BAD_REQUEST)
@@ -78,19 +83,20 @@ class GetDowellSurvey(APIView):
                 formdata["service"] =   request.data.get("service")
                 formdata["url"] =   request.data.get("url")
                 # formdata["country"] = myDict.getlist("country")
-                # formdata["region"] = myDict.getlist("region")
-                formdata["country"] =   request.data.get("country")
-                formdata["region"] =   request.data.get("region")
-                formdata["promotional_sentence"] =   request.data.get("promotional_sentence")
-                formdata["username"] =   request.data.get("username")
-                formdata["name"] =   request.data.get("name")
-                formdata["email"] =   request.data.get("email")
-                formdata["participantsLimit"] =   request.data.get("participantsLimit")
-                formdata["link"] =   request.data.get("link")
-                formdata["start_date"] = my_date(  request.data.get("start_date"))
-                formdata["end_date"] = my_date(  request.data.get("end_date"))
-                formdata["longitude"] =   request.data.get("longitude")
-                formdata["latitude"] =   request.data.get("latitude")
+                formdata["region"] = myDict.get("region[]")
+                formdata["country"] = myDict["country"]
+                # formdata["region"] = myDict["region"]
+                formdata["promotional_sentence"] = myDict["promotional_sentence"]
+                formdata["username"] = myDict["username"]
+                formdata["name"] = myDict["name"]
+                formdata["email"] = myDict["email"]
+                formdata["participantsLimit"] = myDict["participantsLimit"]
+                formdata["link"] = myDict["link"]
+                formdata["start_date"] = my_date(myDict["start_date"])
+                formdata["end_date"] = my_date(myDict["end_date"])
+                formdata["longitude"] = myDict["longitude"]
+                formdata["latitude"] = myDict["latitude"]
+                formdata['category'] = myDict["category"]
                 host = request.META['HTTP_HOST']
                 dta = formdata["country"]
                 c = '-'.join(dta)
@@ -109,6 +115,7 @@ class GetDowellSurvey(APIView):
                 url = 'https://' + host + '/api/qrcode/'
                 serializer = CreateQrCodeSerializerV2(data=formdata)
                 if serializer.is_valid():
+                    print('True')
                     res = serializer.save()
                     res_data = serializer.data
                     # print('This is the res data ', res_data)
@@ -116,6 +123,7 @@ class GetDowellSurvey(APIView):
 
 
                     '''================================='''
+# 070271185547
 
 
                     context = {

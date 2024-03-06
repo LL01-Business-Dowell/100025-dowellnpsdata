@@ -74,8 +74,8 @@ CORS_ALLOWED_ORIGINS = [
     "http://localhost:5173",
     "http://localhost:5174",
     "http://localhost:5175",
-    "https://dowelllabs.github.io/",
-    "http://localhost:3000/"
+    "https://dowelllabs.github.io",
+    "http://localhost:3000"
 ]
 DATA_UPLOAD_MAX_NUMBER_FIELDS = None
 TEMPLATES = [
