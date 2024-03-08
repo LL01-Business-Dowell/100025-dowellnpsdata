@@ -11,7 +11,7 @@ from api.models import QrCode
 from decouple import config
 from django.conf import settings
 
-# internal_key = config("INTERNAL_KEY")
+internal_key = config("INTERNAL_KEY")
 import requests
 from urllib.parse import urlparse, parse_qs
 
@@ -57,8 +57,8 @@ class GetDowellSurvey(APIView):
             api_key = request.query_params.get('api_key')
             print('This is the params api', api_key)
             process_api_response = processApikey(api_key)
-            # if process_api_response.status_code == 200 or api_key == internal_key:
-            if process_api_response.status_code == 200:
+            if process_api_response.status_code == 200 or api_key == internal_key:
+            # if process_api_response.status_code == 200:
                 print('This is the api_key response', process_api_response)
                 company_id = myDict['company_id']
                 formdata['logo'] = myDict['logo']

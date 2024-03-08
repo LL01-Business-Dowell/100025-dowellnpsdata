@@ -30,7 +30,7 @@ urlpatterns = [
     path('update-qr-code/<int:qrcode_id>/', GetDowellSurvey.as_view(), name='update-survey'),
     ###my api v2 paths
     path('create-surveyv2', GetDowellSurveyV2.as_view(), name='get-surveyv2'),
-    path('update-qr-codev2/<int:qrcode_id>/', GetDowellSurveyV2.as_view(), name='update-surveyv2'),
+    path('update-qr-codev2', GetDowellSurveyV2.as_view(), name='update-surveyv2'),
     path('get-dowell-survey-status/', ExtractAndFetchSurvey.as_view(), name='get_dowell_survey'),
     path('survey-count/', SurveyCounter.as_view(), name='survey-counter'),
     ##health_check

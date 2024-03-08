@@ -54,6 +54,7 @@ class QrCodeV2(models.Model):
     category = models.CharField(max_length=500, null=True, blank=True)
     latitude = models.CharField(max_length=500, blank=True, null=True)
     longitude = models.CharField(max_length=500, blank=True, null=True)
+    search_result_id = models.CharField(max_length=200, blank=True, null=True)
     
     def save(self, *args, **kwargs):
        if self.pk is None:
