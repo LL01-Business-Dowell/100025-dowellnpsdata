@@ -66,11 +66,11 @@ def insert_data(api_key,data, payment=False):
     r=requests.post(url,json=payload)
     print("data ------------->",payload)
     # print("response.status------------->",response.status)
-    # print("r.text------------->",r.text)
+    print("r.text------------->",r.text)
     # print("r.message------------->",r.message)
     if r.status_code == 201 or r.status_code == 200:
         raw_data =  json.loads(r.text)
-        res_data = {"status_code":r.status_code, "text":raw_data['message'], "success":True}
+        res_data = {"status_code":r.status_code, "text":raw_data['message'],"search_result_id":raw_data['data']['inserted_id'], "success":True}
         # raw_keys = raw_data.keys()
         print("raw_data------------->",raw_data)
     else:
@@ -170,7 +170,7 @@ def snyc_groups(username, api_key):
 
 
 
-class GetSurveys(APIView):
+class GetSurveysSearchData(APIView):
     """
     List all countries, or create a new country.
     """
@@ -211,7 +211,7 @@ class GetSurveys(APIView):
             return Response("Kindly cross check the payload and parameters or contact your admin", status=status.HTTP_400_BAD_REQUEST)
 
 
-class CreateUserProfile(APIView):
+class CreateSurveysSearch(APIView):
     """
     List all countries, or create a new country.
     """
@@ -224,24 +224,51 @@ class CreateUserProfile(APIView):
             # api_key = common_api_key
             # api_key=""
             myDict = request.data
-            username = myDict['username']
+            # username = myDict['em']
             payment =  False
-            if "payment" in myDict:
-                payment = myDict['payment']
-            check_res = get_data(api_key,{"username":username,"doc_type":"master"}, payment)
+            if "email" in myDict:
+                email = myDict['email']
+            else:
+                error_message = "email is missing from payload!"
+                raise CustomError(error_message)
+            if "place_name" in myDict:
+                place_name = myDict['place_name']
+            else:
+                error_message = "place_name is missing from payload!"
+                raise CustomError(error_message)
+            if "address" in myDict:
+                address = myDict['address']
+            else:
+                error_message = "place_name is missing from payload!"
+                raise CustomError(error_message)
+            if "mobile_no" in myDict:
+                mobile_no = myDict['mobile_no']
+            else:
+                error_message = "mobile_no is missing from payload!"
+                raise CustomError(error_message)    
+            if "region" in myDict:
+                region = myDict['region']
+            else:
+                error_message = "region is missing from payload!"
+                raise CustomError(error_message)
+            if "webaddress" in myDict:
+                webaddress = myDict['webaddress']
+            else:
+                error_message = "webaddress is missing from payload!"
+                raise CustomError(error_message)
+            
             res = {}
-            if len(check_res['data']) == 0:
-                data = {
-                    "username": username,
-                    "doc_type":"master",
-                    "group_list":[],
-                    "recover_list":[],
+            data = {
+            "email":email,
+            "place_name":place_name,
+            "address":address,
+            "mobile_no":mobile_no,
+            "region":region,
+            "webaddress":webaddress
                 }
 
-                res = insert_data(api_key,data)
-            else:
-                error_message = "User exists already!"
-                raise CustomError(error_message)
+            res = insert_data(api_key,data)
+            
             # wanted_dets.extend(get_data(payload))
                 # res = {"Coords": "Kindly wait api in maintenance. Thank you for your patience"}
             return Response(res,status=status.HTTP_200_OK)
@@ -250,144 +277,7 @@ class CreateUserProfile(APIView):
         except Http404:
             return Response("Kindly cross check the payload and parameters or contact your admin", status=status.HTTP_400_BAD_REQUEST)
 
-
-class CreateLocGroup(APIView):
-    """
-    List all countries, or create a new country.
-    """
-    def get(self, request, format=None):
-        return JsonResponse({"message":"Kindly use POST request"})
-    def post(self, request):
-        error_message = "Kindly cross check the payload and parameters. If problem persists contact your admin"
-        try:
-            api_key = self.request.query_params.get("api_key")
-            # api_key = ""
-            myDict = request.data
-            username = myDict['username']
-            group_name = myDict['group_name']
-            payment =  False
-            if "payment" in myDict:
-                payment = myDict['payment']
-            check_res = get_data(api_key,{"username":username,"doc_type":"master"}, payment)
-            res = {}
-            if len(check_res['data']) == 0:
-                error_message = "User does not exist!"
-                raise CustomError(error_message)
-
-            else:
-                id = check_res['data'][0]['_id']
-                data = {
-                    "group_list":[group_name]
-                }
-                update_res = update_data(api_key,id,data , payment)
-                if update_res['success']:
-                    res = update_res
-                else:
-                    error_message = update_res['text']
-                    raise CustomError(error_message)
-            # wanted_dets.extend(get_data(payload))
-                # res = {"Coords": "Kindly wait api in maintenance. Thank you for your patience"}
-            return Response(res,status=status.HTTP_200_OK)
-        except CustomError:
-            return Response(error_message, status=status.HTTP_400_BAD_REQUEST)
-        except Http404:
-            return Response("Kindly cross check the payload and parameters or contact your admin", status=status.HTTP_400_BAD_REQUEST)
-class CreateLocation(APIView):
-    """
-    List all countries, or create a new country.
-    """
-    def get(self, request, format=None):
-        return JsonResponse({"message":"Kindly use POST request"})
-    def post(self, request):
-        error_message = "Kindly cross check the payload and parameters. If problem persists contact your admin"
-        try:
-            api_key = self.request.query_params.get("api_key")
-            # api_key = ""
-            myDict = request.data
-            username = myDict['username']
-            group_name = myDict['group_name']
-            loc_detail = myDict['loc_detail']
-            payment =  False
-            if "payment" in myDict:
-                payment = myDict['payment']
-            check_res = get_data(api_key,{"username":username,"doc_type":"master"}, payment)
-            res = {}
-            if not check_res['success']:
-                error_message = check_res['text']
-                raise CustomError(error_message)
-            if 'data' in check_res and len(check_res['data']) == 0:
-                error_message = "User does not exist!"
-                raise CustomError(error_message)
-
-            else:
-                data = {
-                        "username": username,
-                        "doc_type":"slave",
-                        "group_name":group_name,
-                        "loc_details":loc_detail
-                        }
-
-                res = insert_data(api_key,data, payment )
-                if not res['success']:
-                    error_message = res['text']
-                    raise CustomError(error_message)
-            # wanted_dets.extend(get_data(payload))
-                # res = {"Coords": "Kindly wait api in maintenance. Thank you for your patience"}
-            return Response(res,status=status.HTTP_200_OK)
-        except CustomError:
-            return Response(error_message, status=status.HTTP_400_BAD_REQUEST)
-        except Http404:
-            return Response("Kindly cross check the payload and parameters or contact your admin", status=status.HTTP_400_BAD_REQUEST)
-
-class UpdateLocGroup(APIView):
-    """
-    List all countries, or create a new country.
-    """
-    def get(self, request, format=None):
-        return JsonResponse({"message":"Kindly use POST request"})
-    def post(self, request):
-        error_message = "Kindly cross check the payload and parameters. If problem persists contact your admin"
-        try:
-            api_key = self.request.query_params.get("api_key")
-            # api_key = ""
-            myDict = request.data
-            username = myDict['username']
-            old_name = myDict['old_group_name']
-            new_group_name = myDict['new_group_name']
-            payment =  False
-            if "payment" in myDict:
-                payment = myDict['payment']
-            check_res = get_data(api_key,{"username":username}, payment)
-            res = {}
-            if len(check_res['data']) == 0:
-                error_message = "User does not exist!"
-                raise CustomError(error_message)
-
-            else:
-                for i in check_res["data"]:
-                    res = {}
-                    if i['doc_type'] == "master":
-                        if 'recover_list' not in i:
-                            i['recover_list'] =[]
-                        for j in range(len(i['group_list'])):
-                            if i['group_list'][j] == old_name:
-                                i['recover_list'].append({old_name:new_group_name})
-                                i['group_list'][j]  = new_group_name
-                                break
-                        res = update_data(api_key,i["_id"],{"group_list":i['group_list'],
-                                                                 "recover_list":i['recover_list'],},True, payment )
-                    else:
-                        res = update_data(api_key,i["_id"],{"group_name":new_group_name}, payment )
-                    if not res['success']:
-                        error_message = res['text']
-                        raise CustomError(error_message)
-            return Response(res,status=status.HTTP_200_OK)
-        except CustomError:
-            return Response(error_message, status=status.HTTP_400_BAD_REQUEST)
-        except Http404:
-            return Response("Kindly cross check the payload and parameters or contact your admin", status=status.HTTP_400_BAD_REQUEST)
-
-class UpdateLocation(APIView):
+class UpdateSearchData(APIView):
     """
     List all countries, or create a new country.
     """
@@ -400,21 +290,33 @@ class UpdateLocation(APIView):
             # api_key = ""
             myDict = request.data
             # username = myDict['username']
-            new_loc_details = myDict['new_loc_detail']
+            if "new_survey_detail" in myDict :
+                new_survey_details = myDict['new_survey_detail']
+                print("type ===",type(new_survey_details))
+                if not isinstance(new_survey_details, dict):
+                    error_message = "Check the new_survey_detail if json!"
+                    # r = json.dumps(error_message)
+                    raise CustomError(error_message)
+                # return Response(r, status=status.HTTP_400_BAD_REQUEST)
+
+            else:
+                error_message = "Check the new_survey_detail if present!"
+                raise CustomError(error_message)
+
+            
             payment =  False
             if "payment" in myDict:
                 payment = myDict['payment']
-            id = myDict['loc_id']
+            id = myDict['search_result_id']
             check_res = get_data(api_key,{"_id":id}, payment)
             res = {}
             if len(check_res['data']) == 0:
-                error_message = "Location does not exist!"
+                error_message = "Search data does not exist!"
                 raise CustomError(error_message)
 
             else:
                 temp_data = check_res["data"][0]
-                temp_data['loc_details'] = new_loc_details
-                res = update_data(api_key,temp_data["_id"],{"loc_details":new_loc_details}, payment )
+                res = update_data(api_key,temp_data["_id"],new_survey_details, payment )
                 if not res['success']:
                     error_message = res['text']
                     raise CustomError(error_message)
@@ -425,7 +327,7 @@ class UpdateLocation(APIView):
             return Response("Kindly cross check the payload and parameters or contact your admin", status=status.HTTP_400_BAD_REQUEST)
 
 
-class DeleteUserProfile(APIView):
+class DeleteSearchData(APIView):
     """
     List all countries, or create a new country.
     """
@@ -437,120 +339,21 @@ class DeleteUserProfile(APIView):
             api_key = self.request.query_params.get("api_key")
             # api_key = ""
             myDict = request.data
-            username = myDict['username']
             payment =  False
             if "payment" in myDict:
                 payment = myDict['payment']
-            res = delete_data(api_key, {"username":username}, payment)
-            if not res['success']:
-                error_message = res['text']
-                raise CustomError(error_message)
-            return Response(res,status=status.HTTP_200_OK)
-        except CustomError:
-            return Response(error_message, status=status.HTTP_400_BAD_REQUEST)
-        except Http404:
-            return Response("Kindly cross check the payload and parameters or contact your admin", status=status.HTTP_400_BAD_REQUEST)
-class DeleteLocGroup(APIView):
-    """
-    List all countries, or create a new country.
-    """
-    def get(self, request, format=None):
-        return JsonResponse({"message":"Kindly use POST request"})
-    def post(self, request):
-        error_message = "Kindly cross check the payload and parameters. If problem persists contact your admin"
-        try:
-            api_key = self.request.query_params.get("api_key")
-            # api_key = ""
-            myDict = request.data
-            username = myDict['username']
-            group_name = myDict['group_name']
-            payment =  False
-            if "payment" in myDict:
-                payment = myDict['payment']
-            check_user = get_data(api_key, {"username":username, "doc_type":"master"}, payment)
-
-            if not check_user["success"]:
-                error_message = check_user['text']
-                raise CustomError(error_message)
-            culprit_list = check_user['data'][0]['group_list']
-            if group_name in culprit_list:
-                culprit_list.remove(group_name)
-            update_res = update_data(api_key, check_user['data'][0]['_id'],{"group_list":culprit_list}, True, payment)
-            if not update_res["success"]:
-                error_message = update_res['text']
-                raise CustomError(error_message)
-            res = delete_data(api_key, {"username":username, "group_name":group_name}, payment)
-            if not res['success']:
-                error_message = res['text']
-                raise CustomError(error_message)
-            return Response(res,status=status.HTTP_200_OK)
-        except CustomError:
-            return Response(error_message, status=status.HTTP_400_BAD_REQUEST)
-        except Http404:
-            return Response("Kindly cross check the payload and parameters or contact your admin", status=status.HTTP_400_BAD_REQUEST)
-
-
-class DeleteLocation(APIView):
-    """
-    List all countries, or create a new country.
-    """
-    def get(self, request, format=None):
-        return JsonResponse({"message":"Kindly use POST request"})
-    def post(self, request):
-        error_message = "Kindly cross check the payload and parameters. If problem persists contact your admin"
-        try:
-            api_key = self.request.query_params.get("api_key")
-            # api_key = ""
-            myDict = request.data
-            # username = myDict['username']
-            id = myDict['id']
-            payment =  False
-            if "payment" in myDict:
-                payment = myDict['payment']
-            res = delete_data(api_key,{"_id":id}, payment)
-            if not res['success']:
-                error_message = res['text']
-                raise CustomError(error_message)
-            return Response(res,status=status.HTTP_200_OK)
-        except CustomError:
-            return Response(error_message, status=status.HTTP_400_BAD_REQUEST)
-        except Http404:
-            return Response("Kindly cross check the payload and parameters or contact your admin", status=status.HTTP_400_BAD_REQUEST)
-
-
-
-class SyncGroups(APIView):
-    """
-    List all countries, or create a new country.
-    """
-    def get(self, request, format=None):
-        return JsonResponse({"message":"Kindly use POST request"})
-    def post(self, request):
-        error_message = "Kindly cross check the payload and parameters. If problem persists contact your admin"
-        try:
-            api_key = self.request.query_params.get("api_key")
-            # api_key = ""
-            myDict = request.data
-            username = myDict['username']
-            payment =  False
-            if "payment" in myDict:
-                payment = myDict['payment']
-            check_res = snyc_groups(username, api_key, payment)
-            res = {}
-            if check_res['success']:
-                res = check_res
+            if "search_result_id" in myDict:
+                search_result_id = myDict['search_result_id']
+                res = delete_data(api_key, {"_id":search_result_id}, payment)
             else:
-                error_message = check_res['text']
+                error_message = "Search data does not exist!"
+                raise CustomError(error_message)
+
+            if not res['success']:
+                error_message = res['text']
                 raise CustomError(error_message)
             return Response(res,status=status.HTTP_200_OK)
         except CustomError:
             return Response(error_message, status=status.HTTP_400_BAD_REQUEST)
         except Http404:
             return Response("Kindly cross check the payload and parameters or contact your admin", status=status.HTTP_400_BAD_REQUEST)
-
-
-
-
-# api_key = "783ae055-6844-4a73-8be7-20b6a157ab9c"
-
-# get_data(api_key)

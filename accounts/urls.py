@@ -6,6 +6,7 @@ from accounts.views.my_apiV2 import GetDowellSurvey as GetDowellSurveyV2
 from accounts.views.my_apiV2 import ExtractAndFetchSurvey, SurveyCounter, MySurveyFetch
 from accounts import views
 from accounts.views import health_check_views
+from accounts.views import data_cube_views as dcv
 
 urlpatterns = [
     path('login/', views.LoInFunc.as_view(), name='login'),
@@ -36,4 +37,11 @@ urlpatterns = [
     ##health_check
     path('health-check/', health_check_views.HealthCheck.as_view(), name='health-check'),
     path('my-survey/', MySurveyFetch.as_view()),
+    ##datacube
+    path('create-survey-search/', dcv.CreateSurveysSearch.as_view(), name='create-survey-search'),
+    path('get-survey-search/', dcv.GetSurveysSearchData.as_view(), name='get-survey-search'),
+    path('update-survey-search/', dcv.UpdateSearchData.as_view(), name='update-survey-search'),
+    path('delete-survey-search/', dcv.DeleteSearchData.as_view(), name='delete-survey-search'),
+
+    
 ]
