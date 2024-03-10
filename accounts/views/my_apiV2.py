@@ -139,6 +139,7 @@ class GetDowellSurvey(APIView):
                     description = res_data['promotional_sentence']
                     created_by = res_data['username']
                     logo = res_data['logo']
+                    survey_id = res_data['id']
 
                     qrcode_url = 'https://www.qrcodereviews.uxlivinglab.online/api/v2/qr-code/?api_key=' + api_key
                     payload = {
@@ -162,7 +163,19 @@ class GetDowellSurvey(APIView):
                         # qrcode.update(res_data)
                         qrcode.update({key: res_data[key] for key in keys_to_add if key in res_data})
 
-
+                    surve = QrCodeV2.objects.get(id=survey_id)
+                    formdata = {}
+                    data = res_obj
+                    print('Survey  res_obj  ',  survey_id)
+                    qrcode_id = data['qrcodes'][0]['qrcode_id']
+                    formdata["qr_code_id"] = qrcode_id
+                    print("QR Code ID:", formdata)
+                    serialize = UpdateQrCodeSerializerV2(surve, data=formdata, partial=True)
+                    if serialize.is_valid():
+                        res = serialize.save()
+                        # res = serializer.save()
+                        res_dat = serialize.data
+                        # print('Ree ', res_dat)
                     '''============================================='''
 
                     return Response(res_obj, status=status.HTTP_200_OK)
@@ -183,9 +196,7 @@ class GetDowellSurvey(APIView):
 
 
     def put(self, request, format=None):
-        print('Running edit')
         myDict = request.data
-        print('myDict ', myDict)
         # p_list = myDict['p_list']
 
 
@@ -211,7 +222,6 @@ class GetDowellSurvey(APIView):
                 survey_id = Survey_id
 
                 survey = QrCodeV2.objects.get(id=survey_id)
-                print('survey ', survey)
             except QrCodeV2.DoesNotExist:
                 raise Http404("Survey not found")
 
@@ -258,6 +268,7 @@ class GetDowellSurvey(APIView):
                 name = formdata.get("name")
                 email = formdata.get("email")
                 link = formdata.get('link')
+                
                 participantsLimit = formdata.get("participantsLimit")
 
                     # formdata["start_date"] = my_date(myDict["start_date"])
@@ -274,6 +285,7 @@ class GetDowellSurvey(APIView):
 
 
 
+                print('form ', formdata)
                 serializer = UpdateQrCodeSerializerV2(
                         survey, data=formdata, partial=True)
                 if serializer.is_valid():

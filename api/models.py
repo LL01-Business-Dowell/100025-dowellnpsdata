@@ -23,6 +23,7 @@ class QrCode(models.Model):
     is_end = models.BooleanField(default=False)
     is_paused = models.BooleanField(default=False)
     reason = models.CharField(max_length=500, blank=True, null=True)
+    
 
     def __str__(self):
         return str(self.brand_name)
@@ -55,6 +56,7 @@ class QrCodeV2(models.Model):
     latitude = models.CharField(max_length=500, blank=True, null=True)
     longitude = models.CharField(max_length=500, blank=True, null=True)
     search_result_id = models.CharField(max_length=200, blank=True, null=True)
+    qrcode_id = models.CharField(max_length=200, blank=True, null=True)
     
     def save(self, *args, **kwargs):
        if self.pk is None:

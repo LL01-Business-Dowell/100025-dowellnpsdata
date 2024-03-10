@@ -271,6 +271,8 @@ class UpdateQrCodeSerializerV2(serializers.ModelSerializer):
             instance.name = validated_data.get('name', instance.name)
             instance.email = validated_data.get('email', instance.email)
             instance.username = validated_data.get('username', instance.username)
+            instance.longitude = validated_data.get('longitude', instance.longitude)
+            instance.qr_code_id = validated_data.get('qr_code_id', instance.qr_code_id)
             instance.save()
 
             return instance
