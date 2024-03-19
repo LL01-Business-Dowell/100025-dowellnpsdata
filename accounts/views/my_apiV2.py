@@ -314,7 +314,8 @@ class GetDowellSurvey(APIView):
                     res = requests.put(qrcode_url, data=payload)
                     res_obj = json.loads(res.text)
                     
-                    keys_to_add = ['id','country', 'region', 'name','email', 'username', 'promotional_sentence' ,'participantsLimit', 'category', 'latitude', 'longitude', 'search_result_id']
+                    # keys_to_add = ['id','country', 'region', 'name','email', 'username', 'promotional_sentence' ,'participantsLimit', 'category', 'latitude', 'longitude', 'search_result_id']
+                    keys_to_add = ['id','country', 'region', 'name','email', 'username', 'promotional_sentence' ,'participantsLimit', 'category', 'latitude', 'longitude', 'search_result_id', 'qrcode_id', 'start_date', 'end_date']
                     for key in keys_to_add:
                         if key in res_data:
                             res_obj[key] = res_data[key]
