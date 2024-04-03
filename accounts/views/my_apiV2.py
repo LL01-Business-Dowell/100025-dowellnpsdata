@@ -152,12 +152,14 @@ class GetDowellSurvey(APIView):
                         "created_by": created_by,
                         "search_result_id": search_result_id
                     }
+                    print('payload ', payload)
                     headers = {"Content-Type": "multipart/form-data"}
 
                     res = requests.post(qrcode_url, data=payload)
                     # res = {"qr_code_generator_response": res}
 
                     res_obj = json.loads(res.text)
+                    print('this is mongo data response', res_obj)
                     keys_to_add = ['id','country', 'region', 'name','email', 'username', 'promotional_sentence' ,'participantsLimit', 'category', 'latitude', 'longitude', 'search_result_id']
                     for qrcode in res_obj['qrcodes']:
                         # qrcode.update(res_data)
@@ -166,7 +168,6 @@ class GetDowellSurvey(APIView):
                     surve = QrCodeV2.objects.get(id=survey_id)
                     formdata = {}
                     data = res_obj
-                    print('Survey  res_obj  ',  survey_id)
                     qrcode_id = data['qrcodes'][0]['qrcode_id']
                     formdata["qr_code_id"] = qrcode_id
                     print("QR Code ID:", formdata)
