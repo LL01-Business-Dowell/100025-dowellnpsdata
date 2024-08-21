@@ -7,6 +7,7 @@ from accounts.views.my_apiV2 import ExtractAndFetchSurvey, SurveyCounter, MySurv
 from accounts import views
 from accounts.views import health_check_views
 from accounts.views import data_cube_views as dcv
+from .views.kitchensink import CreateCollectionView, CheckDatabaseStatusView
 
 urlpatterns = [
     path('login/', views.LoInFunc.as_view(), name='login'),
@@ -42,6 +43,10 @@ urlpatterns = [
     path('get-survey-search/', dcv.GetSurveysSearchData.as_view(), name='get-survey-search'),
     path('update-survey-search/', dcv.UpdateSearchData.as_view(), name='update-survey-search'),
     path('delete-survey-search/', dcv.DeleteSearchData.as_view(), name='delete-survey-search'),
+
+    ### kitchensink
+    path('api/create-collection/', CreateCollectionView.as_view(), name='create-collection'),
+    path('api/check-database-status/', CheckDatabaseStatusView.as_view(), name='check-database-status'),
 
     
 ]
